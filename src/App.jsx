@@ -13,8 +13,7 @@ function App() {
       <Router>
         <NavBar />
         <Routes>
-          {/* <Route exact path="/" element={<Home />}></Route> */}
-          <Route exact path="/Animeesh" element={<Home />}></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route path="/popular" element={<MostPopular />}></Route>
           <Route path="/genres" element={<Genres />}></Route>
           <Route path="/watch" element={<WatchAnime />}></Route>
