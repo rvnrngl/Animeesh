@@ -44,7 +44,7 @@ export const Carousel = () => {
           return (
             <SwiperSlide
               key={anime.id}
-              className="flex flex-col justify-end items-start text-white"
+              className="flex flex-col justify-end items-start text-white transition-all duration-300"
             >
               {/* image bg */}
               <div className="absolute w-full h-full brightness-75 lg:shadow-[inset_5px_5px_100px_10px_#000] border-black/10 top-0 left-0 -z-[1]">
