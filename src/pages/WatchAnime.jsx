@@ -27,8 +27,6 @@ export const WatchAnime = () => {
   const [animeInfo, setAnimeInfo] = useState({}); // anime info data from api
   const [animeRecommendation, setAnimeRecommendation] = useState([]);
 
-  console.log(animeId);
-  console.log(animeInfo);
   // get anime info using anime id
   const getAnimeInfo = async () => {
     await anilist.fetchAnimeInfo(animeId).then((data) => {
@@ -45,7 +43,7 @@ export const WatchAnime = () => {
   const [episode, setEpisode] = useState([]); // get episodes
   const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
   const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(1); //set current episode number
-  console.log(episode);
+
   // get the current episode
   const getCurrentEpisode = async (id) => {
     try {
@@ -71,7 +69,7 @@ export const WatchAnime = () => {
   return (
     <>
       <div className="w-screen min-h-screen dark:bg-zinc-800">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-5 pt-[95px] px-5 lg:px-20">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-5 pt-[95px] px-5 lg:px-10 xl:px-20">
           {/* video wrapper comment */}
           <div className="lg:col-span-3 flex flex-col gap-2">
             <div>
@@ -94,32 +92,15 @@ export const WatchAnime = () => {
           </div>
           {/* List of Episodes */}
           <div className="lg:col-span-1 w-full h-fit dark:bg-zinc-500/20 py-3 pb-5 rounded-md">
-            <div className=" px-3 pb-1">
-              <p className="text-gray-900 dark:text-gray-300">
-                List of episodes:
-              </p>
-            </div>
             {episode.length > 30 ? (
-              <div className="w-full grid place-items-center grid-cols-6 gap-2 px-3">
-                {episode.toReversed().map((eps, index) => {
-                  return (
-                    <div
-                      key={index}
-                      onClick={() => handleCurrentLyWatching(eps.id, index + 1)}
-                      className={`w-full flex items-center justify-center rounded-sm p-2 text-black cursor-pointer ${
-                        currentEpisode.id === eps.id
-                          ? "bg-orange-500"
-                          : "bg-zinc-500"
-                      }`}
-                    >
-                      {index + 1}
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="py-2 h-[295px] lg:h-[310px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-                <div className="w-full grid place-items-center">
+              <>
+                {/* greater than 30 episodes */}
+                <div className=" px-3 pb-1">
+                  <p className="text-gray-900 dark:text-gray-300">
+                    List of episodes:
+                  </p>
+                </div>
+                <div className="w-full grid place-items-center grid-cols-6 py-2 max-h-[295px] lg:max-h-[290px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] gap-2 px-3">
                   {episode.toReversed().map((eps, index) => {
                     return (
                       <div
@@ -127,24 +108,49 @@ export const WatchAnime = () => {
                         onClick={() =>
                           handleCurrentLyWatching(eps.id, index + 1)
                         }
-                        className={`w-full flex items-center justify-start py-3 text-gray-900 dark:text-gray-300
-                         hover:bg-zinc-500 cursor-pointer px-4 gap-2 flex-nowrap lg:text-sm
-                        ${
-                          index % 2 === 0 ? "bg-zinc-600/50" : "bg-zinc-500/50"
+                        className={`w-full flex items-center justify-center rounded-sm p-2 text-black cursor-pointer ${
+                          currentEpisode.id === eps.id
+                            ? "bg-orange-500"
+                            : "bg-zinc-500"
                         }`}
                       >
-                        <span>{index + 1}.</span>
-                        <span>
-                          {eps.title}
-                          {/* {eps.title?.length > 37
-                            ? eps.title.slice(0, 37) + "..."
-                            : eps.title} */}
-                        </span>
+                        {index + 1}
                       </div>
                     );
                   })}
                 </div>
-              </div>
+              </>
+            ) : (
+              <>
+                {/* less than 30 episodes */}
+                <div className=" px-3 pb-1">
+                  <p className="text-gray-900 dark:text-gray-300">
+                    List of episodes:
+                  </p>
+                </div>
+                <div className="py-2 max-h-[295px] lg:max-h-[310px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                  <div className="w-full grid place-items-center">
+                    {episode.toReversed().map((eps, index) => {
+                      return (
+                        <div
+                          key={index}
+                          onClick={() =>
+                            handleCurrentLyWatching(eps.id, index + 1)
+                          }
+                          className={`w-full flex items-center justify-start py-3 text-gray-900 dark:text-gray-300
+                         hover:bg-zinc-500 cursor-pointer px-4 gap-2 flex-nowrap lg:text-sm
+                        ${
+                          index % 2 === 0 ? "bg-zinc-600/50" : "bg-zinc-500/50"
+                        }`}
+                        >
+                          <span>{index + 1}.</span>
+                          <span>{eps.title}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
             )}
           </div>
 
