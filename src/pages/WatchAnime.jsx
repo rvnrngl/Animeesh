@@ -17,6 +17,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 // import required modules
 import { Pagination } from "swiper/modules";
+import { Recommendation } from "../components/Recommendation";
 
 defineCustomElements();
 
@@ -25,7 +26,10 @@ export const WatchAnime = () => {
   const location = useLocation(); // get state anime data
   const [animeId] = useState(location.state.anime.id); // init anime id from location
   const [animeInfo, setAnimeInfo] = useState({}); // anime info data from api
-  const [animeRecommendation, setAnimeRecommendation] = useState([]);
+  const [episode, setEpisode] = useState([]); // get episodes
+  const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
+  const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(1); //set current episode number
+  const [animeRecommendation, setAnimeRecommendation] = useState([]); // get list of anime recommendation
 
   // get anime info using anime id
   const getAnimeInfo = async () => {
@@ -39,10 +43,6 @@ export const WatchAnime = () => {
   useEffect(() => {
     getAnimeInfo();
   }, []);
-
-  const [episode, setEpisode] = useState([]); // get episodes
-  const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
-  const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(1); //set current episode number
 
   // get the current episode
   const getCurrentEpisode = async (id) => {
@@ -213,45 +213,15 @@ export const WatchAnime = () => {
             </div>
           </div>
           {/* recommendation anime */}
-          <div className="lg:col-span-4 w-full p-3 rounded-md bg-zinc-500/20">
-            <Swiper
-              slidesPerView={2}
-              spaceBetween={10}
-              className="mySwiper"
-              breakpoints={{
-                640: {
-                  slidesPerView: 3,
-                },
-                768: {
-                  slidesPerView: 4,
-                },
-                1024: {
-                  slidesPerView: 5,
-                },
-                1280: {
-                  slidesPerView: 6,
-                },
-              }}
-            >
-              {animeRecommendation.map((anime) => {
-                return (
-                  <SwiperSlide key={anime.id} className="w-full">
-                    <div>
-                      <img
-                        src={anime.image}
-                        alt={anime.title?.english}
-                        className="h-[250px]"
-                      />
-                    </div>
-                    <div className="text-gray-900 dark:text-gray-300">
-                      <p>{anime.title?.english}</p>
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+          <div className="lg:col-span-4 w-full mb-10">
+            <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
+              Recommendations
+            </h1>
+            <div className="w-full p-3 rounded-md bg-zinc-500/20">
+              <Recommendation animeRecommendation={animeRecommendation} />
+            </div>
           </div>
-          <div className="">hi</div>
+          {/* end */}
         </div>
       </div>
     </>

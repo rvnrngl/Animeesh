@@ -13,6 +13,11 @@ import { FreeMode, Pagination } from "swiper/modules";
 
 export const Slider = ({ animeList }) => {
   const navigate = useNavigate();
+  const handleNavigation = (anime) => {
+    navigate("/watch", { state: { anime } });
+    console.log("Clicked");
+    window.location.reload();
+  };
   return (
     <>
       <div className="w-full">
@@ -40,11 +45,7 @@ export const Slider = ({ animeList }) => {
               <SwiperSlide
                 key={anime.id}
                 className="h-[180px] xs:h-[240px] lg:h-[260px] xl:h-[300px] rounded-md cursor-pointer"
-                onClick={() => {
-                  navigate("/watch", {
-                    state: { anime },
-                  });
-                }}
+                onClick={() => handleNavigation(anime)}
               >
                 <div
                   className="h-full relative rounded-bl-md rounded-tr-md"
@@ -60,7 +61,7 @@ export const Slider = ({ animeList }) => {
                     className="absolute left-0 top-0 w-[30px] h-[30px] bg-orange-500 
                   flex justify-center items-center rounded-br-md text-xs lg:text-lg font-semibold"
                   >
-                    {index > 9 ? <p>0{index + 1}</p> : <p>{index + 1}</p>}
+                    {index < 9 ? <p>0{index + 1}</p> : <p>{index + 1}</p>}
                   </div>
                 </div>
               </SwiperSlide>
