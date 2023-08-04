@@ -12,14 +12,14 @@ export const NavBar = () => {
   const [theme, setTheme] = useState("light"); // change to null
   const [isMenuClosed, setIsMenuClosed] = useState(true); // if dropdown menu is closed
 
-  // // check preffered theme by the system
-  // useEffect(() => {
-  //   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-  //     setTheme("dark");
-  //   } else {
-  //     setTheme("light");
-  //   }
-  // }, []);
+  // check preffered theme by the system
+  useEffect(() => {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, []);
 
   useEffect(() => {
     if (theme === "dark") {
