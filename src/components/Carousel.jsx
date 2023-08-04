@@ -51,12 +51,12 @@ export const Carousel = () => {
                 <img
                   src={anime.cover}
                   alt={anime.title.english}
-                  className="h-full w-full object-cover hidden lg:block"
+                  className="h-full w-full object-cover object-center hidden lg:block"
                 />
                 <img
                   src={anime.image}
                   alt={anime.title.english}
-                  className="w-full object-bottom object-cover lg:hidden"
+                  className="w-full object-cover object-center lg:hidden"
                 />
               </div>
               {/* anime description */}

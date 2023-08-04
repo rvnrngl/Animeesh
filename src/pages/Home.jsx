@@ -5,9 +5,9 @@ import { Carousel } from "../components/Carousel";
 export const Home = () => {
   return (
     <div className="w-screen min-h-screen dark:bg-zinc-800">
-      <div className="w-full flex flex-col justify-center items-center px-5">
+      <div className="w-full flex flex-col justify-center items-center px-3 lg:px-5">
         {/* Slider */}
-        <div className="h-[40vh] lg:h-[75vh] w-full mt-[100px] shadow-lg">
+        <div className="h-[300px] lg:h-[75vh] w-full mt-[100px] shadow-lg">
           <Carousel />
         </div>
         {/* Recent Updated Animes container */}
