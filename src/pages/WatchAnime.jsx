@@ -27,6 +27,8 @@ export const WatchAnime = () => {
   const [animeInfo, setAnimeInfo] = useState({}); // anime info data from api
   const [animeRecommendation, setAnimeRecommendation] = useState([]);
 
+  console.log(animeId);
+  console.log(animeInfo);
   // get anime info using anime id
   const getAnimeInfo = async () => {
     await anilist.fetchAnimeInfo(animeId).then((data) => {
@@ -35,7 +37,6 @@ export const WatchAnime = () => {
       setAnimeRecommendation(data.recommendations); // get anime recommendations
     });
   };
-  console.log(animeRecommendation);
 
   useEffect(() => {
     getAnimeInfo();
@@ -44,7 +45,7 @@ export const WatchAnime = () => {
   const [episode, setEpisode] = useState([]); // get episodes
   const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
   const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(1); //set current episode number
-
+  console.log(episode);
   // get the current episode
   const getCurrentEpisode = async (id) => {
     try {
