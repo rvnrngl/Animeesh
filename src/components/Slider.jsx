@@ -46,7 +46,6 @@ export const Slider = ({ animeList, reLoad }) => {
               <SwiperSlide
                 key={anime.id}
                 className="h-[180px] xs:h-[240px] lg:h-[260px] xl:h-[300px] rounded-md cursor-pointer"
-                onClick={() => handleNavigation(anime)}
               >
                 <div
                   className="h-full relative rounded-bl-md rounded-tr-md"
@@ -56,6 +55,7 @@ export const Slider = ({ animeList, reLoad }) => {
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                   }}
+                  onClick={() => handleNavigation(anime)}
                 >
                   {/* badge */}
                   <div
