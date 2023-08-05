@@ -14,10 +14,10 @@ import { FreeMode, Pagination } from "swiper/modules";
 export const Slider = ({ animeList, reLoad }) => {
   const navigate = useNavigate();
   const handleNavigation = (anime) => {
+    navigate("/watch", { state: { anime } });
     if (reLoad) {
       navigate(0);
     }
-    navigate("/watch", { state: { anime } });
   };
   return (
     <>
