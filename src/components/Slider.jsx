@@ -45,7 +45,7 @@ export const Slider = ({ animeList, reLoad }) => {
           {animeList.map((anime, index) => {
             return (
               <SwiperSlide
-                key={anime.id}
+                key={index}
                 className="h-[180px] xs:h-[240px] lg:h-[260px] xl:h-[300px] rounded-md cursor-pointer"
               >
                 <div
