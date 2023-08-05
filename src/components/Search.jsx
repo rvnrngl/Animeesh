@@ -1,57 +1,58 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { ImSearch } from "react-icons/im";
+import { META } from "@consumet/extensions";
 
-export const Search = () => {
-  const [search, setSearch] = useState("");
-  const [animeData, setAnimeData] = useState([]);
+export const Search = ({ onSearchedData }) => {
+  const anilist = new META.Anilist();
+  const [input, setInput] = useState("");
+  const [anime, setAnime] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const getAnime = async () => {
-    try {
-      const url = `https://api.jikan.moe/v4/anime?q=${search}&sfw&limit=10`;
-      const response = await fetch(url);
-      const resData = await response.json();
-      setAnimeData(resData.data);
-      console.log(resData.data);
-    } catch (error) {
-      console.log(error);
+  const getAnime = async (input) => {
+    setIsLoading(true);
+    await anilist
+      .search(input)
+      .then((data) => {
+        setAnime(data.results);
+        onSearchedData(data.results);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const handleSearch = () => {
+    if (input.trim() !== "") {
+      getAnime(input);
     }
   };
 
-  useEffect(() => {
-    getAnime();
-  }, [search]);
-
+  const handleEnterKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
   return (
     <>
-      <div className=" w-[500px] h-[70px] bg-gray-600 shadow-lg rounded-lg overflow-hidden mb-4">
+      <div className="w-full max-w-[640px] p-2 px-10 flex justify-center items-center gap-2">
         <input
           type="text"
-          id="search"
-          name="search"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Search for anime..."
-          className="w-full h-full p-5 text-xl text-black"
+          value={input}
+          placeholder="Search anime..."
+          className="w-full text-gray-900 text-sm lg:text-base py-2 px-5 border border-gray-500 dark:border-none outline-none rounded-full"
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleEnterKeyPress}
         />
-        <button className="">Search</button>
+        <button
+          onClick={handleSearch}
+          className="p-2 lg:p-3 text-xl lg:text-lg rounded-full bg-gray-600"
+        >
+          <ImSearch />
+        </button>
       </div>
-      {/* Display animeData here */}
-      {animeData.length ? (
-        <ul>
-          {animeData.map((anime, index) => (
-            <li key={index}>
-              <p className="text-white text-lg py-2 w-[500px] text-center bg-gray-600 mb-2">
-                {anime.title}
-              </p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No anime found.</p>
-      )}
-      <p className="text-white text-lg py-2 w-[500px] text-center bg-gray-600">
-        hi
-      </p>
+      {/* <span className="mb-3 lg:text-lg">
+        Search Results Found: <span>{anime.length}</span> items
+      </span> */}
     </>
   );
 };
