@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Genres } from "./pages/Genres";
 import { NavBar } from "./components/NavBar";
@@ -13,7 +13,7 @@ function App() {
       <Router>
         <NavBar />
         <Routes>
-          <Route path="/" element={<Home />}></Route>
+          <Route exact path="/" element={<Home />}></Route>
           <Route path="/popular" element={<MostPopular />}></Route>
           <Route path="/genres" element={<Genres />}></Route>
           <Route path="/watch" element={<WatchAnime />}></Route>
