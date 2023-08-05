@@ -4,7 +4,7 @@ import { Slider } from "./Slider";
 export const Recommendation = ({ animeRecommendation }) => {
   return (
     <>
-      <Slider animeList={animeRecommendation} />
+      <Slider animeList={animeRecommendation} reLoad={true} />
     </>
   );
 };

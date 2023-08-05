@@ -11,12 +11,13 @@ import "swiper/css/pagination";
 // import required modules
 import { FreeMode, Pagination } from "swiper/modules";
 
-export const Slider = ({ animeList }) => {
+export const Slider = ({ animeList, reLoad }) => {
   const navigate = useNavigate();
   const handleNavigation = (anime) => {
     navigate("/watch", { state: { anime } });
-    console.log("Clicked");
-    // window.location.reload();
+    if (reLoad) {
+      navigate(0);
+    }
   };
   return (
     <>

@@ -42,7 +42,7 @@ export const WatchAnime = () => {
 
   useEffect(() => {
     getAnimeInfo();
-  }, []);
+  }, [animeId]);
 
   // get the current episode
   const getCurrentEpisode = async (id) => {

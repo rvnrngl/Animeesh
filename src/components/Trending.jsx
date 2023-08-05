@@ -20,7 +20,7 @@ export const Trending = () => {
 
   return (
     <>
-      <Slider animeList={trendingAnime} />
+      <Slider animeList={trendingAnime} reLoad={false} />
     </>
   );
 };
