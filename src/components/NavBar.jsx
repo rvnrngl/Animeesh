@@ -61,7 +61,9 @@ export const NavBar = () => {
                 className="w-full text-sm lg:text-lg bg-transparent outline-none"
                 placeholder="Search anime..."
               />
-              <ImSearch />
+              <Link to="search">
+                <ImSearch />
+              </Link>
             </div>
           </div>
           {/* login button */}
