@@ -16,7 +16,7 @@ export const Slider = ({ animeList }) => {
   const handleNavigation = (anime) => {
     navigate("/watch", { state: { anime } });
     console.log("Clicked");
-    window.location.reload();
+    // window.location.reload();
   };
   return (
     <>
