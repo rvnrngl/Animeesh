@@ -45,7 +45,6 @@ export const NavBar = () => {
 
   //handle search
   const handleSearch = () => {
-    localStorage.setItem("inputValue", input);
     if (window.location.hash === "#/search") {
       window.location.reload();
     } else {
@@ -57,6 +56,7 @@ export const NavBar = () => {
   const handleEnterKeyPress = (event) => {
     if (event.key === "Enter") {
       if (input.trim() !== "") {
+        localStorage.setItem("inputValue", input);
         handleSearch();
       } else {
         console.log("Enter any keyword");
@@ -67,7 +67,7 @@ export const NavBar = () => {
   return (
     <>
       <div className="w-screen dark:bg-zinc-900 px-3 lg:px-5">
-        <nav className="w-full border-b dark:border-none dark:bg-zinc-800 px-7 z-50 shadow-md rounded-b-[40px] py-3 lg:py-0">
+        <nav className="w-full border-b dark:border-none dark:bg-zinc-800 px-6 lg:px-7 z-50 shadow-md rounded-b-[30px] lg:rounded-b-[40px] py-3 lg:py-0">
           <ul className="text-lg lg:text-xl flex justify-between items-center gap-2">
             <div className="flex w-full dark:text-gray-200 items-center gap-2 lg:gap-4">
               <button onClick={toggleMenu} className="lg:hidden">
