@@ -1,14 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Search } from "../components/Search";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { META } from "@consumet/extensions";
 
 // react icons
 import { FaPlay } from "react-icons/fa";
 
 export const SearchAnime = () => {
+  const anilist = new META.Anilist();
+  const [inputValue, setInputValue] = useState(
+    localStorage.getItem("inputValue") || ""
+  ); // init input value stored in local storage
   const [searchedAnime, setSearchedAnime] = useState([]);
   const [isFetched, setIsFetched] = useState(false);
   const navigate = useNavigate();
+
+  // console.log(inputRef.current);
+  // console.log(inputValue);
+
+  const getSearchedAnime = async () => {
+    await anilist.search(inputValue).then((data) => {
+      setSearchedAnime(data.results);
+    });
+  };
+
+  useEffect(() => {
+    getSearchedAnime();
+    localStorage.removeItem("inputValue");
+  }, [inputValue]);
 
   const handleSearchedData = (data) => {
     if (data.length > 0) {

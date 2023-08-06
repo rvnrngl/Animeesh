@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { ImSearch } from "react-icons/im";
@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 export const NavBar = () => {
   const [isDark, setIsDark] = useState(false);
-  const [theme, setTheme] = useState("light"); // change to null
+  const [theme, setTheme] = useState(null); // change to null
   const [isMenuClosed, setIsMenuClosed] = useState(true); // if dropdown menu is closed
   const [input, setInput] = useState(""); // store input field
   const navigate = useNavigate();
@@ -44,10 +44,20 @@ export const NavBar = () => {
   };
 
   //handle search
+  const handleSearch = () => {
+    localStorage.setItem("inputValue", input);
+    if (window.location.pathname === "/search") {
+      window.location.reload();
+    } else {
+      navigate("/search");
+    }
+  };
+
+  //handle enter key  pressed
   const handleEnterKeyPress = (event) => {
     if (event.key === "Enter") {
       if (input.trim() !== "") {
-        navigate("/search", { state: input });
+        handleSearch();
       } else {
         console.log("Enter any keyword");
       }
@@ -57,7 +67,7 @@ export const NavBar = () => {
   return (
     <>
       <div className="w-screen dark:bg-zinc-900 px-3 lg:px-5">
-        <nav className="w-full border-b dark:border-none bg-white/70 dark:bg-zinc-800 px-7 z-50 shadow-md rounded-b-[40px] py-3 lg:py-0">
+        <nav className="w-full border-b dark:border-none dark:bg-zinc-800 px-7 z-50 shadow-md rounded-b-[40px] py-3 lg:py-0">
           <ul className="text-lg lg:text-xl flex justify-between items-center gap-2">
             <div className="flex w-full dark:text-gray-200 items-center gap-2 lg:gap-4">
               <button onClick={toggleMenu} className="lg:hidden">
@@ -73,14 +83,14 @@ export const NavBar = () => {
               <div className="hidden lg:flex dark:text-gray-300 items-center font-semibold ml-5 uppercase">
                 <Link
                   to="/popular"
-                  className="p-6 hover:bg-zinc-900 relative group transition-all duration-100"
+                  className="p-6 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
                 >
                   <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover:block"></span>
                   <span className="group-hover:text-orange-400">Popular</span>
                 </Link>
                 <Link
                   to="/genres"
-                  className="p-6 hover:bg-zinc-900 relative group transition-all duration-100"
+                  className="p-6 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
                 >
                   <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover:block"></span>
                   <span className="group-hover:text-orange-400">Genre</span>
@@ -97,7 +107,7 @@ export const NavBar = () => {
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleEnterKeyPress}
               />
-              <button onClick={() => navigate("/search", { state: input })}>
+              <button onClick={handleSearch}>
                 <ImSearch className="text-base" />
               </button>
             </div>

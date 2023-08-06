@@ -34,7 +34,7 @@ export const Search = ({ onSearchedData }) => {
   };
   return (
     <>
-      <div className="w-full max-w-[640px] p-2 px-10 flex justify-center items-center gap-2">
+      <div className="lg:hidden w-full max-w-[640px] p-2 px-10 flex justify-center items-center gap-2">
         <input
           type="text"
           value={input}
