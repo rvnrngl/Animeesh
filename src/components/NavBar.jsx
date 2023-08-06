@@ -46,7 +46,7 @@ export const NavBar = () => {
   //handle search
   const handleSearch = () => {
     localStorage.setItem("inputValue", input);
-    if (window.location.pathname === "/search") {
+    if (window.location.hash === "#/search") {
       window.location.reload();
     } else {
       navigate("/search");
