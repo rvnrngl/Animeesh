@@ -68,8 +68,8 @@ export const WatchAnime = () => {
 
   return (
     <>
-      <div className="w-screen min-h-screen dark:bg-zinc-800">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-5 pt-[95px] px-5 lg:px-10 xl:px-20">
+      <div className="w-screen min-h-screen dark:bg-zinc-900">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-5 pt-7 px-5 lg:px-10 xl:px-20">
           {/* video wrapper comment */}
           <div className="lg:col-span-3 flex flex-col gap-2">
             <div>

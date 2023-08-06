@@ -42,7 +42,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <nav className="w-screen h-[75px] border-b dark:border-none fixed top-0 left-0 bg-white/70 dark:bg-zinc-900/80 px-5 z-50 shadow-md">
+      <nav className="w-screen h-[75px] border-b dark:border-none bg-white/70 dark:bg-zinc-800 px-5 z-50 shadow-md">
         <ul className="text-xl flex justify-between items-center gap-2 py-5">
           <div className="flex w-full dark:text-gray-300 items-center gap-2 lg:gap-4">
             <button onClick={toggleMenu}>

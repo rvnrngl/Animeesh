@@ -5,10 +5,10 @@ import { Trending } from "../components/Trending";
 
 export const Home = () => {
   return (
-    <div className="w-screen min-h-screen dark:bg-zinc-800">
+    <div className="w-screen min-h-screen dark:bg-zinc-900">
       <div className="w-full flex flex-col justify-center items-center gap-3 px-3 lg:px-5">
         {/* Slider */}
-        <div className="h-[300px] md:h-[400px] lg:h-[75vh] w-full mt-[100px] shadow-lg">
+        <div className="h-[300px] md:h-[400px] lg:h-[75vh] mt-7 w-full shadow-lg">
           <Carousel />
         </div>
         {/* Trending Animes container */}

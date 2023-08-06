@@ -24,8 +24,8 @@ export const SearchAnime = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen dark:bg-zinc-800 dark:text-gray-300">
-      <div className="w-full h-full pt-[90px] px-4 flex flex-col gap-4 justify-center items-center">
+    <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
+      <div className="w-full h-full pt-5 px-4 flex flex-col gap-4 justify-center items-center">
         {/* search container */}
         <Search onSearchedData={handleSearchedData} />
         {/* items to be search */}
