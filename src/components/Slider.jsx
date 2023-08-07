@@ -8,15 +8,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
-// import required modules
-import { FreeMode, Pagination } from "swiper/modules";
 
-export const Slider = ({ animeList, reLoad }) => {
+export const Slider = ({ animeList, reLoad, type }) => {
   const navigate = useNavigate();
   const handleNavigation = (anime) => {
     if (reLoad) {
+      window.localStorage.setItem("type", type);
       navigate(window.location.reload(), { state: { anime } });
     } else {
+      window.localStorage.setItem("type", type);
       navigate("/watch", { state: { anime } });
     }
   };
