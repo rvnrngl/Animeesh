@@ -10,19 +10,10 @@ import { useNavigate } from "react-router-dom";
 
 export const NavBar = () => {
   const [isDark, setIsDark] = useState(false);
-  const [theme, setTheme] = useState(null); // change to null
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light"); // change to null
   const [isMenuClosed, setIsMenuClosed] = useState(true); // if dropdown menu is closed
   const [input, setInput] = useState(""); // store input field
   const navigate = useNavigate();
-
-  // check preffered theme by the system
-  useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, []);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -30,13 +21,24 @@ export const NavBar = () => {
     } else {
       document.documentElement.classList.remove("dark");
     }
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   //toogle theme
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
     setIsDark((current) => !current);
   };
+
+  // check preffered theme by the system
+  useEffect(() => {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      if (!localStorage.getItem("theme")) {
+        setTheme("dark");
+      }
+    }
+  }, []);
 
   //toggle menu
   const toggleMenu = () => {
