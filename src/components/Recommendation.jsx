@@ -4,7 +4,11 @@ import { Slider } from "./Slider";
 export const Recommendation = ({ animeRecommendation }) => {
   return (
     <>
-      <Slider animeList={animeRecommendation} reLoad={true} />
+      <Slider
+        animeList={animeRecommendation}
+        reLoad={true}
+        type="recommendation"
+      />
     </>
   );
 };
