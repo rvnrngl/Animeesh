@@ -72,12 +72,12 @@ export const NavBar = () => {
     <>
       <div className="w-screen dark:bg-zinc-900 px-3 lg:px-5">
         <nav className="w-full border-b dark:border-none dark:bg-zinc-800 px-6 lg:px-7 z-50 shadow-md rounded-b-[30px] lg:rounded-b-[40px] py-3 lg:py-0">
-          <ul className="text-lg lg:text-xl flex justify-between items-center gap-2">
+          <ul className="text-lg flex justify-between items-center gap-2">
             <div className="flex w-full dark:text-gray-200 items-center gap-2 lg:gap-4">
               <button onClick={toggleMenu} className="lg:hidden">
                 <GiHamburgerMenu size={25} />
               </button>
-              <Link to="/" className=" flex items-center gap-2 lg:gap-3">
+              <Link to="/" className="flex items-center gap-2 lg:gap-3">
                 <PiTelevisionBold className="text-orange-500 text-4xl" />
                 <h1 className="font-semibold lg:text-2xl lg:font-bold hidden sm:block uppercase">
                   Animeesh
@@ -87,14 +87,14 @@ export const NavBar = () => {
               <div className="hidden lg:flex dark:text-gray-300 items-center font-semibold ml-5 uppercase">
                 <Link
                   to="/popular"
-                  className="p-6 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
+                  className="p-5 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
                 >
                   <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover:block"></span>
                   <span className="group-hover:text-orange-400">Popular</span>
                 </Link>
                 <Link
                   to="/genres"
-                  className="p-6 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
+                  className="p-5 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
                 >
                   <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover:block"></span>
                   <span className="group-hover:text-orange-400">Genre</span>
