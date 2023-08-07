@@ -18,8 +18,10 @@ export const NavBar = () => {
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
+      document.body.style.backgroundColor = "#18181b";
     } else {
       document.documentElement.classList.remove("dark");
+      document.body.style.backgroundColor = "#fff";
     }
     localStorage.setItem("theme", theme);
   }, [theme]);
