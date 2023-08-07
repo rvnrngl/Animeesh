@@ -28,7 +28,7 @@ export const WatchAnime = () => {
   const [animeInfo, setAnimeInfo] = useState({}); // anime info data from api
   const [episode, setEpisode] = useState([]); // get episodes
   const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
-  const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(1); //set current episode number
+  const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(null); //set current episode number
   const [animeRecommendation, setAnimeRecommendation] = useState([]); // get list of anime recommendation
 
   // get anime info using anime id
@@ -50,13 +50,22 @@ export const WatchAnime = () => {
       const url = `https://api.consumet.org/anime/gogoanime/watch/${id}`;
       const response = await axios.get(url, { params: { server: "gogocdn" } });
       setCurrentEpisode(response.data.sources[4]);
+      window.localStorage.setItem("type", "");
     } catch (err) {
       throw new Error(err.message);
     }
   };
 
   useEffect(() => {
-    getCurrentEpisode(episode[episode.length - 1]?.id); // get first episode of the anime
+    const getType = window.localStorage.getItem("type"); // get the type of parameter in where the anime data came from "recent/search"
+    // note the api episodes array start from last item
+    if (getType === "recent") {
+      setCurrentEpisodeNumber(episode.length);
+      getCurrentEpisode(episode[0]?.id); // get recent episode of the anime
+    } else {
+      setCurrentEpisodeNumber(episode.length - (episode.length - 1));
+      getCurrentEpisode(episode[episode.length - 1]?.id); // get first episode of the anime
+    }
   }, [episode]);
 
   // get selected episode id
