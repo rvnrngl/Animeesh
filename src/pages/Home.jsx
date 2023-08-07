@@ -23,8 +23,8 @@ export const Home = () => {
           <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
             Recent Updated
           </h1>
-          <div className="w-full grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-5">
-            <Cards />
+          <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
+            <Cards type={"recent"} />
           </div>
         </div>
       </div>
