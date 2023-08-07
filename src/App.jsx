@@ -6,6 +6,7 @@ import { NavBar } from "./components/NavBar";
 import { MostPopular } from "./pages/MostPopular";
 import { WatchAnime } from "./pages/WatchAnime";
 import { SearchAnime } from "./pages/SearchAnime";
+import { ScrollToTopButton } from "./components/ScrollToTopButton";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/watch" element={<WatchAnime />}></Route>
           <Route path="/search" element={<SearchAnime />}></Route>
         </Routes>
+        <ScrollToTopButton />
       </Router>
     </>
   );

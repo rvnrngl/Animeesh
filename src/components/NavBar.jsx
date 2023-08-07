@@ -70,8 +70,8 @@ export const NavBar = () => {
 
   return (
     <>
-      <div className="w-screen dark:bg-zinc-900 px-3 lg:px-5">
-        <nav className="w-full border-b dark:border-none dark:bg-zinc-800 px-6 lg:px-7 z-50 shadow-md rounded-b-[30px] lg:rounded-b-[40px] py-3 lg:py-0">
+      <div className="w-screen dark:bg-zinc-900 lg:px-5">
+        <nav className="w-full border-b dark:border-none dark:bg-zinc-800 px-5 lg:px-7 z-50 shadow-md lg:rounded-b-[40px] py-3 lg:py-0">
           <ul className="text-lg flex justify-between items-center gap-2">
             <div className="flex w-full dark:text-gray-200 items-center gap-2 lg:gap-4">
               <button onClick={toggleMenu} className="lg:hidden">
