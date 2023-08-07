@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { ImSearch } from "react-icons/im";
@@ -14,6 +14,15 @@ export const NavBar = () => {
   const [isMenuClosed, setIsMenuClosed] = useState(true); // if dropdown menu is closed
   const [input, setInput] = useState(""); // store input field
   const navigate = useNavigate();
+
+  // check preffered theme by the system
+  useEffect(() => {
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      if (!localStorage.getItem("theme")) {
+        setTheme("dark");
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (theme === "dark") {
@@ -33,15 +42,6 @@ export const NavBar = () => {
     setIsDark((current) => !current);
   };
 
-  // check preffered theme by the system
-  useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      if (!localStorage.getItem("theme")) {
-        setTheme("dark");
-      }
-    }
-  }, []);
-
   //toggle menu
   const toggleMenu = () => {
     setIsMenuClosed(!isMenuClosed);
@@ -54,6 +54,12 @@ export const NavBar = () => {
     } else {
       navigate("/search");
     }
+  };
+
+  // handle navigate to page
+  const handleNavigate = (route) => {
+    setIsMenuClosed(!isMenuClosed);
+    navigate(route);
   };
 
   //handle enter key  pressed
@@ -70,7 +76,7 @@ export const NavBar = () => {
 
   return (
     <>
-      <div className="w-screen dark:bg-zinc-900 lg:px-5">
+      <div className="w-screen dark:bg-zinc-900 lg:px-5 relative">
         <nav className="w-full border-b dark:border-none dark:bg-zinc-800 px-5 lg:px-7 z-50 shadow-md lg:rounded-b-[40px] py-3 lg:py-0">
           <ul className="text-lg flex justify-between items-center gap-2">
             <div className="flex w-full dark:text-gray-200 items-center gap-2 lg:gap-4">
@@ -146,56 +152,63 @@ export const NavBar = () => {
           </ul>
         </nav>
         {/* menu */}
+        {/* <div
+          onClick={toggleMenu}
+          className={
+            !isMenuClosed
+              ? "w-screen h-screen bg-zinc-700/30 fixed top-0 left-0 z-[100] ease-in-out duration-600"
+              : "fixed -left[100vh]"
+          }
+        > */}
         <div
           onClick={toggleMenu}
           className={
             !isMenuClosed
-              ? "w-screen h-screen bg-zinc-700/30 fixed top-0 left-0 z-[100] ease-in-out duration-300"
-              : "fixed -left[100vh]"
+              ? "fixed top-0 left-0 w-full h-full bg-zinc-950/50 z-[100] ease-in-out duration-300"
+              : "bg-transparent"
+          }
+        ></div>
+        <div
+          className={
+            !isMenuClosed
+              ? "fixed w-[250px] h-screen top-0 left-0 bg-white dark:bg-zinc-700 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300"
+              : "fixed w-[250px] h-screen top-0 -left-[300px] bg-white dark:bg-zinc-700 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300"
           }
         >
-          <div
-            className={
-              !isMenuClosed
-                ? "fixed w-[300px] lg:w-[250px] h-screen top-0 left-0 bg-white dark:bg-zinc-700 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300"
-                : "fixed w-[300px] lg:w-[250px] h-screen top-0 -left-[350px] bg-white dark:bg-zinc-700 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300"
-            }
-          >
-            <div className="px-6 dark:text-gray-300">
-              <button
-                onClick={() => toggleMenu(false)}
-                className="flex items-center gap-2 mb-5 bg-zinc-400/50 hover:bg-zinc-400 hover:text-gray-900 rounded-full py-1 px-4 ease-in-out duration-300"
-              >
-                <CgLogOut />
-                <span className="font-semibold">Close</span>
-              </button>
-            </div>
-            <div className="flex flex-col dark:text-gray-300">
-              <Link
-                to="/"
-                className="border-b border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
-              >
-                Home
-              </Link>
-              <Link
-                to="/search"
-                className="border-b border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300 lg:hidden"
-              >
-                Search
-              </Link>
-              <Link
-                to="/popular"
-                className="border-b border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
-              >
-                Popular
-              </Link>
-              <Link
-                to="/genres"
-                className="border-b border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
-              >
-                Genres
-              </Link>
-            </div>
+          <div className="px-6 dark:text-gray-300">
+            <button
+              onClick={toggleMenu}
+              className="flex items-center gap-2 mb-5 bg-zinc-400/50 hover:bg-zinc-400 hover:text-gray-900 rounded-full py-1 px-4 ease-in-out duration-300"
+            >
+              <CgLogOut />
+              <span className="font-semibold">Close</span>
+            </button>
+          </div>
+          <div className="flex flex-col dark:text-gray-300">
+            <button
+              onClick={() => handleNavigate("/")}
+              className="border-b text-left border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
+            >
+              Home
+            </button>
+            <button
+              onClick={() => handleNavigate("/search")}
+              className="border-b text-left border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300 lg:hidden"
+            >
+              Search
+            </button>
+            <button
+              onClick={() => handleNavigate("/popular")}
+              className="border-b text-left border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
+            >
+              Popular
+            </button>
+            <button
+              onClick={() => handleNavigate("/genres")}
+              className="border-b text-left border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
+            >
+              Genres
+            </button>
           </div>
         </div>
       </div>
