@@ -111,7 +111,7 @@ export const WatchAnime = () => {
             </div>
           </div>
           {/* List of Episodes */}
-          <div className="lg:col-span-1 w-full h-fit dark:bg-zinc-500/20 py-3 pb-5 rounded-md">
+          <div className="lg:col-span-1 w-full h-fit text-sm dark:bg-zinc-500/20 py-3 pb-5 rounded-md">
             {episode.length > 30 ? (
               <>
                 {/* greater than 30 episodes */}
@@ -176,19 +176,25 @@ export const WatchAnime = () => {
           </div>
 
           {/* anime details comment */}
-          <div className="lg:col-span-3 p-3 bg-zinc-500/20 lg:pr-20 dark:text-gray-300 rounded-md text-sm">
-            <div className="flex flex-row items-start gap-3 lg:gap-6">
+          <div className="lg:col-span-3 p-3 lg:pr-20 dark:text-gray-300 rounded-md text-sm">
+            <div className="flex flex-col xs:flex-row items-center xs:items-start gap-3 lg:gap-6">
               {/* image section comment */}
               <img
                 src={animeInfo.image}
                 alt={animeInfo.id}
-                className="w-[120px] h-[120px] lg:w-[250px] lg:h-[300px]"
+                className="w-[150px] h-[180px] xs:w-[100px] xs:h-[120px] sm:w-[160px] sm:h-[200px] 
+                lg:w-[250px] lg:h-[300px] object-cover"
               />
-              <div>
-                <h1 className="text-xl font-bold mb-2">
-                  {animeInfo.title?.english}
+              <div className="text-sm text-center xs:text-left">
+                <h1 className="text-lg lg:text-2xl uppercase font-bold mb-2">
+                  {animeInfo.title?.english === null
+                    ? animeInfo.title?.userPreferred
+                    : animeInfo.title?.english}
                 </h1>
-                <p className="mb-2 w-full cursor-pointer overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                <p
+                  className="md:hidden mb-3 w-full cursor-pointer text-justify overflow-y-scroll overflow-x-hidden 
+                [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                >
                   {animeInfo.description?.length > 180
                     ? animeInfo.description
                         ?.replace(/<\/?i\s*\/?>/g, "")
@@ -198,37 +204,98 @@ export const WatchAnime = () => {
                         ?.replace(/<\/?i\s*\/?>/g, "")
                         ?.replace(/<\/?br\s*\/?>/g, "")}
                 </p>
-                <ul>
-                  <li className=" text-gray-500">
-                    Studio:{" "}
-                    <span className="text-black dark:text-gray-300">
-                      {animeInfo.studios}
-                    </span>
-                  </li>
-                  <li className=" text-gray-500">
-                    Release Date:{" "}
-                    <span className="text-black dark:text-gray-300">
-                      {animeInfo.releaseDate}
-                    </span>
-                  </li>
-                  <li className=" text-gray-500">
-                    Status:{" "}
-                    <span className="text-black dark:text-gray-300">
-                      {animeInfo.status}
-                    </span>
-                  </li>
-                  <li className=" text-gray-500">
-                    Total Episode:{" "}
-                    <span className="text-black dark:text-gray-300">
-                      {animeInfo.totalEpisodes}
-                    </span>
-                  </li>
-                  <li className=" text-gray-500">
-                    Type:{" "}
-                    <span className="text-black dark:text-gray-300">
-                      {animeInfo.type}
-                    </span>
-                  </li>
+                <p
+                  className="hidden md:block mb-3 w-full cursor-pointer text-justify overflow-y-scroll overflow-x-hidden 
+                [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                >
+                  {animeInfo.description?.length > 250
+                    ? animeInfo.description
+                        ?.replace(/<\/?i\s*\/?>/g, "")
+                        ?.replace(/<\/?br\s*\/?>/g, "")
+                        .slice(0, 250) + "...See More"
+                    : animeInfo.description
+                        ?.replace(/<\/?i\s*\/?>/g, "")
+                        ?.replace(/<\/?br\s*\/?>/g, "")}
+                </p>
+                <ul className="w-full grid grid-cols-2 gap-1 text-xs lg:text-sm">
+                  <div className="flex flex-col items-start">
+                    <li className=" text-gray-500">
+                      Type:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.type}
+                      </span>
+                    </li>
+                    <li className=" text-gray-500">
+                      Season:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.season}
+                      </span>
+                    </li>
+                    <li className=" text-gray-500">
+                      Country:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.countryOfOrigin}
+                      </span>
+                    </li>
+                    <li className=" text-gray-500">
+                      Status:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.status}
+                      </span>
+                    </li>
+                    <li className=" text-gray-500">
+                      Release Date:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.releaseDate}
+                      </span>
+                    </li>
+                    <li className="text-left text-gray-500">
+                      Genre:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.genres?.map((genre, index) => (
+                          <span key={index}>{genre} </span>
+                        ))}
+                      </span>
+                    </li>
+                  </div>
+                  <div className="flex flex-col items-start">
+                    <li className=" text-gray-500">
+                      Sub/Dub:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.subOrDub}
+                      </span>
+                    </li>
+                    <li className=" text-gray-500">
+                      Episodes:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.currentEpisode}
+                      </span>
+                    </li>
+                    <li className=" text-gray-500">
+                      Duration:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.duration}
+                      </span>
+                    </li>
+                    <li className=" text-gray-500">
+                      Rating:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.rating}
+                      </span>
+                    </li>
+                    <li className=" text-gray-500">
+                      Popularity:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.popularity}
+                      </span>
+                    </li>
+                    <li className=" text-gray-500">
+                      Studio:{" "}
+                      <span className="text-black dark:text-gray-300">
+                        {animeInfo.studios}
+                      </span>
+                    </li>
+                  </div>
                 </ul>
               </div>
             </div>
