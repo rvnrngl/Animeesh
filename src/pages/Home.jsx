@@ -11,7 +11,7 @@ export const Home = () => {
 
   //get recent anime episodes
   const getRecentAnime = async () => {
-    await anilist.fetchRecentEpisodes().then((data) => {
+    await anilist.fetchRecentEpisodes("gogoanime", 1, 20).then((data) => {
       setRecentAnime(data.results);
     });
   };

@@ -5,7 +5,6 @@ import { META } from "@consumet/extensions";
 export const Search = ({ onSearchedData }) => {
   const anilist = new META.Anilist();
   const [input, setInput] = useState("");
-  const [anime, setAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const getAnime = async (input) => {
@@ -13,7 +12,6 @@ export const Search = ({ onSearchedData }) => {
     await anilist
       .search(input)
       .then((data) => {
-        setAnime(data.results);
         onSearchedData(data.results);
       })
       .finally(() => {
@@ -23,7 +21,11 @@ export const Search = ({ onSearchedData }) => {
 
   const handleSearch = () => {
     if (input.trim() !== "") {
+      localStorage.setItem("inputValue", input);
       getAnime(input);
+      window.location.reload();
+    } else {
+      console.log("Enter any keyword");
     }
   };
 
@@ -33,26 +35,26 @@ export const Search = ({ onSearchedData }) => {
     }
   };
   return (
-    <>
-      <div className="lg:hidden w-full max-w-[640px] p-2 px-10 flex justify-center items-center gap-2">
+    <div className="w-full flex items-center gap-2">
+      <div
+        className="w-full dark:text-gray-200 border border-gray-500 
+        dark:border-none dark:bg-zinc-700/90 rounded-sm py-1 px-3"
+      >
         <input
           type="text"
           value={input}
           placeholder="Search anime..."
-          className="w-full text-gray-900 text-sm lg:text-base py-2 px-5 border border-gray-500 dark:border-none outline-none rounded-full"
+          className="w-full text-sm bg-transparent outline-none"
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleEnterKeyPress}
         />
-        <button
-          onClick={handleSearch}
-          className="p-2 lg:p-3 text-xl lg:text-lg rounded-full bg-gray-600"
-        >
-          <ImSearch />
-        </button>
       </div>
-      {/* <span className="mb-3 lg:text-lg">
-        Search Results Found: <span>{anime.length}</span> items
-      </span> */}
-    </>
+      <button
+        onClick={handleSearch}
+        className="py-[6px] px-3 text-sm bg-zinc-600 rounded-sm"
+      >
+        Search
+      </button>
+    </div>
   );
 };

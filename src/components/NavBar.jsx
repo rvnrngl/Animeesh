@@ -47,30 +47,30 @@ export const NavBar = () => {
     setIsMenuClosed(!isMenuClosed);
   };
 
-  //handle search
-  const handleSearch = () => {
-    if (window.location.hash === "#/search") {
-      window.location.reload();
-    } else {
-      navigate("/search");
-    }
-  };
-
   // handle navigate to page
   const handleNavigate = (route) => {
     setIsMenuClosed(!isMenuClosed);
     navigate(route);
   };
 
+  //handle search
+  const handleSearch = () => {
+    if (input.trim() !== "") {
+      localStorage.setItem("inputValue", input);
+      if (window.location.hash === "#/search") {
+        window.location.reload();
+      } else {
+        navigate("/search");
+      }
+    } else {
+      console.log("Enter any keyword");
+    }
+  };
+
   //handle enter key  pressed
   const handleEnterKeyPress = (event) => {
     if (event.key === "Enter") {
-      if (input.trim() !== "") {
-        localStorage.setItem("inputValue", input);
-        handleSearch();
-      } else {
-        console.log("Enter any keyword");
-      }
+      handleSearch();
     }
   };
 
@@ -152,14 +152,6 @@ export const NavBar = () => {
           </ul>
         </nav>
         {/* menu */}
-        {/* <div
-          onClick={toggleMenu}
-          className={
-            !isMenuClosed
-              ? "w-screen h-screen bg-zinc-700/30 fixed top-0 left-0 z-[100] ease-in-out duration-600"
-              : "fixed -left[100vh]"
-          }
-        > */}
         <div
           onClick={toggleMenu}
           className={
