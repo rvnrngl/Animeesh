@@ -47,7 +47,7 @@ export const Carousel = () => {
               className="flex flex-col justify-end items-start text-white transition-all duration-300 cursor-grab"
             >
               {/* image bg */}
-              <div className="absolute w-full h-full brightness-75 border-black/10 top-0 left-0 -z-[1]">
+              <div className="absolute w-full h-full brightness-75 border-gray-900/10 top-0 left-0 -z-[1]">
                 <img
                   src={anime.cover}
                   alt={anime.title.english}
@@ -60,7 +60,7 @@ export const Carousel = () => {
                 />
               </div>
               {/* anime description */}
-              <div className="w-full flex flex-col px-3 lg:px-9 py-8 bg-gradient-to-b from-transparent to-zinc-950">
+              <div className="w-full flex flex-col px-3 lg:px-9 py-8 bg-gradient-to-b from-transparent to-zinc-900/90">
                 <span className="text-orange-400">#{index + 1} Top Anime</span>
                 <p className="w-3/4 lg:w-2/4 text-lg font-semibold lg:text-3xl break-words leading-5">
                   {anime.title.english}
