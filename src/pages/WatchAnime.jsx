@@ -100,7 +100,7 @@ export const WatchAnime = () => {
                   ? currentEpisodeTitle.slice(0, 60) + "..."
                   : currentEpisodeTitle}
               </p>
-              <div className="flex items-center gap-4 text-lg lg:text-2xl text-gray-900 dark:text-gray-400">
+              <div className="flex items-center gap-4 text-lg lg:text-2xl text-zinc-600 dark:text-gray-400">
                 <button>
                   <GiPreviousButton />
                 </button>
@@ -111,25 +111,29 @@ export const WatchAnime = () => {
             </div>
           </div>
           {/* List of Episodes */}
-          <div className="lg:col-span-1 w-full h-fit text-sm dark:bg-zinc-500/20 py-3 pb-5 rounded-md">
+          <div className="lg:col-span-1 w-full h-fit text-sm bg-zinc-100 border dark:border-none dark:bg-zinc-500/20 py-3 pb-5 rounded-md">
             {episode.length > 30 ? (
               <>
                 {/* greater than 30 episodes */}
                 <div className=" px-3 pb-1">
-                  <p className="text-gray-900 dark:text-gray-300">
+                  <p className="text-gray-900 font-semibold dark:text-gray-300">
                     List of episodes:
                   </p>
                 </div>
-                <div className="w-full grid place-items-center grid-cols-6 py-2 max-h-[295px] lg:max-h-[290px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] gap-2 px-3">
+                <div
+                  className="w-full grid place-items-center grid-cols-6 py-2 max-h-[295px] lg:max-h-[290px] overflow-y-scroll overflow-x-hidden 
+                [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] gap-2 px-3"
+                >
                   {episode.toReversed().map((eps, index) => {
                     return (
                       <div
                         key={index}
                         onClick={() => handleCurrentLyWatching(eps, index + 1)}
-                        className={`w-full flex items-center justify-center rounded-sm p-2 cursor-pointer ${
+                        className={`w-full flex items-center justify-center rounded-sm p-2 hover:text-gray-200 hover:bg-zinc-700 
+                        dark:hover:text-gray-900 dark:hover:bg-zinc-300 cursor-pointer ${
                           currentEpisodeId === eps.id
-                            ? "bg-zinc-400"
-                            : "bg-zinc-700 text-black dark:text-gray-400"
+                            ? "bg-zinc-500 dark:bg-zinc-400 text-gray-100 dark:text-gray-900"
+                            : "bg-zinc-400 dark:bg-zinc-700 text-black dark:text-gray-400"
                         }`}
                       >
                         {index + 1}
@@ -156,13 +160,14 @@ export const WatchAnime = () => {
                             handleCurrentLyWatching(eps, index + 1)
                           }
                           className={`w-full flex items-center justify-start py-3 text-gray-900 dark:text-gray-300
-                         hover:bg-zinc-500 cursor-pointer px-4 gap-2 flex-nowrap lg:text-sm ${
-                           currentEpisodeId === eps.id
-                             ? "bg-zinc-400 dark:text-gray-950 text-gray-400"
-                             : index % 2 === 0
-                             ? "bg-zinc-700"
-                             : "bg-zinc-700/50"
-                         }`}
+                          hover:bg-zinc-600 hover:text-gray-200 dark:hover:bg-zinc-300 dark:hover:text-gray-900 
+                          cursor-pointer px-4 gap-2 flex-nowrap lg:text-sm ${
+                            currentEpisodeId === eps.id
+                              ? "bg-zinc-500 dark:bg-zinc-400 dark:text-gray-950 text-gray-100"
+                              : index % 2 === 0
+                              ? "bg-zinc-300 dark:bg-zinc-600"
+                              : "bg-zinc-400/90 dark:bg-zinc-700/50"
+                          }`}
                         >
                           <span>{index + 1}.</span>
                           <span>{eps.title}</span>
@@ -305,7 +310,7 @@ export const WatchAnime = () => {
             <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
               Recommendations
             </h1>
-            <div className="w-full p-3 rounded-md bg-zinc-500/20">
+            <div className="w-full p-3 rounded-md bg-zinc-100 border dark:border-none dark:bg-zinc-500/20">
               <Recommendation animeRecommendation={animeRecommendation} />
             </div>
           </div>

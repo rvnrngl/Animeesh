@@ -108,7 +108,7 @@ export const NavBar = () => {
               </div>
             </div>
             {/* search bar */}
-            <div className="hidden lg:flex w-[380px] items-center gap-2 dark:text-gray-200 border border-gray-500 dark:border-none dark:bg-zinc-700/90 rounded-lg py-2 px-4 mr-2">
+            <div className="hidden lg:flex w-[380px] items-center gap-2 dark:text-gray-200 border border-gray-400 dark:border-none dark:bg-zinc-700/90 rounded-lg py-2 px-4 mr-2">
               <input
                 type="text"
                 value={input}

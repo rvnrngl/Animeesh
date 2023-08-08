@@ -26,7 +26,7 @@ export const Cards = ({ animeList, type }) => {
               />
               {/* hover */}
               <div
-                className="bg-transparent group-hover:bg-zinc-900/50 absolute top-0 left-0 w-full h-full 
+                className="bg-transparent group-hover:bg-zinc-900/60 absolute top-0 left-0 w-full h-full 
               flex justify-center items-center transition-all duration-200"
               >
                 <FaPlay
@@ -36,7 +36,7 @@ export const Cards = ({ animeList, type }) => {
               </div>
             </div>
             <div className="w-full text-left dark:text-gray-300 py-2 flex flex-col">
-              <span className="text-white text-sm font-semibold">
+              <span className="dark:text-white text-sm font-semibold">
                 {anime.title?.english === null
                   ? anime.title?.userPreferred?.length > 20
                     ? anime.title?.userPreferred.slice(0, 20) + "..."
@@ -45,7 +45,7 @@ export const Cards = ({ animeList, type }) => {
                   ? anime.title?.english.slice(0, 20) + "..."
                   : anime.title?.english}
               </span>
-              <div className=" flex gap-2 text-sm text-gray-400">
+              <div className=" flex gap-2 text-sm text-gray-500 dark:text-gray-400">
                 <span>{anime.type}</span>
                 <span>•</span>
                 {type === "recent" ? (
