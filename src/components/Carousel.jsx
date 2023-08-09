@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 // import required modules
-import { Pagination } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 
 import axios from "axios";
 
@@ -33,11 +33,16 @@ export const Carousel = () => {
   return (
     <>
       <Swiper
+        loop="true"
         pagination={{
           dynamicBullets: true,
         }}
-        loop="true"
-        modules={[Pagination]}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        navigation={true}
+        modules={[Autoplay, Pagination]}
         className="mySwiper w-full h-full text-sm lg:text-base rounded-lg"
       >
         {popularAnime.map((anime, index) => {
