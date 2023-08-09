@@ -30,8 +30,6 @@ export const Carousel = () => {
     getPopularAnime();
   }, []);
 
-  console.log(popularAnime);
-
   return (
     <>
       <Swiper
