@@ -9,12 +9,13 @@ export const Cards = ({ animeList, type }) => {
     window.localStorage.setItem("type", type);
     navigate("/watch", { state: { anime } });
   };
+
   return (
     <>
-      {animeList.map((anime) => {
+      {animeList.map((anime, index) => {
         return (
           <div
-            key={anime.id}
+            key={index}
             onClick={() => handleNavigation(anime)}
             className="flex flex-col items-center text-sm lg:text-base rounded-sm overflow-hidden group cursor-pointer"
           >

@@ -35,8 +35,8 @@ export const Home = () => {
           <Trending />
         </div>
         {/* Recent Updated Animes container */}
-        <div>
-          <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
+        <div className="mt-[15px]">
+          <h1 className="mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
             Recent Updated
           </h1>
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
