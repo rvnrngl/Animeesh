@@ -28,12 +28,12 @@ export const ScrollToTopButton = () => {
 
   return (
     <div
-      className={`fixed bottom-5 right-5 bg-gray-700 p-3 rounded-full cursor-pointer ${
+      className={`fixed bottom-5 right-5 bg-orange-400 dark:bg-gray-800 border-1 border-gray-900 dark:border-none p-5 rounded-full group cursor-pointer z-[999] ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
       onClick={scrollToTop}
     >
-      <FaArrowUp className="text-white text-xl" />
+      <FaArrowUp className="text-gray-900 dark:text-white group-hover:text-white dark:group-hover:text-orange-400 text-xl" />
     </div>
   );
 };
