@@ -36,7 +36,16 @@ export const Cards = ({ animeList, type }) => {
               </div>
             </div>
             <div className="w-full text-left dark:text-gray-300 py-2 flex flex-col">
-              <span className="dark:text-white text-sm font-semibold">
+              <span className="xs:hidden dark:text-white text-sm font-semibold">
+                {anime.title?.english === null
+                  ? anime.title?.userPreferred?.length > 10
+                    ? anime.title?.userPreferred.slice(0, 10) + "..."
+                    : anime.title?.userPreferred
+                  : anime.title?.english?.length > 10
+                  ? anime.title?.english.slice(0, 10) + "..."
+                  : anime.title?.english}
+              </span>
+              <span className="hidden xs:block dark:text-white text-sm font-semibold">
                 {anime.title?.english === null
                   ? anime.title?.userPreferred?.length > 20
                     ? anime.title?.userPreferred.slice(0, 20) + "..."

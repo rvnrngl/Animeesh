@@ -30,6 +30,8 @@ export const Carousel = () => {
     getPopularAnime();
   }, []);
 
+  console.log(popularAnime);
+
   return (
     <>
       <Swiper
@@ -71,8 +73,15 @@ export const Carousel = () => {
                   {anime.title.english}
                 </p>
                 <div className="flex items-center gap-2 text-[10px] lg:text-base text-white/90 font-thin">
-                  <p>Type: {anime.type}</p>
-                  <p>Episodes: {anime.totalEpisodes}</p>
+                  <p>
+                    Type: <span className=" font-semibold">{anime.type}</span>
+                  </p>
+                  <p>
+                    Episodes:{" "}
+                    <span className=" font-semibold">
+                      {anime.totalEpisodes}
+                    </span>
+                  </p>
                   <p>
                     Rating:{" "}
                     <span className=" font-semibold">{anime.rating}</span>

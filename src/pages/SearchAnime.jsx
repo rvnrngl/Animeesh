@@ -13,7 +13,7 @@ export const SearchAnime = () => {
   const [isFetched, setIsFetched] = useState(false);
 
   const getSearchedAnime = async () => {
-    await anilist.search(inputValue).then((data) => {
+    await anilist.search(inputValue, 1, 20).then((data) => {
       setSearchedAnime(data.results);
     });
   };
@@ -33,13 +33,13 @@ export const SearchAnime = () => {
 
   return (
     <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
-      <div className="w-full h-full pt-5 px-4 flex flex-col gap-5 justify-center items-center">
+      <div className="w-full h-full pt-5 xs:px-4 flex flex-col gap-10 justify-center items-center">
         {/* search container */}
         <div className="lg:hidden w-full px-4">
           <Search onSearchedData={handleSearchedData} />
         </div>
-        <div className="w-full flex justify-center items-center text-zinc-500 px-4">
-          <span className="text-base lg:text-2xl">
+        <div className="w-full flex justify-center sm:justify-start items-center text-zinc-300 px-4 lg:mt-4">
+          <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-2xl">
             Search results for "{inputValue}"
           </span>
         </div>
