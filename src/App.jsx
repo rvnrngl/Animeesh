@@ -7,6 +7,7 @@ import { MostPopular } from "./pages/MostPopular";
 import { WatchAnime } from "./pages/WatchAnime";
 import { SearchAnime } from "./pages/SearchAnime";
 import { ScrollToTopButton } from "./components/ScrollToTopButton";
+import { RecentAnime } from "./pages/RecentAnime";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/genres" element={<Genres />}></Route>
           <Route path="/watch" element={<WatchAnime />}></Route>
           <Route path="/search" element={<SearchAnime />}></Route>
+          <Route path="/recent" element={<RecentAnime />}></Route>
         </Routes>
         <ScrollToTopButton />
       </Router>
