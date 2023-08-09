@@ -90,7 +90,14 @@ export const NavBar = () => {
                 </h1>
               </Link>
               {/* Other pages link */}
-              <div className="hidden lg:flex dark:text-gray-300 items-center font-semibold ml-5 uppercase">
+              <div className="hidden lg:flex dark:text-gray-300 items-center font-semibold ml-5">
+                <Link
+                  to="/recent"
+                  className="p-5 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
+                >
+                  <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover:block"></span>
+                  <span className="group-hover:text-orange-400">Recent</span>
+                </Link>
                 <Link
                   to="/popular"
                   className="p-5 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
