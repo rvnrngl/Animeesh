@@ -197,6 +197,12 @@ export const NavBar = () => {
               Search
             </button>
             <button
+              onClick={() => handleNavigate("/recent")}
+              className="border-b text-left border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
+            >
+              Recent
+            </button>
+            <button
               onClick={() => handleNavigate("/popular")}
               className="border-b text-left border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
             >
