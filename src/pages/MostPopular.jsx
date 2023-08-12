@@ -14,7 +14,7 @@ export const MostPopular = () => {
   });
 
   useEffect(() => {
-    getPopularAnime(1, 20, ["POPULARITY_DESC"]);
+    getPopularAnime(1, 30, ["POPULARITY_DESC"]);
   }, []);
 
   const getPopularAnime = async (pageNumber, itemsPerPage, sort) => {
@@ -54,7 +54,7 @@ export const MostPopular = () => {
 
   const handlePageChange = (data) => {
     if (data.selected + 1 !== pagination.currentPage) {
-      getPopularAnime(data.selected + 1, 20, ["POPULARITY_DESC"]);
+      getPopularAnime(data.selected + 1, 30, ["POPULARITY_DESC"]);
     }
   };
 
