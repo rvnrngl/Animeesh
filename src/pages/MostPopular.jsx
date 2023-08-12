@@ -54,6 +54,7 @@ export const MostPopular = () => {
 
   const handlePageChange = (data) => {
     if (data.selected + 1 !== pagination.currentPage) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       getPopularAnime(data.selected + 1, 30, ["POPULARITY_DESC"]);
     }
   };

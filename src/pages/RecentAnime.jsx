@@ -14,6 +14,7 @@ export const RecentAnime = () => {
   });
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getRecentAnime("gogoanime", 1, 30);
   }, []);
 
@@ -47,6 +48,7 @@ export const RecentAnime = () => {
 
   const handlePageChange = (data) => {
     if (data.selected + 1 !== pagination.currentPage) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
       getRecentAnime("gogoanime", data.selected + 1, 30);
     }
   };
