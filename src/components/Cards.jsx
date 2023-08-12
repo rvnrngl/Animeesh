@@ -55,11 +55,11 @@ export const Cards = ({ animeList, type }) => {
                   ? anime.title?.english.slice(0, 20) + "..."
                   : anime.title?.english}
               </span>
-              <div className=" flex gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <div className=" flex gap-2 text-[10px] xs:text-xs lg:text-sm text-gray-500 dark:text-gray-400">
                 <span>{anime.type}</span>
                 <span>•</span>
                 {type === "recent" ? (
-                  <span>Episode: {anime.episodeNumber}</span>
+                  <span>Latest Episode: {anime.episodeNumber}</span>
                 ) : (
                   <span>EPS: {anime.totalEpisodes}</span>
                 )}
