@@ -105,6 +105,7 @@ export const Carousel = () => {
                 <div className="flex items-center gap-2 text-gray-900 text-sm lg:text-lg mt-3">
                   <button
                     onClick={() => {
+                      window.scrollTo({ top: 0, behavior: "smooth" });
                       navigate("/watch", {
                         state: { anime },
                       });
