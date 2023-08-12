@@ -14,12 +14,12 @@ export const Slider = ({ animeList, reLoad, type }) => {
   const handleNavigation = (anime) => {
     if (reLoad) {
       window.localStorage.setItem("type", type);
-      window.scrollTo({ top: 0, behavior: "smooth" });
       navigate(window.location.reload(), { state: { anime } });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       window.localStorage.setItem("type", type);
-      window.scrollTo({ top: 0, behavior: "smooth" });
       navigate("/watch", { state: { anime } });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
   return (
