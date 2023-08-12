@@ -3,7 +3,6 @@ import { Search } from "../components/Search";
 import { META } from "@consumet/extensions";
 
 // react icons
-import { FaPlay } from "react-icons/fa";
 import { Cards } from "../components/Cards";
 
 export const SearchAnime = () => {
@@ -33,7 +32,7 @@ export const SearchAnime = () => {
 
   return (
     <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
-      <div className="w-full h-full pt-5 xs:px-4 flex flex-col gap-10 justify-center items-center">
+      <div className="w-full h-full pt-5 px-4 flex flex-col gap-10 justify-center items-center">
         {/* search container */}
         <div className="lg:hidden w-full px-4">
           <Search onSearchedData={handleSearchedData} />
