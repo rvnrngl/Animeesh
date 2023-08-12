@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home />}></Route>
           <Route path="/popular" element={<MostPopular />}></Route>
-          <Route path="/genres" element={<Genres />}></Route>
+          {/* <Route path="/genres" element={<Genres />}></Route> */}
           <Route path="/watch" element={<WatchAnime />}></Route>
           <Route path="/search" element={<SearchAnime />}></Route>
           <Route path="/recent" element={<RecentAnime />}></Route>

@@ -5,6 +5,9 @@ import { Trending } from "../components/Trending";
 
 import { META } from "@consumet/extensions";
 
+import { MdNavigateNext } from "react-icons/md";
+import { Link } from "react-router-dom";
+
 export const Home = () => {
   const anilist = new META.Anilist();
   const [recentAnime, setRecentAnime] = useState([]);
@@ -35,10 +38,20 @@ export const Home = () => {
           <Trending />
         </div>
         {/* Recent Updated Animes container */}
-        <div className="mt-[15px]">
-          <h1 className="mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
-            Recent Updated
-          </h1>
+        <div className="w-full mt-[15px]">
+          <div className="w-full flex items-center justify-between mb-4  dark:text-gray-300">
+            <span className="text-lg lg:text-2xl lg:font-semibold">
+              Recent Updated
+            </span>
+            <Link
+              to="/recent"
+              className="text-[10px] xs:text-xs md:text-base lg:text-base text-gray-500 dark:text-gray-400 flex items-center gap-1 
+            hover:text-gray-900 dark:hover:text-gray-100 ease-in-out duration-200"
+            >
+              <span className="uppercase">View more</span>
+              <MdNavigateNext />
+            </Link>
+          </div>
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
             <Cards animeList={recentAnime} type={"recent"} />
           </div>
