@@ -136,7 +136,7 @@ export const NavBar = () => {
             <div className="flex justify-center items-center pl-4 border-l border-zinc-500/50">
               <button
                 onClick={toggleTheme}
-                className="h-[30px] w-[30px] lg:h-[35px] lg:w-[35px] bg-orange-400 p-3 lg:p-4 relative overflow-hidden rounded-full shadow-sm"
+                className="h-[30px] w-[30px] lg:h-[35px] lg:w-[35px] text-gray-900 bg-orange-400 p-3 lg:p-4 relative overflow-hidden rounded-full shadow-sm"
               >
                 <BiSolidSun
                   size={20}
