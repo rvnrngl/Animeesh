@@ -37,7 +37,7 @@ export const SearchAnime = () => {
         <div className="lg:hidden w-full px-4">
           <Search onSearchedData={handleSearchedData} />
         </div>
-        <div className="w-full flex justify-center sm:justify-start items-center text-zinc-300 px-4 lg:mt-4">
+        <div className="w-full flex justify-center sm:justify-start items-center font-semibold lg:font-bold dark:text-zinc-300 px-4 lg:mt-4">
           <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-2xl">
             Search results for "{inputValue}"
           </span>
