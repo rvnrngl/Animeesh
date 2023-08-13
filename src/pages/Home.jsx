@@ -8,15 +8,24 @@ import { META } from "@consumet/extensions";
 import { MdNavigateNext } from "react-icons/md";
 import { Link } from "react-router-dom";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 export const Home = () => {
   const anilist = new META.Anilist();
   const [recentAnime, setRecentAnime] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   //get recent anime episodes
   const getRecentAnime = async () => {
-    await anilist.fetchRecentEpisodes("gogoanime", 1, 20).then((data) => {
+    setIsLoading(true);
+    try {
+      const data = await anilist.fetchRecentEpisodes("gogoanime", 1, 20);
       setRecentAnime(data.results);
-    });
+    } catch (error) {
+      console.error("Error fetching recent anime:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -53,7 +62,22 @@ export const Home = () => {
             </Link>
           </div>
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
-            <Cards animeList={recentAnime} type={"recent"} />
+            {isLoading === true ? (
+              Array.from({ length: 20 }, (_, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="h-[300px] flex flex-col items-start gap-1"
+                  >
+                    <Skeleton className="w-full h-full rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                    <Skeleton className="w-2/4 h-3 rounded-none bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                    <Skeleton className="w-3/4 h-3 rounded-none bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                  </div>
+                );
+              })
+            ) : (
+              <Cards animeList={recentAnime} type={"recent"} />
+            )}
           </div>
         </div>
       </div>
