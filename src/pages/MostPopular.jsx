@@ -64,7 +64,7 @@ export const MostPopular = () => {
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-8 justify-center items-center">
         {/* Title */}
         <div className="w-full flex flex-col xs:flex-row gap-1 justify-between items-center px-4 lg:mt-4">
-          <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-3xl font-bold">
+          <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-3xl font-semibold lg:font-bold">
             Most Popular Anime
           </span>
           <span className="text-gray-600 dark:text-gray-400 text-[10px] xs:text-xs sm:text-sm lg:text-base font-thin">
