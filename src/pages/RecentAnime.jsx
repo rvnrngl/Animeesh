@@ -70,8 +70,8 @@ export const RecentAnime = () => {
         {/* Title */}
         {isLoading === true ? (
           <div className="w-full flex flex-col xs:flex-row gap-1 justify-between items-center px-4 lg:mt-4">
-            <Skeleton className="w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm"></Skeleton>
-            <Skeleton className="w-[50px] sm:w-[100px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm"></Skeleton>
+            <Skeleton className="w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+            <Skeleton className="w-[50px] sm:w-[100px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
           </div>
         ) : (
           <div className="w-full flex flex-col xs:flex-row gap-1 justify-between items-center px-4 lg:mt-4">

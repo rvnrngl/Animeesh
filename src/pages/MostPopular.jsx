@@ -3,9 +3,12 @@ import { Cards } from "../components/Cards";
 import { META } from "@consumet/extensions";
 import ReactPaginate from "react-paginate";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
 export const MostPopular = () => {
   const anilist = new META.Anilist();
   const [popularAnime, setPopularAnime] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [pagination, setPagination] = useState({
     currentPage: 0,
     hasNextPage: false,
@@ -14,42 +17,47 @@ export const MostPopular = () => {
   });
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getPopularAnime(1, 30, ["POPULARITY_DESC"]);
   }, []);
 
   const getPopularAnime = async (pageNumber, itemsPerPage, sort) => {
-    await anilist
-      .advancedSearch(
+    setIsLoading(true);
+    try {
+      const data = await anilist.advancedSearch(
         undefined,
         "ANIME",
         pageNumber,
         itemsPerPage,
         undefined,
         sort
-      )
-      .then((data) => {
-        setPopularAnime(data.results);
-        const limit = 500;
-        const dataTotalResults = data.totalResults;
-        if (dataTotalResults > limit) {
-          // limit total results to 100 items
-          setPagination({
-            currentPage: data.currentPage,
-            hasNextPage: data.hasNextPage,
-            totalPages: Math.ceil(
-              (data.totalResults - (data.totalResults - limit)) / 30
-            ),
-            totalResults: data.totalResults - (data.totalResults - limit),
-          });
-        } else {
-          setPagination({
-            currentPage: data.currentPage,
-            hasNextPage: data.hasNextPage,
-            totalPages: data.totalPages,
-            totalResults: data.totalResults,
-          });
-        }
-      });
+      );
+      setPopularAnime(data.results);
+      const limit = 500;
+      const dataTotalResults = data.totalResults;
+      if (dataTotalResults > limit) {
+        // limit total results to 100 items
+        setPagination({
+          currentPage: data.currentPage,
+          hasNextPage: data.hasNextPage,
+          totalPages: Math.ceil(
+            (data.totalResults - (data.totalResults - limit)) / 30
+          ),
+          totalResults: data.totalResults - (data.totalResults - limit),
+        });
+      } else {
+        setPagination({
+          currentPage: data.currentPage,
+          hasNextPage: data.hasNextPage,
+          totalPages: data.totalPages,
+          totalResults: data.totalResults,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching popular anime:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handlePageChange = (data) => {
@@ -63,18 +71,40 @@ export const MostPopular = () => {
     <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-8 justify-center items-center">
         {/* Title */}
-        <div className="w-full flex flex-col xs:flex-row gap-1 justify-between items-center px-4 lg:mt-4">
-          <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-3xl font-semibold lg:font-bold">
-            Most Popular Anime
-          </span>
-          <span className="text-gray-600 dark:text-gray-400 text-[10px] xs:text-xs sm:text-sm lg:text-base font-thin">
-            {pagination.totalResults} Total Results
-          </span>
-        </div>
+        {isLoading === true ? (
+          <div className="w-full flex flex-col xs:flex-row gap-1 justify-between items-center px-4 lg:mt-4">
+            <Skeleton className="w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+            <Skeleton className="w-[50px] sm:w-[100px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+          </div>
+        ) : (
+          <div className="w-full flex flex-col xs:flex-row gap-1 justify-between items-center px-4 lg:mt-4">
+            <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-3xl font-semibold lg:font-bold">
+              Most Popular Anime
+            </span>
+            <span className="text-gray-600 dark:text-gray-400 text-[10px] xs:text-xs sm:text-sm lg:text-base font-thin">
+              {pagination.totalResults} Total Results
+            </span>
+          </div>
+        )}
         {/* items */}
         <div className="w-full flex flex-col gap-5 lg:gap-10 lg:px-2">
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
-            <Cards animeList={popularAnime} type={"popular"} />
+            {isLoading === true ? (
+              Array.from({ length: 20 }, (_, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="h-[300px] flex flex-col items-start gap-1"
+                  >
+                    <Skeleton className="w-full h-full rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                    <Skeleton className="w-2/4 h-3 rounded-none bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                    <Skeleton className="w-3/4 h-3 rounded-none bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                  </div>
+                );
+              })
+            ) : (
+              <Cards animeList={popularAnime} type={"popular"} />
+            )}
           </div>
           {/* paginate */}
           <ReactPaginate
