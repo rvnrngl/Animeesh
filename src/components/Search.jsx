@@ -5,18 +5,15 @@ import { META } from "@consumet/extensions";
 export const Search = ({ onSearchedData }) => {
   const anilist = new META.Anilist();
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const getAnime = async (input) => {
     setIsLoading(true);
-    await anilist
-      .search(input)
-      .then((data) => {
-        onSearchedData(data.results);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    try {
+      const data = await anilist.search(input);
+      onSearchedData(data.results);
+    } catch (error) {
+      console.error("Error fetching searched anime:", error);
+    }
   };
 
   const handleSearch = () => {
@@ -51,7 +48,7 @@ export const Search = ({ onSearchedData }) => {
       </div>
       <button
         onClick={handleSearch}
-        className="py-[6px] px-3 text-sm bg-zinc-600 rounded-sm"
+        className="py-[6px] px-3 text-sm dark:text-gray-100 text-gray-900 bg-zinc-400 dark:bg-zinc-600 rounded-sm"
       >
         Search
       </button>
