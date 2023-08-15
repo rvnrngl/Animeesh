@@ -108,7 +108,7 @@ export const Cards = ({ animeList, type }) => {
                       </span>
                     </div>
                     {/* description */}
-                    <p className="text-sm w-full">
+                    <p className="text-sm w-full text-gray-500 dark:text-gray-400">
                       {anime.episodeTitle?.length > 60
                         ? anime.episodeTitle.slice(0, 60) + "..."
                         : anime.episodeTitle}
@@ -189,9 +189,12 @@ export const Cards = ({ animeList, type }) => {
                       </div>
                     </div>
                     {/* description */}
-                    <p className="text-sm w-full">
+                    <p className="text-sm w-full text-gray-500 dark:text-gray-400">
                       {anime.description?.length > 60
-                        ? anime.description.slice(0, 60) + "..."
+                        ? anime.description
+                            ?.replace(/<\/?i\s*\/?>/g, "")
+                            ?.replace(/<\/?br\s*\/?>/g, "")
+                            .slice(0, 60) + "..."
                         : anime.description}
                     </p>
                     <div className="flex flex-col items-start">

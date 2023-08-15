@@ -84,8 +84,8 @@ export const NavBar = () => {
                 <GiHamburgerMenu size={25} />
               </button>
               <Link to="/" className="flex items-center gap-2 lg:gap-3">
-                <PiTelevisionBold className="text-orange-500 text-4xl" />
-                <h1 className="font-semibold lg:text-2xl lg:font-bold hidden sm:block uppercase">
+                <PiTelevisionBold className="text-orange-500 text-4xl hover:animate-pulse" />
+                <h1 className="font-semibold lg:text-2xl lg:font-bold hidden sm:block uppercase hover:animate-pulse">
                   Animeesh
                 </h1>
               </Link>
@@ -93,14 +93,14 @@ export const NavBar = () => {
               <div className="hidden lg:flex dark:text-gray-300 items-center font-semibold ml-5">
                 <Link
                   to="/recent"
-                  className="p-5 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
+                  className="p-5 hover:animate-pulse hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
                 >
                   <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover:block"></span>
                   <span className="group-hover:text-orange-400">Recent</span>
                 </Link>
                 <Link
                   to="/popular"
-                  className="p-5 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
+                  className="p-5 hover:animate-pulse hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
                 >
                   <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover:block"></span>
                   <span className="group-hover:text-orange-400">Popular</span>

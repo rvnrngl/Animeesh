@@ -372,24 +372,12 @@ export const WatchAnime = () => {
                 className="w-full h-[180px] xs:h-[240px] lg:h-[260px] xl:h-[300px] 
                 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2"
               >
-                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800">
-                  <Skeleton className="absolute left-0 top-0 w-[30px] h-[30px] bg-zinc-400/50 dark:bg-zinc-700/50 rounded-none rounded-br-sm"></Skeleton>
-                </Skeleton>
-                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800">
-                  <Skeleton className="absolute left-0 top-0 w-[30px] h-[30px] bg-zinc-400/50 dark:bg-zinc-700/50 rounded-none rounded-br-sm"></Skeleton>
-                </Skeleton>
-                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden sm:block">
-                  <Skeleton className="absolute left-0 top-0 w-[30px] h-[30px] bg-zinc-400/50 dark:bg-zinc-700/50 rounded-none rounded-br-sm"></Skeleton>
-                </Skeleton>
-                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden md:block ">
-                  <Skeleton className="absolute left-0 top-0 w-[30px] h-[30px] bg-zinc-400/50 dark:bg-zinc-700/50 rounded-none rounded-br-sm"></Skeleton>
-                </Skeleton>
-                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden lg:block ">
-                  <Skeleton className="absolute left-0 top-0 w-[30px] h-[30px] bg-zinc-400/50 dark:bg-zinc-700/50 rounded-none rounded-br-sm"></Skeleton>
-                </Skeleton>
-                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden xl:block ">
-                  <Skeleton className="absolute left-0 top-0 w-[30px] h-[30px] bg-zinc-400/50 dark:bg-zinc-700/50 rounded-none rounded-br-sm"></Skeleton>
-                </Skeleton>
+                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden sm:block"></Skeleton>
+                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden md:block "></Skeleton>
+                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden lg:block "></Skeleton>
+                <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden xl:block "></Skeleton>
               </div>
             ) : (
               <Recommendation animeRecommendation={animeRecommendation} />

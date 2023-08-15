@@ -69,10 +69,26 @@ export const Slider = ({ animeList, reLoad, type }) => {
                     {index < 9 ? <p>0{index + 1}</p> : <p>{index + 1}</p>}
                   </div>
                   <div
-                    className="hidden lg:flex absolute left-0 top-0 w-[35px] h-full font-bold text-lg 
-                  justify-center bg-gradient-to-b from-zinc-500/90 to-zinc-900/90 text-gray-200"
+                    className="hidden lg:flex flex-col absolute left-0 top-0 w-[35px] h-full font-bold text-sm 
+                  justify-between items-center bg-gradient-to-b from-zinc-500/90 to-zinc-900/90 text-gray-200 pb-2"
                   >
-                    {index < 9 ? <p>0{index + 1}</p> : <p>{index + 1}</p>}
+                    {index < 9 ? (
+                      <p className="text-2xl">0{index + 1}</p>
+                    ) : (
+                      <p className="text-2xl">{index + 1}</p>
+                    )}
+                    <p
+                      className="h-fit w-full -rotate-180 [writing-mode:vertical-lr] text-left pl-2
+                      bg-gradient-to-t from-orange-100 to-orange-500/90 bg-clip-text text-transparent uppercase"
+                    >
+                      {anime.title?.english === null
+                        ? anime.title?.userPreferred?.length > 20
+                          ? anime.title?.userPreferred.slice(0, 20) + "..."
+                          : anime.title?.userPreferred
+                        : anime.title?.english?.length > 20
+                        ? anime.title?.english.slice(0, 20) + "..."
+                        : anime.title?.english}
+                    </p>
                   </div>
                 </div>
               </SwiperSlide>
