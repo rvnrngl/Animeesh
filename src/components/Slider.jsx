@@ -22,6 +22,7 @@ export const Slider = ({ animeList, reLoad, type }) => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
+
   return (
     <>
       <div className="w-full">
@@ -62,8 +63,14 @@ export const Slider = ({ animeList, reLoad, type }) => {
                 >
                   {/* badge */}
                   <div
-                    className="absolute left-0 top-0 w-[30px] h-[30px] bg-orange-500 
+                    className="lg:hidden absolute left-0 top-0 w-[30px] h-[30px] bg-orange-500 
                   flex justify-center items-center rounded-br-md text-xs lg:text-lg font-semibold"
+                  >
+                    {index < 9 ? <p>0{index + 1}</p> : <p>{index + 1}</p>}
+                  </div>
+                  <div
+                    className="hidden lg:flex absolute left-0 top-0 w-[35px] h-full font-bold text-lg 
+                  justify-center bg-gradient-to-b from-zinc-500/90 to-zinc-900/90 text-gray-200"
                   >
                     {index < 9 ? <p>0{index + 1}</p> : <p>{index + 1}</p>}
                   </div>
