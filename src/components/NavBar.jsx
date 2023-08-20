@@ -7,6 +7,7 @@ import { BsFillMoonStarsFill } from "react-icons/bs";
 import { BiSolidSun } from "react-icons/bi";
 import { CgLogOut } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
+import ImageTitle from "../assets/animeesh-title.png";
 
 export const NavBar = () => {
   const [isDark, setIsDark] = useState(false);
@@ -77,20 +78,23 @@ export const NavBar = () => {
   return (
     <>
       <div className="w-screen dark:bg-zinc-900 lg:px-5 relative">
-        <nav className="w-full border-b dark:border-none dark:bg-zinc-800 px-5 lg:px-7 z-50 shadow-md lg:rounded-b-[40px] py-3 lg:py-0">
+        <nav className="w-full border-b dark:border-none dark:bg-zinc-800 px-4 lg:px-7 z-50 shadow-md lg:rounded-b-[40px] py-2 md:py-3 lg:py-0">
           <ul className="text-lg flex justify-between items-center gap-2">
             <div className="flex w-full dark:text-gray-200 items-center gap-2 lg:gap-4">
               <button onClick={toggleMenu} className="lg:hidden">
-                <GiHamburgerMenu size={25} />
+                <GiHamburgerMenu className="text-[21px] xs:text-[25px] lg:text-2xl" />
               </button>
-              <Link to="/" className="flex items-center gap-2 lg:gap-3">
-                <PiTelevisionBold className="text-orange-500 text-4xl hover:animate-pulse" />
-                <h1 className="font-semibold lg:text-2xl lg:font-bold hidden sm:block uppercase hover:animate-pulse">
-                  Animeesh
-                </h1>
+              <Link to="/">
+                <div className="w-[110px] xs:w-[120px] lg:w-[170px] hover:animate-pulse">
+                  <img
+                    src={ImageTitle}
+                    alt="Animeesh"
+                    className="w-full drop-shadow-lg"
+                  />
+                </div>
               </Link>
               {/* Other pages link */}
-              <div className="hidden lg:flex dark:text-gray-300 items-center font-semibold ml-5">
+              <div className="hidden lg:flex dark:text-gray-300 items-center font-semibold ml-2">
                 <Link
                   to="/recent"
                   className="p-5 hover:animate-pulse hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
@@ -105,13 +109,6 @@ export const NavBar = () => {
                   <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover:block"></span>
                   <span className="group-hover:text-orange-400">Popular</span>
                 </Link>
-                {/* <Link
-                  to="/genres"
-                  className="p-5 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative group transition-all duration-100"
-                >
-                  <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover:block"></span>
-                  <span className="group-hover:text-orange-400">Genre</span>
-                </Link> */}
               </div>
             </div>
             {/* search bar */}
@@ -129,14 +126,14 @@ export const NavBar = () => {
               </button>
             </div>
             {/* appear in mobile */}
-            <Link to="search" className="lg:hidden mr-2">
-              <ImSearch className="text-xl dark:text-gray-300" />
+            <Link to="search" className="lg:hidden mr-1 sm:mr-2">
+              <ImSearch className="text-lg lg:text-xl dark:text-gray-300" />
             </Link>
             {/* button to toggle theme */}
-            <div className="flex justify-center items-center pl-4 border-l border-zinc-500/50">
+            <div className="flex justify-center items-center pl-3 sm:pl-4 border-l border-zinc-500/50">
               <button
                 onClick={toggleTheme}
-                className="h-[30px] w-[30px] lg:h-[35px] lg:w-[35px] text-gray-900 bg-orange-400 p-3 lg:p-4 relative overflow-hidden rounded-full shadow-sm"
+                className="h-[25px] w-[25px] lg:h-[35px] lg:w-[35px] text-gray-900 bg-orange-400 xs:p-1 lg:p-4 relative overflow-hidden rounded-full shadow-sm"
               >
                 <BiSolidSun
                   size={20}
