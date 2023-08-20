@@ -15,7 +15,7 @@ export const Slider = ({ animeList, reLoad, type }) => {
     if (reLoad) {
       window.localStorage.setItem("type", type);
       navigate(window.location.reload(), { state: { anime } });
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0 });
     } else {
       window.localStorage.setItem("type", type);
       navigate("/watch", { state: { anime } });
