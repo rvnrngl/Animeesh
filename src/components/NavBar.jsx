@@ -167,8 +167,8 @@ export const NavBar = () => {
         <div
           className={
             !isMenuClosed
-              ? "fixed w-[250px] h-screen top-0 left-0 bg-white dark:bg-zinc-700 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300"
-              : "fixed w-[250px] h-screen top-0 -left-[300px] bg-white dark:bg-zinc-700 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300"
+              ? "fixed w-[250px] h-screen top-0 left-0 bg-white dark:bg-zinc-800 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300"
+              : "fixed w-[250px] h-screen top-0 -left-[300px] bg-white dark:bg-zinc-800 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300"
           }
         >
           <div className="px-6 dark:text-gray-300">
@@ -204,12 +204,6 @@ export const NavBar = () => {
               className="border-b text-left border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
             >
               Popular
-            </button>
-            <button
-              onClick={() => handleNavigate("/genres")}
-              className="border-b text-left border-zinc-500/50 py-3 px-6 font-semibold hover:text-gray-900 hover:bg-zinc-200 dark:hover:bg-zinc-400 transition-all duration-300"
-            >
-              Genres
             </button>
           </div>
         </div>
