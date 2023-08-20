@@ -32,16 +32,16 @@ export const Cards = ({ animeList, type }) => {
                 onClick={() => handleNavigation(anime)}
                 className="flex flex-col items-center text-sm lg:text-base rounded-sm overflow-hidden group cursor-pointer"
               >
-                <div className="h-full w-full rounded-sm overflow-hidden object-cover relative">
+                <div className="h-full w-full rounded-sm overflow-hidden relative">
                   <img
                     src={anime.image}
                     alt={anime.title?.english}
-                    className="h-full w-full object-cover object-center"
+                    className="h-full w-full object-cover object-center group-hover:scale-110 ease-in-out duration-300"
                   />
                   {/* hover */}
                   <div
-                    className="bg-transparent group-hover:bg-zinc-900/60 absolute top-0 left-0 w-full h-full 
-              flex justify-center items-center transition-all duration-200"
+                    className="hidden bg-transparent group-hover:bg-zinc-900/70 absolute top-0 left-0 w-full h-full 
+                    lg:flex justify-center items-center transition-all duration-200"
                   >
                     <FaPlay
                       className=" text-transparent group-hover:text-orange-500 text-3xl lg:text-4xl group-hover:block 
@@ -49,7 +49,7 @@ export const Cards = ({ animeList, type }) => {
                     />
                   </div>
                 </div>
-                <div className="w-full text-left dark:text-gray-300 py-2 flex flex-col">
+                <div className="w-full text-left dark:text-gray-300 py-2 flex flex-col group-hover:brightness-75">
                   <span className="xs:hidden dark:text-white text-sm font-semibold">
                     {anime.title?.english === null
                       ? anime.title?.userPreferred?.length > 10
