@@ -9,7 +9,7 @@ import { Cards } from "../components/Cards";
 
 export const SearchAnime = () => {
   const anilist = new META.Anilist();
-  const [inputValue] = useState(localStorage.getItem("inputValue") || ""); // init input value stored in local storage
+  const [inputValue] = useState(sessionStorage.getItem("inputValue") || ""); // init input value stored in local storage
   const [searchedAnime, setSearchedAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,7 +41,11 @@ export const SearchAnime = () => {
           <Search onSearchedData={handleSearchedData} />
         </div>
         <div className="w-full flex justify-center sm:justify-start items-center font-semibold lg:font-bold dark:text-zinc-300 px-4 lg:mt-4">
-          {isLoading == true ? (
+          {inputValue === "" ? (
+            <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-500">
+              Search Anime...
+            </span>
+          ) : isLoading == true ? (
             <Skeleton
               className="w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-3 xs:h-4 
             sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"

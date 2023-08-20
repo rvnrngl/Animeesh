@@ -18,7 +18,7 @@ export const Search = ({ onSearchedData }) => {
 
   const handleSearch = () => {
     if (input.trim() !== "") {
-      localStorage.setItem("inputValue", input);
+      sessionStorage.setItem("inputValue", input);
       getAnime(input);
       window.location.reload();
     } else {

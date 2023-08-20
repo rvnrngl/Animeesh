@@ -57,7 +57,7 @@ export const NavBar = () => {
   //handle search
   const handleSearch = () => {
     if (input.trim() !== "") {
-      localStorage.setItem("inputValue", input);
+      sessionStorage.setItem("inputValue", input);
       if (window.location.hash === "#/search") {
         window.location.reload();
       } else {
