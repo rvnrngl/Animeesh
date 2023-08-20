@@ -362,7 +362,7 @@ export const WatchAnime = () => {
             </div>
           </div>
           {/* recommendation anime */}
-          <div className="lg:col-span-4 w-full mb-10">
+          <div className="lg:col-span-4 w-full">
             <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
               Recommendations
             </h1>

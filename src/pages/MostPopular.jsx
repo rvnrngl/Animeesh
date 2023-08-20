@@ -62,7 +62,7 @@ export const MostPopular = () => {
 
   const handlePageChange = (data) => {
     if (data.selected + 1 !== pagination.currentPage) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0 });
       getPopularAnime(data.selected + 1, 30, ["POPULARITY_DESC"]);
     }
   };
@@ -116,7 +116,7 @@ export const MostPopular = () => {
             marginPagesDisplayed={3}
             renderOnZeroPageCount={null}
             onPageChange={handlePageChange}
-            className="w-full text-xs xs:text-sm dark:text-gray-300 flex justify-center items-center gap-1 xs:gap-2 md:gap-3 lg:gap-4 p-2 mb-20"
+            className="w-full text-xs xs:text-sm dark:text-gray-300 flex justify-center items-center gap-1 xs:gap-2 md:gap-3 lg:gap-4 p-2"
             pageClassName="border border-gray-300 rounded-sm group overflow-hidden"
             previousClassName="mr-2 border border-gray-300 rounded-sm group uppercase"
             nextClassName="ml-2 border border-gray-300 rounded-sm group uppercase"
