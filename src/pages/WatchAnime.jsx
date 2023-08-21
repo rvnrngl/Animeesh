@@ -51,12 +51,16 @@ export const WatchAnime = () => {
 
   // get the current episode
   const getCurrentEpisode = async (id) => {
-    try {
-      const url = `https://api.consumet.org/anime/gogoanime/watch/${id}`;
-      const response = await axios.get(url, { params: { server: "gogocdn" } });
-      setCurrentEpisode(response.data.sources[4]);
-    } catch (err) {
-      throw new Error(err.message);
+    if (id !== undefined) {
+      try {
+        const url = `https://api.consumet.org/anime/gogoanime/watch/${id}`;
+        const response = await axios.get(url, {
+          params: { server: "gogocdn" },
+        });
+        setCurrentEpisode(response.data.sources[4]);
+      } catch (err) {
+        throw new Error(err.message);
+      }
     }
   };
 
