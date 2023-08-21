@@ -174,12 +174,11 @@ export const WatchAnime = () => {
                           onClick={() =>
                             handleCurrentLyWatching(eps, index + 1)
                           }
-                          className={`w-full flex items-center justify-center rounded-sm p-2 hover:text-gray-200 hover:bg-zinc-700 
-                        dark:hover:text-gray-900 dark:hover:bg-zinc-300 cursor-pointer ${
-                          currentEpisodeId === eps.id
-                            ? "bg-zinc-500 dark:bg-zinc-400 text-gray-100 dark:text-gray-900"
-                            : "bg-zinc-400 dark:bg-zinc-700 text-black dark:text-gray-400"
-                        }`}
+                          className={`w-full flex items-center justify-center rounded-sm p-2 hover:text-gray-200 lg:hover:brightness-75 cursor-pointer ${
+                            currentEpisodeId === eps.id
+                              ? "bg-zinc-500 dark:bg-zinc-400 text-gray-100 dark:text-gray-900"
+                              : "bg-zinc-400 dark:bg-zinc-700 text-black dark:text-gray-400"
+                          }`}
                         >
                           {index + 1}
                         </div>
@@ -205,14 +204,13 @@ export const WatchAnime = () => {
                               handleCurrentLyWatching(eps, index + 1)
                             }
                             className={`w-full flex items-center justify-start py-3 text-gray-900 dark:text-gray-300
-                          hover:bg-zinc-600 hover:text-gray-200 dark:hover:bg-zinc-300 dark:hover:text-gray-900 
-                          cursor-pointer px-4 gap-2 flex-nowrap lg:text-sm ${
-                            currentEpisodeId === eps.id
-                              ? "bg-zinc-500 dark:bg-zinc-400 dark:text-gray-950 text-gray-100"
-                              : index % 2 === 0
-                              ? "bg-zinc-300 dark:bg-zinc-600"
-                              : "bg-zinc-400/90 dark:bg-zinc-700/50"
-                          }`}
+                        hover:text-gray-200 lg:hover:brightness-75 cursor-pointer px-4 gap-2 flex-nowrap lg:text-sm ${
+                          currentEpisodeId === eps.id
+                            ? "bg-zinc-500 dark:bg-zinc-400 dark:text-gray-950 text-gray-100"
+                            : index % 2 === 0
+                            ? "bg-zinc-300 dark:bg-zinc-600"
+                            : "bg-zinc-400/90 dark:bg-zinc-700/50"
+                        }`}
                           >
                             <span>{index + 1}.</span>
                             <span>{eps.title}</span>
