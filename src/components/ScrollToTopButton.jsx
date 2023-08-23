@@ -7,6 +7,10 @@ export const ScrollToTopButton = () => {
   const toggleVisibility = () => {
     if (window.scrollY > 300) {
       setIsVisible(true);
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setIsVisible(false);
+      }, 2000);
     } else {
       setIsVisible(false);
     }
@@ -19,6 +23,8 @@ export const ScrollToTopButton = () => {
     });
   };
 
+  const timeoutRef = React.useRef(null);
+
   useEffect(() => {
     window.addEventListener("scroll", toggleVisibility);
     return () => {
@@ -28,7 +34,8 @@ export const ScrollToTopButton = () => {
 
   return (
     <div
-      className={`fixed bottom-5 right-5 bg-orange-400 dark:bg-gray-800 border-1 border-gray-900 dark:border-none p-5 rounded-full group cursor-pointer z-[999] ${
+      className={`fixed bottom-5 right-5 bg-orange-400 dark:bg-gray-800 border-1 border-gray-900 
+      dark:border-none p-5 rounded-full group cursor-pointer z-[999] ease-in-out duration-300 ${
         isVisible ? "opacity-100" : "opacity-0"
       }`}
       onClick={scrollToTop}
