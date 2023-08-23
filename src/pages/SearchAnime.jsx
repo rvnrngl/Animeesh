@@ -40,7 +40,7 @@ export const SearchAnime = () => {
         <div className="lg:hidden w-full px-4">
           <Search onSearchedData={handleSearchedData} />
         </div>
-        <div className="w-full flex justify-center sm:justify-start items-center font-semibold lg:font-bold dark:text-zinc-300 px-4 lg:mt-4">
+        <div className="w-full flex justify-center items-center font-semibold lg:font-bold dark:text-zinc-300 px-4 lg:mt-4">
           {inputValue === "" ? (
             <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-500">
               Search Anime...

@@ -38,6 +38,7 @@ export const Search = ({ onSearchedData }) => {
         dark:border-none dark:bg-zinc-700/90 rounded-sm py-1 px-3"
       >
         <input
+          id="search"
           type="text"
           value={input}
           placeholder="Search anime..."

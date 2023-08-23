@@ -72,18 +72,22 @@ export const MostPopular = () => {
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-8 justify-center items-center">
         {/* Title */}
         {isLoading === true ? (
-          <div className="w-full flex flex-col xs:flex-row gap-1 justify-between items-center px-4 lg:mt-4">
+          <div className="w-full flex flex-col gap-1 justify-between items-center px-4 lg:mt-4">
             <Skeleton className="w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
             <Skeleton className="w-[50px] sm:w-[100px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
           </div>
         ) : (
-          <div className="w-full flex flex-col xs:flex-row gap-1 justify-between items-center px-4 lg:mt-4">
-            <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-3xl font-semibold lg:font-bold">
+          <div className="w-full flex flex-col gap-1 justify-between items-center px-4 lg:mt-4">
+            <span className="text-center text-xs xs:text-base sm:text-lg md:text-xl lg:text-3xl font-semibold lg:font-bold">
               Most Popular Anime
             </span>
-            <span className="text-gray-600 dark:text-gray-400 text-[10px] xs:text-xs sm:text-sm lg:text-base font-thin">
-              {pagination.totalResults} Total Results
-            </span>
+            {popularAnime.length < 1 ? (
+              ""
+            ) : (
+              <span className="text-gray-600 dark:text-gray-400 text-[10px] xs:text-xs sm:text-sm lg:text-base font-thin">
+                {pagination.totalResults} Total Results
+              </span>
+            )}
           </div>
         )}
         {/* items */}
@@ -107,31 +111,37 @@ export const MostPopular = () => {
             )}
           </div>
           {/* paginate */}
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel="next"
-            previousLabel="prev"
-            pageCount={pagination.totalPages}
-            pageRangeDisplayed={3}
-            marginPagesDisplayed={3}
-            renderOnZeroPageCount={null}
-            onPageChange={handlePageChange}
-            className="w-full text-xs xs:text-sm dark:text-gray-300 flex justify-center items-center gap-1 xs:gap-2 md:gap-3 lg:gap-4 p-2"
-            pageClassName="border border-gray-300 rounded-sm group overflow-hidden"
-            previousClassName="mr-2 border border-gray-300 rounded-sm group uppercase"
-            nextClassName="ml-2 border border-gray-300 rounded-sm group uppercase"
-            pageLinkClassName="w-[15px] h-[15px] xs:w-[20px] xs:h-[20px] sm:w-[35px] sm:h-[35px] 
+          {popularAnime.length < 1 ? (
+            <span className="text-2xl lg:text-4xl font-bold text-center text-gray-600/50">
+              No results found
+            </span>
+          ) : (
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel="next"
+              previousLabel="prev"
+              pageCount={pagination.totalPages}
+              pageRangeDisplayed={3}
+              marginPagesDisplayed={3}
+              renderOnZeroPageCount={null}
+              onPageChange={handlePageChange}
+              className="w-full text-xs xs:text-sm dark:text-gray-300 flex justify-center items-center gap-1 xs:gap-2 md:gap-3 lg:gap-4 p-2"
+              pageClassName="border border-zinc-200 dark:border-zinc-800 rounded-sm group overflow-hidden"
+              previousClassName="mr-2 text-xs border border-zinc-200 dark:border-zinc-800 rounded-sm group uppercase"
+              nextClassName="ml-2 text-xs border border-zinc-200 dark:border-zinc-800 rounded-sm group uppercase"
+              pageLinkClassName="w-[15px] h-[15px] xs:w-[20px] xs:h-[20px] sm:w-[35px] sm:h-[35px] 
             flex justify-center items-center h-full group-hover:font-semibold group-hover:bg-gradient-to-b from-transparent to-slate-800/10 
             dark:group-hover:bg-gradient-to-b from-transparent to-slate-400/40 ease-in-out duration-200"
-            previousLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
+              previousLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
             flex justify-center items-center h-full group-hover:font-semibold group-hover:bg-gradient-to-b from-transparent to-slate-800/10 
             dark:group-hover:bg-gradient-to-b from-transparent to-slate-400/40 ease-in-out duration-200"
-            nextLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
+              nextLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
             flex justify-center items-center h-full group-hover:font-semibold group-hover:bg-gradient-to-b from-transparent to-slate-800/10 
             dark:group-hover:bg-gradient-to-b from-transparent to-slate-400/40 ease-in-out duration-200"
-            activeClassName="bg-zinc-700 dark:bg-zinc-400"
-            activeLinkClassName="text-gray-100 dark:text-gray-900"
-          />
+              activeClassName="bg-zinc-700 dark:bg-zinc-400"
+              activeLinkClassName="text-gray-100 dark:text-gray-900"
+            />
+          )}
         </div>
       </div>
     </div>
