@@ -38,6 +38,19 @@ export const NavBar = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // Add or remove 'overflow-hidden' class to the body element when the menu state changes
+  useEffect(() => {
+    if (!isMenuClosed) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isMenuClosed]);
+
   //toogle theme
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -228,7 +241,7 @@ export const NavBar = () => {
         <div
           className={
             !isMenuClosed
-              ? "fixed w-[250px] h-screen top-0 left-0 bg-white dark:bg-zinc-800 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300 overflow-hidden"
+              ? "fixed w-[250px] h-screen top-0 left-0 bg-white dark:bg-zinc-800 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300 overflow-y-auto"
               : "fixed w-[250px] h-screen top-0 -left-[300px] bg-white dark:bg-zinc-800 dark:border-zinc-700 border-r py-6 z-[200] ease-in-out duration-300"
           }
         >
