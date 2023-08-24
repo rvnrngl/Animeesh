@@ -9,9 +9,15 @@ import { Cards } from "../components/Cards";
 
 export const SearchAnime = () => {
   const anilist = new META.Anilist();
-  const [inputValue] = useState(sessionStorage.getItem("inputValue") || ""); // init input value stored in local storage
+  const [inputValue, setInputValue] = useState(
+    sessionStorage.getItem("inputValue") || ""
+  ); // init input value stored in session storage
   const [searchedAnime, setSearchedAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setInputValue(sessionStorage.getItem("inputValue"));
+  }, [isLoading]);
 
   useEffect(() => {
     getSearchedAnime();
@@ -33,12 +39,24 @@ export const SearchAnime = () => {
     setSearchedAnime(data);
   };
 
+  const searchedValue = (data) => {
+    setInputValue(data);
+  };
+
+  const loading = (data) => {
+    setIsLoading(data);
+  };
+
   return (
     <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-6 lg:gap-10 justify-center items-center">
         {/* search container */}
         <div className="lg:hidden w-full px-4">
-          <Search onSearchedData={handleSearchedData} />
+          <Search
+            onSearchedData={handleSearchedData}
+            searchedValue={searchedValue}
+            loading={loading}
+          />
         </div>
         <div className="w-full flex justify-center items-center font-semibold lg:font-bold dark:text-zinc-300 px-4 lg:mt-4">
           {inputValue === "" ? (

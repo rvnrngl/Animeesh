@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { ImSearch } from "react-icons/im";
+import React, { useState } from "react";
 import { META } from "@consumet/extensions";
 
-export const Search = ({ onSearchedData }) => {
+export const Search = ({ onSearchedData, searchValue, loading }) => {
   const anilist = new META.Anilist();
   const [input, setInput] = useState("");
 
   const getAnime = async (input) => {
-    setIsLoading(true);
+    loading(true);
     try {
       const data = await anilist.search(input);
       onSearchedData(data.results);
     } catch (error) {
       console.error("Error fetching searched anime:", error);
+    } finally {
+      loading(false);
     }
   };
 
   const handleSearch = () => {
     if (input.trim() !== "") {
-      sessionStorage.setItem("inputValue", input);
       getAnime(input);
-      window.location.reload();
+      sessionStorage.setItem("inputValue", input);
     } else {
       console.log("Enter any keyword");
     }
