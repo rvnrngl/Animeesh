@@ -83,12 +83,8 @@ export const NavBar = () => {
   //handle search
   const handleSearch = () => {
     if (input.trim() !== "") {
-      sessionStorage.setItem("inputValue", input);
-      if (window.location.hash === "#/search") {
-        window.location.reload();
-      } else {
-        navigate("/search");
-      }
+      const searchUrl = `/search?q=${encodeURIComponent(input)}`;
+      navigate(searchUrl);
     } else {
       console.log("Enter any keyword");
     }
