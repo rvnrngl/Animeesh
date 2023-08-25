@@ -17,8 +17,25 @@ export const Cards = ({ animeList, type }) => {
   const navigate = useNavigate();
 
   const handleNavigation = (anime) => {
+    console.log(anime);
     window.localStorage.setItem("type", type);
-    navigate("/watch", { state: { anime } });
+    if (anime.title?.english !== null) {
+      navigate(
+        `/watch/${anime.title?.english
+          .replace(/[-:]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()}`,
+        { state: { anime } }
+      );
+    } else {
+      navigate(
+        `/watch/${anime.title?.userPreferred
+          .replace(/[-:]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()}`,
+        { state: { anime } }
+      );
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 

@@ -6,18 +6,22 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 // react icons
 import { Cards } from "../components/Cards";
+import { useLocation } from "react-router-dom";
 
 export const SearchAnime = () => {
   const anilist = new META.Anilist();
-  const [inputValue, setInputValue] = useState(
-    sessionStorage.getItem("inputValue") || ""
-  ); // init input value stored in session storage
+  const [inputValue, setInputValue] = useState(""); // init input value stored in session storage
   const [searchedAnime, setSearchedAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const query = queryParams.get("q");
 
   useEffect(() => {
-    setInputValue(sessionStorage.getItem("inputValue"));
-  }, [isLoading]);
+    if (query) {
+      setInputValue(query);
+    }
+  }, [query]);
 
   useEffect(() => {
     getSearchedAnime();
@@ -35,28 +39,12 @@ export const SearchAnime = () => {
     }
   };
 
-  const handleSearchedData = (data) => {
-    setSearchedAnime(data);
-  };
-
-  const searchedValue = (data) => {
-    setInputValue(data);
-  };
-
-  const loading = (data) => {
-    setIsLoading(data);
-  };
-
   return (
     <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-6 lg:gap-10 justify-center items-center">
         {/* search container */}
         <div className="lg:hidden w-full px-4">
-          <Search
-            onSearchedData={handleSearchedData}
-            searchedValue={searchedValue}
-            loading={loading}
-          />
+          <Search />
         </div>
         <div className="w-full flex justify-center items-center font-semibold lg:font-bold dark:text-zinc-300 px-4 lg:mt-4">
           {inputValue === "" ? (
@@ -93,8 +81,15 @@ export const SearchAnime = () => {
                   </div>
                 );
               })
-            ) : (
+            ) : searchedAnime.length > 0 ? (
               <Cards animeList={searchedAnime} type={"search"} />
+            ) : (
+              <span
+                className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80 
+              col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5 xl:col-span-6"
+              >
+                No Results Found
+              </span>
             )}
           </div>
         </div>

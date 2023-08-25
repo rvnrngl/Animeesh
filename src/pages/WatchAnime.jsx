@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { META } from "@consumet/extensions";
 import axios from "axios";
 
@@ -20,7 +20,7 @@ export const WatchAnime = () => {
   const anilist = new META.Anilist(); // initialized provider
   const location = useLocation(); // get state anime data
   const fetchAnimeId = location.state.anime.id; // init anime id from location
-  const [animeId] = useState(fetchAnimeId);
+  const [animeId, setAnimeId] = useState(fetchAnimeId);
   const [animeInfo, setAnimeInfo] = useState({}); // anime info data from api
   const [episode, setEpisode] = useState([]); // get episodes
   const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
@@ -29,6 +29,11 @@ export const WatchAnime = () => {
   const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(null); //set current episode number
   const [animeRecommendation, setAnimeRecommendation] = useState([]); // get list of anime recommendation
   const [isLoading, setIsLoading] = useState(false);
+  const { title } = useParams();
+
+  useEffect(() => {
+    setAnimeId(fetchAnimeId);
+  }, [title]);
 
   useEffect(() => {
     getAnimeInfo();
@@ -44,8 +49,6 @@ export const WatchAnime = () => {
       setAnimeRecommendation(data.recommendations); // get anime recommendations
     } catch (error) {
       console.error("Error fetching anime info:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -60,6 +63,8 @@ export const WatchAnime = () => {
         setCurrentEpisode(response.data.sources[4]);
       } catch (err) {
         throw new Error(err.message);
+      } finally {
+        setIsLoading(false);
       }
     }
   };

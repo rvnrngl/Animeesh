@@ -36,16 +36,11 @@ export const Genre = ({ closeMenu, type }) => {
   };
 
   const handleFilter = () => {
-    sessionStorage.setItem("genreList", JSON.stringify(selectedGenres));
+    const encodedGenre = encodeURIComponent(JSON.stringify(selectedGenres));
+    const newGenreUrl = `/genres?g=${encodedGenre}`;
+    navigate(newGenreUrl);
     closeMenu();
     setSelectedGenres([]);
-    if (window.location.hash === "#/genres") {
-      window.location.reload();
-      window.scrollTo({ top: 0 });
-    } else {
-      navigate("/genres");
-      window.scrollTo({ top: 0 });
-    }
   };
 
   return (

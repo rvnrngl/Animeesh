@@ -4,11 +4,14 @@ import { Cards } from "../components/Cards";
 import ReactPaginate from "react-paginate";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLocation } from "react-router-dom";
 
 export const Genres = () => {
   const anilist = new META.Anilist();
-  const genres = JSON.parse(sessionStorage.getItem("genreList"));
-  const [selectedGenres] = useState(genres);
+  const location = useLocation();
+  const genreParams = new URLSearchParams(location.search);
+  const encodedGenre = genreParams.get("g");
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const [animeList, setAnimeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [pagination, setPagination] = useState({
@@ -20,10 +23,16 @@ export const Genres = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    if (encodedGenre) {
+      setSelectedGenres(JSON.parse(decodeURIComponent(encodedGenre)));
+    }
+  }, [encodedGenre]);
+
+  useEffect(() => {
     if (selectedGenres?.length > 0) {
       getAnimeList(1, 30, ["POPULARITY_DESC"], selectedGenres);
     }
-  }, []);
+  }, [selectedGenres]);
 
   const getAnimeList = async (pageNumber, itemsPerPage, sort, genres) => {
     setIsLoading(true);
@@ -38,11 +47,9 @@ export const Genres = () => {
         genres
       );
       setAnimeList(data.results);
-      // limit total results to 500 items
-      const limit = 500;
+      const limit = 1000;
       const dataTotalResults = data.totalResults;
       if (dataTotalResults > limit) {
-        // limit total results to 100 items
         setPagination({
           currentPage: data.currentPage,
           hasNextPage: data.hasNextPage,
@@ -102,7 +109,7 @@ export const Genres = () => {
               ""
             ) : (
               <span className="text-gray-600 dark:text-gray-400 text-[10px] xs:text-xs sm:text-sm lg:text-base font-thin">
-                {pagination.totalResults} Results
+                {pagination.totalResults} Total Results
               </span>
             )}
           </div>
@@ -129,8 +136,8 @@ export const Genres = () => {
           </div>
           {/* paginate */}
           {animeList.length < 1 ? (
-            <span className="text-2xl lg:text-4xl font-bold text-center text-gray-600/50">
-              No results found
+            <span className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80">
+              No Results Found
             </span>
           ) : (
             <ReactPaginate

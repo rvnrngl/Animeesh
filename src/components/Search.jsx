@@ -1,26 +1,14 @@
 import React, { useState } from "react";
-import { META } from "@consumet/extensions";
+import { useNavigate } from "react-router-dom";
 
-export const Search = ({ onSearchedData, searchValue, loading }) => {
-  const anilist = new META.Anilist();
+export const Search = () => {
   const [input, setInput] = useState("");
-
-  const getAnime = async (input) => {
-    loading(true);
-    try {
-      const data = await anilist.search(input);
-      onSearchedData(data.results);
-    } catch (error) {
-      console.error("Error fetching searched anime:", error);
-    } finally {
-      loading(false);
-    }
-  };
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     if (input.trim() !== "") {
-      getAnime(input);
-      sessionStorage.setItem("inputValue", input);
+      const searchUrl = `/search?q=${encodeURIComponent(input)}`;
+      navigate(searchUrl);
     } else {
       console.log("Enter any keyword");
     }
@@ -34,8 +22,8 @@ export const Search = ({ onSearchedData, searchValue, loading }) => {
   return (
     <div className="w-full flex items-center gap-2">
       <div
-        className="w-full dark:text-gray-200 border border-gray-500 
-        dark:border-none dark:bg-zinc-700/90 rounded-sm py-1 px-3"
+        className="w-full dark:text-gray-200 border border-gray-500/50 
+        dark:border-transparent dark:bg-zinc-700/90 rounded-sm py-1 px-3"
       >
         <input
           id="search"
@@ -49,7 +37,7 @@ export const Search = ({ onSearchedData, searchValue, loading }) => {
       </div>
       <button
         onClick={handleSearch}
-        className="py-[6px] px-3 text-sm dark:text-gray-100 text-gray-900 bg-zinc-400 dark:bg-zinc-600 rounded-sm"
+        className="py-[6px] px-3 text-sm text-gray-900 dark:text-gray-800 bg-orange-400 rounded-sm"
       >
         Search
       </button>

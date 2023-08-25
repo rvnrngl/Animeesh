@@ -25,7 +25,8 @@
     "swiper": "^10.0.4",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.6",
-    "vidstack": "^0.6.13"
+    "vidstack": "^0.6.13",
+    "zustand": "^4.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.4.10",

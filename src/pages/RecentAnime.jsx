@@ -30,7 +30,7 @@ export const RecentAnime = () => {
         itemsPerPage
       );
       setRecentAnime(data.results);
-      const limit = 250;
+      const limit = 250; // limit of anime to be displayed
       const dataTotalResults = data.totalResults;
       if (dataTotalResults > limit) {
         // limit total results to 100 items
@@ -108,37 +108,31 @@ export const RecentAnime = () => {
             )}
           </div>
           {/* paginate */}
-          {recentAnime.length < 1 ? (
-            <span className="text-2xl lg:text-4xl font-bold text-center text-gray-600/50">
-              No results found
-            </span>
-          ) : (
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel="next"
-              previousLabel="prev"
-              pageCount={pagination.totalPages}
-              pageRangeDisplayed={3}
-              marginPagesDisplayed={3}
-              renderOnZeroPageCount={null}
-              onPageChange={handlePageChange}
-              className="w-full text-xs xs:text-sm dark:text-gray-300 flex justify-center items-center gap-1 xs:gap-2 md:gap-3 lg:gap-4 p-2"
-              pageClassName="border border-zinc-200 dark:border-zinc-800 rounded-sm group overflow-hidden"
-              previousClassName="mr-2 text-xs border border-zinc-200 dark:border-zinc-800 rounded-sm group uppercase"
-              nextClassName="ml-2 text-xs border border-zinc-200 dark:border-zinc-800 rounded-sm group uppercase"
-              pageLinkClassName="w-[15px] h-[15px] xs:w-[20px] xs:h-[20px] sm:w-[35px] sm:h-[35px] 
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="next"
+            previousLabel="prev"
+            pageCount={pagination.totalPages}
+            pageRangeDisplayed={3}
+            marginPagesDisplayed={3}
+            renderOnZeroPageCount={null}
+            onPageChange={handlePageChange}
+            className="w-full text-xs xs:text-sm dark:text-gray-300 flex justify-center items-center gap-1 xs:gap-2 md:gap-3 lg:gap-4 p-2"
+            pageClassName="border border-zinc-200 dark:border-zinc-800 rounded-sm group overflow-hidden"
+            previousClassName="mr-2 text-xs border border-zinc-200 dark:border-zinc-800 rounded-sm group uppercase"
+            nextClassName="ml-2 text-xs border border-zinc-200 dark:border-zinc-800 rounded-sm group uppercase"
+            pageLinkClassName="w-[15px] h-[15px] xs:w-[20px] xs:h-[20px] sm:w-[35px] sm:h-[35px] 
             flex justify-center items-center h-full group-hover:font-semibold group-hover:bg-gradient-to-b from-transparent to-slate-800/10 
             dark:group-hover:bg-gradient-to-b from-transparent to-slate-400/40 ease-in-out duration-200"
-              previousLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
+            previousLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
             flex justify-center items-center h-full group-hover:font-semibold group-hover:bg-gradient-to-b from-transparent to-slate-800/10 
             dark:group-hover:bg-gradient-to-b from-transparent to-slate-400/40 ease-in-out duration-200"
-              nextLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
+            nextLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
             flex justify-center items-center h-full group-hover:font-semibold group-hover:bg-gradient-to-b from-transparent to-slate-800/10 
             dark:group-hover:bg-gradient-to-b from-transparent to-slate-400/40 ease-in-out duration-200"
-              activeClassName="bg-zinc-700 dark:bg-zinc-400"
-              activeLinkClassName="text-gray-100 dark:text-gray-900"
-            />
-          )}
+            activeClassName="bg-zinc-700 dark:bg-zinc-400"
+            activeLinkClassName="text-gray-100 dark:text-gray-900"
+          />
         </div>
       </div>
     </div>
