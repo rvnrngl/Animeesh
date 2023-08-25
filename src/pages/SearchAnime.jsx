@@ -39,28 +39,12 @@ export const SearchAnime = () => {
     }
   };
 
-  // const handleSearchedData = (data) => {
-  //   setSearchedAnime(data);
-  // };
-
-  // const searchedValue = (data) => {
-  //   setInputValue(data);
-  // };
-
-  // const loading = (data) => {
-  //   setIsLoading(data);
-  // };
-
   return (
     <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-6 lg:gap-10 justify-center items-center">
         {/* search container */}
         <div className="lg:hidden w-full px-4">
-          <Search
-          // onSearchedData={handleSearchedData}
-          // searchedValue={searchedValue}
-          // loading={loading}
-          />
+          <Search />
         </div>
         <div className="w-full flex justify-center items-center font-semibold lg:font-bold dark:text-zinc-300 px-4 lg:mt-4">
           {inputValue === "" ? (
@@ -97,8 +81,15 @@ export const SearchAnime = () => {
                   </div>
                 );
               })
-            ) : (
+            ) : searchedAnime.length > 0 ? (
               <Cards animeList={searchedAnime} type={"search"} />
+            ) : (
+              <span
+                className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80 
+              col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5 xl:col-span-6"
+              >
+                No Results Found
+              </span>
             )}
           </div>
         </div>
