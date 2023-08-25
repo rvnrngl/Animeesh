@@ -49,8 +49,6 @@ export const WatchAnime = () => {
       setAnimeRecommendation(data.recommendations); // get anime recommendations
     } catch (error) {
       console.error("Error fetching anime info:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -65,6 +63,8 @@ export const WatchAnime = () => {
         setCurrentEpisode(response.data.sources[4]);
       } catch (err) {
         throw new Error(err.message);
+      } finally {
+        setIsLoading(false);
       }
     }
   };

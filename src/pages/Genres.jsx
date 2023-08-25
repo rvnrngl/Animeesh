@@ -38,11 +38,9 @@ export const Genres = () => {
         genres
       );
       setAnimeList(data.results);
-      // limit total results to 500 items
-      const limit = 500;
+      const limit = 1000;
       const dataTotalResults = data.totalResults;
       if (dataTotalResults > limit) {
-        // limit total results to 100 items
         setPagination({
           currentPage: data.currentPage,
           hasNextPage: data.hasNextPage,
@@ -102,7 +100,7 @@ export const Genres = () => {
               ""
             ) : (
               <span className="text-gray-600 dark:text-gray-400 text-[10px] xs:text-xs sm:text-sm lg:text-base font-thin">
-                {pagination.totalResults} Results
+                {pagination.totalResults} Total Results
               </span>
             )}
           </div>
@@ -130,7 +128,7 @@ export const Genres = () => {
           {/* paginate */}
           {animeList.length < 1 ? (
             <span className="text-2xl lg:text-4xl font-bold text-center text-gray-600/50">
-              No results found
+              End of Results
             </span>
           ) : (
             <ReactPaginate
