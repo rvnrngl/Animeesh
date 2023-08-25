@@ -4,11 +4,14 @@ import { Cards } from "../components/Cards";
 import ReactPaginate from "react-paginate";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { useLocation } from "react-router-dom";
 
 export const Genres = () => {
   const anilist = new META.Anilist();
-  const genres = JSON.parse(sessionStorage.getItem("genreList"));
-  const [selectedGenres] = useState(genres);
+  const location = useLocation();
+  const genreParams = new URLSearchParams(location.search);
+  const encodedGenre = genreParams.get("g");
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const [animeList, setAnimeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [pagination, setPagination] = useState({
@@ -20,10 +23,16 @@ export const Genres = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    if (encodedGenre) {
+      setSelectedGenres(JSON.parse(decodeURIComponent(encodedGenre)));
+    }
+  }, [encodedGenre]);
+
+  useEffect(() => {
     if (selectedGenres?.length > 0) {
       getAnimeList(1, 30, ["POPULARITY_DESC"], selectedGenres);
     }
-  }, []);
+  }, [selectedGenres]);
 
   const getAnimeList = async (pageNumber, itemsPerPage, sort, genres) => {
     setIsLoading(true);
@@ -127,8 +136,8 @@ export const Genres = () => {
           </div>
           {/* paginate */}
           {animeList.length < 1 ? (
-            <span className="text-2xl lg:text-4xl font-bold text-center text-gray-600/50">
-              End of Results
+            <span className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80">
+              No Results Found
             </span>
           ) : (
             <ReactPaginate
