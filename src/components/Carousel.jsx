@@ -35,6 +35,27 @@ export const Carousel = () => {
     }
   };
 
+  const handleNavigate = (anime) => {
+    if (anime.title?.english !== null) {
+      navigate(
+        `/watch/${anime.title?.english
+          .replace(/[-:]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()}`,
+        { state: { anime } }
+      );
+    } else {
+      navigate(
+        `/watch/${anime.title?.userPreferred
+          .replace(/[-:]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()}`,
+        { state: { anime } }
+      );
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
       {isLoading === true ? (
@@ -122,12 +143,7 @@ export const Carousel = () => {
                   </div>
                   <div className="flex items-center gap-2 text-gray-900 text-sm lg:text-lg mt-3">
                     <button
-                      onClick={() => {
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                        navigate("/watch", {
-                          state: { anime },
-                        });
-                      }}
+                      onClick={() => handleNavigate(anime)}
                       className="w-fit flex items-center gap-1 py-px px-2 font-semibold shadow-md 
                   uppercase rounded-sm bg-orange-400 border-b border-orange-400 hover:text-gray-200
                   duration-200 ease-out"

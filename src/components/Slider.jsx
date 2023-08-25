@@ -12,15 +12,25 @@ import "swiper/css/pagination";
 export const Slider = ({ animeList, reLoad, type }) => {
   const navigate = useNavigate();
   const handleNavigation = (anime) => {
-    if (reLoad) {
-      window.localStorage.setItem("type", type);
-      navigate(window.location.reload(), { state: { anime } });
-      window.scrollTo({ top: 0 });
+    window.localStorage.setItem("type", type);
+    if (anime.title?.english !== null) {
+      navigate(
+        `/watch/${anime.title?.english
+          .replace(/[-:]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()}`,
+        { state: { anime } }
+      );
     } else {
-      window.localStorage.setItem("type", type);
-      navigate("/watch", { state: { anime } });
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      navigate(
+        `/watch/${anime.title?.userPreferred
+          .replace(/[-:]/g, "")
+          .replace(/\s+/g, "-")
+          .toLowerCase()}`,
+        { state: { anime } }
+      );
     }
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

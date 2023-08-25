@@ -8,18 +8,20 @@ export const Footer = () => {
   // gintama anime hehe
   const anime = {
     id: 918,
+    title: {
+      english: "Gintama",
+    },
   };
 
   const handleNavigate = () => {
-    if (window.location.hash === "#/watch") {
-      navigate(window.location.reload(), { state: { anime } });
-      window.scrollTo({ top: 0 });
-    } else {
-      navigate("/watch", {
-        state: { anime },
-      });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    navigate(
+      `/watch/${anime.title?.english
+        .replace(/[-:]/g, "")
+        .replace(/\s+/g, "-")
+        .toLowerCase()}`,
+      { state: { anime } }
+    );
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
