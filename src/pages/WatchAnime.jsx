@@ -11,6 +11,7 @@ import { defineCustomElements } from "vidstack/elements";
 import { Recommendation } from "../components/Recommendation";
 
 import { GiPreviousButton, GiNextButton } from "react-icons/gi";
+import { BsPlayFill } from "react-icons/bs";
 
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -97,14 +98,14 @@ export const WatchAnime = () => {
   return (
     <>
       <div className="w-screen min-h-screen dark:bg-zinc-900">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-5 pt-5 px-5 lg:px-10 xl:px-20">
-          {/* video wrapper comment */}
+        <div className="w-full grid grid-cols-1 lg:grid-cols-4 gap-5 pt-4 px-4 md:px-5 lg:px-10 xl:px-20">
+          {/* media player */}
           <div className="lg:col-span-3 flex flex-col gap-2">
             {isLoading === true ? (
               <Skeleton className="aspect-video bg-zinc-200 dark:bg-zinc-800"></Skeleton>
             ) : (
               <media-player
-                autoplay
+                autoplay={false}
                 src={currentEpisode.url}
                 aspect-ratio="16/9"
                 crossorigin
@@ -118,11 +119,8 @@ export const WatchAnime = () => {
               <Skeleton className="w-full bg-zinc-200 dark:bg-zinc-800 h-6 xs:h-7 lg:h-10 p-2"></Skeleton>
             ) : (
               <div className="w-full flex justify-between rounded-md items-center text-gray-300 gap-4 p-2">
-                <p className="text-gray-900 dark:text-gray-300 text-xs lg:text-lg">
-                  Episode {currentEpisodeNumber} :{" "}
-                  {currentEpisodeTitle?.length > 60
-                    ? currentEpisodeTitle.slice(0, 60) + "..."
-                    : currentEpisodeTitle}
+                <p className="text-gray-900 dark:text-gray-300 text-xs lg:text-lg line-clamp-1">
+                  Episode {currentEpisodeNumber} : {currentEpisodeTitle}
                 </p>
                 <div className="flex items-center gap-4 text-lg lg:text-2xl text-zinc-600 dark:text-gray-400">
                   <button>
@@ -156,10 +154,13 @@ export const WatchAnime = () => {
                   })}
                 </div>
               </Skeleton>
-              <div></div>
+              {/* <div></div> */}
             </div>
           ) : (
-            <div className="lg:col-span-1 w-full h-fit text-sm bg-zinc-100 border dark:border-none dark:bg-zinc-500/20 py-3 pb-5 rounded-md">
+            <div
+              className="lg:col-span-1 w-full h-fit text-xs sm:text-sm bg-zinc-100 border dark:border-none 
+            dark:bg-zinc-800/30 py-3 pb-5 rounded-sm"
+            >
               {episode.length > 30 ? (
                 <>
                   {/* greater than 30 episodes */}
@@ -195,11 +196,14 @@ export const WatchAnime = () => {
                 <>
                   {/* less than 30 episodes */}
                   <div className=" px-3 pb-2">
-                    <p className="text-gray-900 dark:text-gray-300">
+                    <p className="text-gray-900 dark:text-gray-400">
                       List of episodes:
                     </p>
                   </div>
-                  <div className="py-2 max-h-[295px] lg:max-h-[310px] overflow-y-scroll overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                  <div
+                    className="w-full py-2 max-h-[295px] lg:max-h-[310px] overflow-y-scroll overflow-x-hidden 
+                  [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                  >
                     <div className="w-full grid place-items-center">
                       {episode.toReversed().map((eps, index) => {
                         return (
@@ -208,17 +212,20 @@ export const WatchAnime = () => {
                             onClick={() =>
                               handleCurrentLyWatching(eps, index + 1)
                             }
-                            className={`w-full flex items-center justify-start py-3 text-gray-900 dark:text-gray-300
-                        hover:text-gray-200 lg:hover:brightness-75 cursor-pointer px-4 gap-2 flex-nowrap lg:text-sm ${
+                            className={`relative w-full flex items-center px-3 pr-10 py-2 gap-2 
+                        hover:text-gray-200 lg:hover:brightness-75 cursor-pointer lg:text-sm ${
                           currentEpisodeId === eps.id
-                            ? "bg-zinc-500 dark:bg-zinc-400 dark:text-gray-950 text-gray-100"
-                            : index % 2 === 0
-                            ? "bg-zinc-300 dark:bg-zinc-600"
-                            : "bg-zinc-400/90 dark:bg-zinc-700/50"
+                            ? "bg-zinc-500 dark:bg-zinc-700 text-gray-950 dark:text-gray-100 font-semibold"
+                            : "odd:bg-zinc-300 dark:odd:bg-zinc-800 text-gray-900 dark:text-gray-400 even:bg-zinc-400/90 dark:even:bg-transparent"
                         }`}
                           >
                             <span>{index + 1}.</span>
-                            <span>{eps.title}</span>
+                            <span className="line-clamp-1">{eps.title}</span>
+                            {currentEpisodeId === eps.id ? (
+                              <BsPlayFill className="absolute right-2 top-1/2 transform -translate-y-1/2 text-base xs:text-xl" />
+                            ) : (
+                              ""
+                            )}
                           </div>
                         );
                       })}
