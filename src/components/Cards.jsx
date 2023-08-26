@@ -17,8 +17,8 @@ export const Cards = ({ animeList, type }) => {
   const navigate = useNavigate();
 
   const handleNavigation = (anime) => {
-    console.log(anime);
     window.localStorage.setItem("type", type);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (anime.title?.english !== null) {
       navigate(
         `/watch/${anime.title?.english
@@ -36,7 +36,6 @@ export const Cards = ({ animeList, type }) => {
         { state: { anime } }
       );
     }
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -157,12 +156,7 @@ export const Cards = ({ animeList, type }) => {
                       </span>
                     </div>
                     <button
-                      onClick={() => {
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                        navigate("/watch", {
-                          state: { anime },
-                        });
-                      }}
+                      onClick={() => handleNavigation(anime)}
                       className="bg-orange-500 py-2 rounded-full font-semibold flex justify-center items-center 
                       gap-2 hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200"
                     >
@@ -248,12 +242,7 @@ export const Cards = ({ animeList, type }) => {
                     </div>
 
                     <button
-                      onClick={() => {
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                        navigate("/watch", {
-                          state: { anime },
-                        });
-                      }}
+                      onClick={() => handleNavigation(anime)}
                       className="bg-orange-500 py-2 rounded-full font-semibold flex justify-center items-center 
                       gap-2 hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200"
                     >
