@@ -119,7 +119,7 @@ export const WatchAnime = () => {
               <Skeleton className="w-full bg-zinc-200 dark:bg-zinc-800 h-6 xs:h-7 lg:h-10 p-2"></Skeleton>
             ) : (
               <div className="w-full flex justify-between rounded-md items-center text-gray-300 gap-4 p-2">
-                <p className="text-gray-900 dark:text-gray-300 text-xs lg:text-lg line-clamp-1">
+                <p className="text-gray-900 dark:text-gray-300 text-xs lg:text-base line-clamp-1">
                   Episode {currentEpisodeNumber} : {currentEpisodeTitle}
                 </p>
                 <div className="flex items-center gap-4 text-lg lg:text-2xl text-zinc-600 dark:text-gray-400">
@@ -237,7 +237,7 @@ export const WatchAnime = () => {
             </div>
           )}
           {/* anime details comment */}
-          <div className="lg:col-span-3 p-3 lg:pr-20 bg-zinc-100 border dark:border-none dark:bg-transparent dark:text-gray-300 rounded-md text-sm">
+          <div className="lg:col-span-3 py-3 lg:pr-20 bg-zinc-100 border dark:border-none dark:bg-transparent dark:text-gray-300 rounded-md text-sm">
             <div className="flex flex-col xs:flex-row items-center xs:items-start gap-3 lg:gap-6">
               {/* image section comment */}
               {isLoading === true ? (
@@ -387,15 +387,11 @@ export const WatchAnime = () => {
               )}
             </div>
           </div>
-          <div className="lg:col-span-3 p-3 lg:pr-20 bg-zinc-100 border dark:border-none dark:bg-transparent dark:text-gray-300 rounded-md text-sm">
-            <div className="w-full h-full flex justify-center items-center"></div>
-          </div>
           {/* recommendation anime */}
           <div className="lg:col-span-4 w-full">
             <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
               Recommendations
             </h1>
-
             {isLoading === true ? (
               <div
                 className="w-full h-[180px] xs:h-[240px] lg:h-[260px] xl:h-[300px] 
