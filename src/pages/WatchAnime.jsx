@@ -4,9 +4,19 @@ import { META } from "@consumet/extensions";
 import axios from "axios";
 
 //import vidstack
+// import "vidstack/styles/defaults.css";
+// import "vidstack/styles/community-skin/video.css";
+// import { defineCustomElements } from "vidstack/elements";
+// defineCustomElements();
 import "vidstack/styles/defaults.css";
 import "vidstack/styles/community-skin/video.css";
-import { defineCustomElements } from "vidstack/elements";
+
+import {
+  MediaCommunitySkin,
+  MediaOutlet,
+  MediaPlayer,
+  MediaPoster,
+} from "@vidstack/react";
 
 import { Recommendation } from "../components/Recommendation";
 
@@ -14,8 +24,6 @@ import { GiPreviousButton, GiNextButton } from "react-icons/gi";
 import { BsPlayFill } from "react-icons/bs";
 
 import { Skeleton } from "@/components/ui/skeleton";
-
-defineCustomElements();
 
 export const WatchAnime = () => {
   const anilist = new META.Anilist(); // initialized provider
@@ -76,7 +84,7 @@ export const WatchAnime = () => {
           // if not then get the backup quality
           defaultSource = sources.find((source) => source.quality === "backup");
         }
-        setCurrentEpisode(defaultSource);
+        setCurrentEpisode(defaultSource.url);
       } catch (err) {
         throw new Error(err.message);
       } finally {
@@ -119,15 +127,25 @@ export const WatchAnime = () => {
             {isLoading === true ? (
               <Skeleton className="aspect-video bg-zinc-200 dark:bg-zinc-800"></Skeleton>
             ) : (
-              <media-player
-                autoplay={false}
-                src={currentEpisode.url}
-                aspect-ratio="16/9"
-                crossorigin
+              <MediaPlayer
+                autoplay
+                src={currentEpisode}
+                aspectRatio={16 / 9}
+                crossorigin=""
               >
-                <media-outlet></media-outlet>
-                <media-community-skin></media-community-skin>
-              </media-player>
+                <MediaOutlet></MediaOutlet>
+                <MediaCommunitySkin />
+              </MediaPlayer>
+
+              // <media-player
+              //   autoplay={false}
+              //   src={currentEpisode.url}
+              //   aspect-ratio="16/9"
+              //   crossorigin
+              // >
+              //   <media-outlet></media-outlet>
+              //   <media-community-skin></media-community-skin>
+              // </media-player>
             )}
             {/* Controls */}
             {isLoading === true ? (
@@ -169,7 +187,6 @@ export const WatchAnime = () => {
                   })}
                 </div>
               </Skeleton>
-              {/* <div></div> */}
             </div>
           ) : (
             <div
