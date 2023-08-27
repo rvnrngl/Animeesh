@@ -61,7 +61,22 @@ export const WatchAnime = () => {
         const response = await axios.get(url, {
           params: { server: "gogocdn" },
         });
-        setCurrentEpisode(response.data.sources[4]);
+        const sources = response.data.sources;
+        let defaultSource = null;
+        // check if there is default quality
+        const hasDefaultQuality = sources.some(
+          (source) => source.quality === "default"
+        );
+        if (hasDefaultQuality) {
+          // if true get source where quality === default
+          defaultSource = sources.find(
+            (source) => source.quality === "default"
+          );
+        } else {
+          // if not then get the backup quality
+          defaultSource = sources.find((source) => source.quality === "backup");
+        }
+        setCurrentEpisode(defaultSource);
       } catch (err) {
         throw new Error(err.message);
       } finally {
