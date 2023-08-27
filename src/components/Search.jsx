@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Search = () => {
   const [input, setInput] = useState("");
+  const inputRef = useRef(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const handleSearch = () => {
     if (input.trim() !== "") {
@@ -26,6 +31,7 @@ export const Search = () => {
         dark:border-transparent dark:bg-zinc-700/90 rounded-sm py-1 px-3"
       >
         <input
+          ref={inputRef}
           id="search"
           type="text"
           value={input}

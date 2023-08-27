@@ -9,10 +9,11 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 
-export const Slider = ({ animeList, reLoad, type }) => {
+export const Slider = ({ animeList, type }) => {
   const navigate = useNavigate();
   const handleNavigation = (anime) => {
     window.localStorage.setItem("type", type);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (anime.title?.english !== null) {
       navigate(
         `/watch/${anime.title?.english
@@ -30,7 +31,6 @@ export const Slider = ({ animeList, reLoad, type }) => {
         { state: { anime } }
       );
     }
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

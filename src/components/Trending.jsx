@@ -42,7 +42,7 @@ export const Trending = () => {
           <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden xl:block "></Skeleton>
         </div>
       ) : (
-        <Slider animeList={trendingAnime} reLoad={false} type={"home"} />
+        <Slider animeList={trendingAnime} type={"home"} />
       )}
     </>
   );

@@ -3,14 +3,8 @@ import { useLocation, useParams } from "react-router-dom";
 import { META } from "@consumet/extensions";
 import axios from "axios";
 
-//import vidstack
-// import "vidstack/styles/defaults.css";
-// import "vidstack/styles/community-skin/video.css";
-// import { defineCustomElements } from "vidstack/elements";
-// defineCustomElements();
 import "vidstack/styles/defaults.css";
 import "vidstack/styles/community-skin/video.css";
-
 import {
   MediaCommunitySkin,
   MediaOutlet,
@@ -136,16 +130,6 @@ export const WatchAnime = () => {
                 <MediaOutlet></MediaOutlet>
                 <MediaCommunitySkin />
               </MediaPlayer>
-
-              // <media-player
-              //   autoplay={false}
-              //   src={currentEpisode.url}
-              //   aspect-ratio="16/9"
-              //   crossorigin
-              // >
-              //   <media-outlet></media-outlet>
-              //   <media-community-skin></media-community-skin>
-              // </media-player>
             )}
             {/* Controls */}
             {isLoading === true ? (

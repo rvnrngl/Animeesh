@@ -1,13 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-// Import Swiper React components
+
+// Import Swiper
 import { Swiper, SwiperSlide } from "swiper/react";
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-// import required modules
 import { Autoplay, Pagination } from "swiper/modules";
+
 import { PiTelevisionBold } from "react-icons/pi";
 import { META } from "@consumet/extensions";
 
