@@ -277,7 +277,7 @@ export const WatchAnime = () => {
                 </div>
               ) : (
                 <div className="text-sm text-center xs:text-left">
-                  <h1 className="text-lg lg:text-2xl uppercase font-bold mb-2">
+                  <h1 className="text-lg lg:text-2xl uppercase font-bold leading-5 mb-2">
                     {animeInfo.title?.english === null
                       ? animeInfo.title?.userPreferred !== undefined
                         ? animeInfo.title?.userPreferred
