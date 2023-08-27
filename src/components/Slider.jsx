@@ -79,7 +79,7 @@ export const Slider = ({ animeList, reLoad, type }) => {
                     {index < 9 ? <p>0{index + 1}</p> : <p>{index + 1}</p>}
                   </div>
                   <div
-                    className="hidden lg:flex flex-col absolute left-0 top-0 w-[35px] h-full font-bold text-sm 
+                    className="hidden lg:flex flex-col gap-2 absolute left-0 top-0 w-[35px] h-full font-bold text-sm 
                   justify-between items-center bg-gradient-to-b from-zinc-500/90 to-zinc-900/90 text-gray-200 pb-2"
                   >
                     {index < 9 ? (
@@ -88,16 +88,14 @@ export const Slider = ({ animeList, reLoad, type }) => {
                       <p className="text-2xl">{index + 1}</p>
                     )}
                     <p
-                      className="h-fit w-full -rotate-180 [writing-mode:vertical-lr] text-left pl-2
+                      className="h-full w-full -rotate-180 [writing-mode:vertical-lr] text-left pl-2
                       bg-gradient-to-t from-orange-100 to-orange-500/90 bg-clip-text text-transparent uppercase"
                     >
-                      {anime.title?.english === null
-                        ? anime.title?.userPreferred?.length > 20
-                          ? anime.title?.userPreferred.slice(0, 20) + "..."
-                          : anime.title?.userPreferred
-                        : anime.title?.english?.length > 20
-                        ? anime.title?.english.slice(0, 20) + "..."
-                        : anime.title?.english}
+                      <span className="h-full line-clamp-1">
+                        {anime.title?.english === null
+                          ? anime.title?.userPreferred
+                          : anime.title?.english}
+                      </span>
                     </p>
                   </div>
                 </div>

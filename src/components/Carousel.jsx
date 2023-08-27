@@ -126,19 +126,12 @@ export const Carousel = () => {
                   </div>
                   <div
                     className="text-[10px] lg:text-base text-white/90 font-thin max-h-[40px] lg:max-h-[75px] 
-                w-3/4 lg:w-2/4 break-words leading-3 overflow-hidden mt-1"
+                  w-3/4 sm:w-2/4 break-words leading-3 overflow-hidden mt-1"
                   >
-                    <p className="lg:hidden">
+                    <p className="line-clamp-3">
                       {anime.description
                         .replace(/<\/?i\s*\/?>/g, "")
-                        .replace(/<\/?br\s*\/?>/g, "")
-                        .slice(0, 140) + "..."}
-                    </p>
-                    <p className="hidden lg:block">
-                      {anime.description
-                        .replace(/<\/?i\s*\/?>/g, "")
-                        .replace(/<\/?br\s*\/?>/g, "")
-                        .slice(0, 250) + "..."}
+                        .replace(/<\/?br\s*\/?>/g, "")}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-900 text-sm lg:text-lg mt-3">

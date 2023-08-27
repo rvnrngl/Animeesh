@@ -66,22 +66,9 @@ export const Cards = ({ animeList, type }) => {
                   </div>
                 </div>
                 <div className="w-full text-left dark:text-gray-300 py-2 flex flex-col group-hover:brightness-75">
-                  <span className="xs:hidden dark:text-white text-sm font-semibold">
+                  <span className="dark:text-white text-sm font-semibold line-clamp-1">
                     {anime.title?.english === null
-                      ? anime.title?.userPreferred?.length > 10
-                        ? anime.title?.userPreferred.slice(0, 10) + "..."
-                        : anime.title?.userPreferred
-                      : anime.title?.english?.length > 10
-                      ? anime.title?.english.slice(0, 10) + "..."
-                      : anime.title?.english}
-                  </span>
-                  <span className="hidden xs:block dark:text-white text-sm font-semibold">
-                    {anime.title?.english === null
-                      ? anime.title?.userPreferred?.length > 20
-                        ? anime.title?.userPreferred.slice(0, 20) + "..."
-                        : anime.title?.userPreferred
-                      : anime.title?.english?.length > 20
-                      ? anime.title?.english.slice(0, 20) + "..."
+                      ? anime.title?.userPreferred
                       : anime.title?.english}
                   </span>
                   <div className=" flex gap-2 text-[10px] xs:text-xs lg:text-sm text-gray-500 dark:text-gray-400">
@@ -104,7 +91,7 @@ export const Cards = ({ animeList, type }) => {
               >
                 <div className="w-full flex justify-between space-x-4 text-gray-900 dark:text-gray-200">
                   <div className="space-y-1 flex flex-col gap-2 text-sm">
-                    <h1 className="text-base font-semibold text-orange-400 leading-5">
+                    <h1 className="text-base font-semibold text-orange-400 leading-5 line-clamp-2">
                       {anime.title?.english === null
                         ? anime.title?.userPreferred
                         : anime.title?.english}
@@ -124,7 +111,7 @@ export const Cards = ({ animeList, type }) => {
                       </span>
                     </div>
                     {/* description */}
-                    <p className="text-sm w-full text-gray-500 dark:text-gray-400">
+                    <p className="text-sm w-full text-gray-500 dark:text-gray-400 line-clamp-3">
                       {anime.episodeTitle?.length > 60
                         ? anime.episodeTitle.slice(0, 60) + "..."
                         : anime.episodeTitle}
@@ -134,7 +121,8 @@ export const Cards = ({ animeList, type }) => {
                         <span className="text-gray-500 dark:text-gray-400">
                           Other Name:{" "}
                         </span>
-                        {anime.title?.native} {anime.title?.romaji}{" "}
+                        {anime.title?.native}, {anime.title?.romaji}
+                        {", "}
                         {anime.title.userPreferred}
                       </span>
                       <span className="text-xs">
@@ -150,7 +138,8 @@ export const Cards = ({ animeList, type }) => {
                             key={index}
                             className="text-gray-900 dark:text-gray-200"
                           >
-                            {genre}{" "}
+                            {genre}
+                            {index !== anime.genres?.length - 1 ? ", " : ""}
                           </span>
                         ))}
                       </span>
@@ -174,7 +163,7 @@ export const Cards = ({ animeList, type }) => {
               >
                 <div className="w-full flex justify-between space-x-4 text-gray-900 dark:text-gray-200">
                   <div className="space-y-1 flex flex-col gap-2 text-sm">
-                    <h1 className="text-base font-semibold text-orange-400 leading-5">
+                    <h1 className="text-base font-semibold text-orange-400 leading-5 line-clamp-2">
                       {anime.title?.english === null
                         ? anime.title?.userPreferred
                         : anime.title?.english}
@@ -200,20 +189,18 @@ export const Cards = ({ animeList, type }) => {
                       </div>
                     </div>
                     {/* description */}
-                    <p className="text-sm w-full text-gray-500 dark:text-gray-400">
-                      {anime.description?.length > 60
-                        ? anime.description
-                            ?.replace(/<\/?i\s*\/?>/g, "")
-                            ?.replace(/<\/?br\s*\/?>/g, "")
-                            .slice(0, 60) + "..."
-                        : anime.description}
+                    <p className="text-sm w-full text-gray-500 dark:text-gray-400 line-clamp-3">
+                      {anime.description
+                        ?.replace(/<\/?i\s*\/?>/g, "")
+                        .replace(/<\/?br\s*\/?>/g, "")}
                     </p>
                     <div className="flex flex-col items-start">
                       <span className="text-xs">
                         <span className="text-gray-500 dark:text-gray-400">
                           Other Name:{" "}
                         </span>
-                        {anime.title?.native} {anime.title?.romaji}{" "}
+                        {anime.title?.native}, {anime.title?.romaji}
+                        {", "}
                         {anime.title.userPreferred}
                       </span>
                       <span className="text-xs">
@@ -235,12 +222,12 @@ export const Cards = ({ animeList, type }) => {
                             key={index}
                             className="text-gray-900 dark:text-gray-200"
                           >
-                            {genre}{" "}
+                            {genre}
+                            {index !== anime.genres?.length - 1 ? ", " : ""}
                           </span>
                         ))}
                       </span>
                     </div>
-
                     <button
                       onClick={() => handleNavigation(anime)}
                       className="bg-orange-500 py-2 rounded-full font-semibold flex justify-center items-center 

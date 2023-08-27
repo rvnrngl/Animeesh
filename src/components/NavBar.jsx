@@ -160,11 +160,11 @@ export const NavBar = () => {
                     <span>Genres</span>
                     <FiChevronDown
                       size={20}
-                      className={
-                        isGenreClosed
-                          ? "rotate-0 ease-in-out duration-300"
-                          : "rotate-180 ease-in-out duration-300"
-                      }
+                      className={isGenreClosed ? "rotate-0" : "rotate-180"}
+                      style={{
+                        backgroundColor: "your-background-color",
+                        transition: "transform 0.3s ease-in-out",
+                      }}
                     />
                   </div>
                   <div

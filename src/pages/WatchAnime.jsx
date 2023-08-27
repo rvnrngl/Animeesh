@@ -257,40 +257,46 @@ export const WatchAnime = () => {
               {isLoading === true ? (
                 <div className="w-full flex flex-col items-center xs:items-start gap-3 px-3">
                   <Skeleton className="w-3/4 h-[20px] lg:h-[30px] bg-zinc-200 dark:bg-zinc-800"></Skeleton>
-                  <Skeleton className="w-full h-[90px] lg:h-[255px] bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                  <Skeleton className="w-full h-[30px] lg:h-[40px] bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+                  <Skeleton className="w-full h-[90px] lg:h-[200px] bg-zinc-200 dark:bg-zinc-800"></Skeleton>
                 </div>
               ) : (
                 <div className="text-sm text-center xs:text-left">
                   <h1 className="text-lg lg:text-2xl uppercase font-bold mb-2">
                     {animeInfo.title?.english === null
-                      ? animeInfo.title?.userPreferred
+                      ? animeInfo.title?.userPreferred !== undefined
+                        ? animeInfo.title?.userPreferred
+                        : animeInfo.title?.romaji
                       : animeInfo.title?.english}
                   </h1>
+                  {animeInfo.synonyms?.length > 0 ? (
+                    <h1 className=" text-xs sm:text-sm mb-2 text-gray-500 line-clamp-2">
+                      {" "}
+                      Synonyms:{" "}
+                      {animeInfo.synonyms.map((synonym, index) => {
+                        return (
+                          <span
+                            key={index}
+                            className="text-black dark:text-gray-300"
+                          >
+                            {synonym}
+                            {index !== animeInfo.synonyms.length - 1
+                              ? ", "
+                              : ""}
+                          </span>
+                        );
+                      })}
+                    </h1>
+                  ) : (
+                    ""
+                  )}
                   <p
-                    className="md:hidden mb-3 w-full cursor-pointer text-justify overflow-y-scroll overflow-x-hidden 
-                [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
+                    className="mb-3 w-full cursor-pointer text-justify line-clamp-3 overflow-y-scroll 
+                    overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
                   >
-                    {animeInfo.description?.length > 180
-                      ? animeInfo.description
-                          ?.replace(/<\/?i\s*\/?>/g, "")
-                          ?.replace(/<\/?br\s*\/?>/g, "")
-                          .slice(0, 185) + "...See More"
-                      : animeInfo.description
-                          ?.replace(/<\/?i\s*\/?>/g, "")
-                          ?.replace(/<\/?br\s*\/?>/g, "")}
-                  </p>
-                  <p
-                    className="hidden md:block mb-3 w-full cursor-pointer text-justify overflow-y-scroll overflow-x-hidden 
-                [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
-                  >
-                    {animeInfo.description?.length > 250
-                      ? animeInfo.description
-                          ?.replace(/<\/?i\s*\/?>/g, "")
-                          ?.replace(/<\/?br\s*\/?>/g, "")
-                          .slice(0, 250) + "...See More"
-                      : animeInfo.description
-                          ?.replace(/<\/?i\s*\/?>/g, "")
-                          ?.replace(/<\/?br\s*\/?>/g, "")}
+                    {animeInfo.description
+                      ?.replace(/<\/?i\s*\/?>/g, "")
+                      ?.replace(/<\/?br\s*\/?>/g, "")}
                   </p>
                   <ul className="w-full grid grid-cols-2 gap-1 text-xs lg:text-sm">
                     <div className="flex flex-col items-start">
@@ -328,7 +334,12 @@ export const WatchAnime = () => {
                         Genre:{" "}
                         <span className="text-black dark:text-gray-300">
                           {animeInfo.genres?.map((genre, index) => (
-                            <span key={index}>{genre} </span>
+                            <span key={index}>
+                              {genre}
+                              {index !== animeInfo.genres.length - 1
+                                ? ", "
+                                : ""}
+                            </span>
                           ))}
                         </span>
                       </li>
@@ -375,6 +386,9 @@ export const WatchAnime = () => {
                 </div>
               )}
             </div>
+          </div>
+          <div className="lg:col-span-3 p-3 lg:pr-20 bg-zinc-100 border dark:border-none dark:bg-transparent dark:text-gray-300 rounded-md text-sm">
+            <div className="w-full h-full flex justify-center items-center"></div>
           </div>
           {/* recommendation anime */}
           <div className="lg:col-span-4 w-full">
