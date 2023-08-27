@@ -165,7 +165,7 @@ export const WatchAnime = () => {
                 <>
                   {/* greater than 30 episodes */}
                   <div className="px-3 pb-2">
-                    <p className="text-gray-900 font-semibold dark:text-gray-300">
+                    <p className="text-gray-950 dark:text-gray-400">
                       List of episodes:
                     </p>
                   </div>
@@ -180,10 +180,11 @@ export const WatchAnime = () => {
                           onClick={() =>
                             handleCurrentLyWatching(eps, index + 1)
                           }
-                          className={`w-full flex items-center justify-center rounded-sm p-2 hover:text-gray-200 lg:hover:brightness-75 cursor-pointer ${
+                          className={`w-full flex items-center justify-center rounded-sm p-2 cursor-pointer ${
                             currentEpisodeId === eps.id
-                              ? "bg-zinc-500 dark:bg-zinc-400 text-gray-100 dark:text-gray-900"
-                              : "bg-zinc-400 dark:bg-zinc-700 text-black dark:text-gray-400"
+                              ? "bg-orange-400/80 dark:text-gray-950 font-semibold"
+                              : `bg-zinc-200 dark:bg-zinc-800 text-gray-950 dark:text-gray-400 
+                              lg:hover:bg-zinc-300 lg:dark:hover:bg-zinc-700`
                           }`}
                         >
                           {index + 1}
@@ -196,7 +197,7 @@ export const WatchAnime = () => {
                 <>
                   {/* less than 30 episodes */}
                   <div className=" px-3 pb-2">
-                    <p className="text-gray-900 dark:text-gray-400">
+                    <p className="text-gray-500 dark:text-gray-400">
                       List of episodes:
                     </p>
                   </div>
@@ -212,12 +213,12 @@ export const WatchAnime = () => {
                             onClick={() =>
                               handleCurrentLyWatching(eps, index + 1)
                             }
-                            className={`relative w-full flex items-center px-3 pr-10 py-2 gap-2 
-                        hover:text-gray-200 lg:hover:brightness-75 cursor-pointer lg:text-sm ${
-                          currentEpisodeId === eps.id
-                            ? "bg-zinc-500 dark:bg-zinc-700 text-gray-950 dark:text-gray-100 font-semibold"
-                            : "odd:bg-zinc-300 dark:odd:bg-zinc-800 text-gray-900 dark:text-gray-400 even:bg-zinc-400/90 dark:even:bg-transparent"
-                        }`}
+                            className={`relative w-full flex items-center px-3 pr-10 py-2 gap-2 cursor-pointer lg:text-sm ${
+                              currentEpisodeId === eps.id
+                                ? "bg-zinc-300 dark:bg-zinc-700 text-gray-950 dark:text-gray-100 font-semibold"
+                                : `odd:bg-zinc-200 dark:odd:bg-zinc-800 text-gray-900 dark:text-gray-400 even:bg-transparent dark:even:bg-transparent 
+                                lg:hover:bg-zinc-300 hover:text-gray-950 hover:font-semibold dark:lg:hover:bg-zinc-700 dark:hover:text-gray-100`
+                            }`}
                           >
                             <span>{index + 1}.</span>
                             <span className="line-clamp-1">{eps.title}</span>
@@ -236,7 +237,7 @@ export const WatchAnime = () => {
             </div>
           )}
           {/* anime details comment */}
-          <div className="lg:col-span-3 p-3 lg:pr-20 dark:text-gray-300 rounded-md text-sm">
+          <div className="lg:col-span-3 p-3 lg:pr-20 bg-zinc-100 border dark:border-none dark:bg-transparent dark:text-gray-300 rounded-md text-sm">
             <div className="flex flex-col xs:flex-row items-center xs:items-start gap-3 lg:gap-6">
               {/* image section comment */}
               {isLoading === true ? (
