@@ -162,7 +162,7 @@ export const Genres = () => {
             )}
           </div>
           {/* paginate */}
-          {!isLoading && animeList > 0 ? (
+          {!isLoading && animeList.length > 0 ? (
             <div className="w-full flex items-center justify-center gap-4 md:gap-8">
               <button
                 disabled={prevDisabled}
@@ -200,13 +200,15 @@ export const Genres = () => {
                 )}
               </button>
             </div>
-          ) : (
+          ) : !isLoading && animeList.length < 1 ? (
             <span
               className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80 
               col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5 xl:col-span-6"
             >
               No Results Found
             </span>
+          ) : (
+            ""
           )}
         </div>
       </div>
