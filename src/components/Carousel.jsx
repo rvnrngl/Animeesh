@@ -11,10 +11,14 @@ import { PiTelevisionBold } from "react-icons/pi";
 import { META } from "@consumet/extensions";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 
 export const Carousel = () => {
   const anilist = new META.Anilist();
   const [popularAnime, setPopularAnime] = useState([]);
+  const [currentDate] = useState(new Date());
+  const year = currentDate.getFullYear();
+  const season = getCurrentSeason(currentDate);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -22,10 +26,23 @@ export const Carousel = () => {
     getPopularAnime();
   }, []);
 
+  // get top 10 popular anime of this season
   const getPopularAnime = async () => {
     setIsLoading(true);
     try {
-      const data = await anilist.fetchPopularAnime();
+      const data = await anilist.advancedSearch(
+        undefined,
+        "ANIME",
+        1,
+        10,
+        undefined,
+        ["POPULARITY_DESC"],
+        undefined,
+        undefined,
+        year,
+        undefined,
+        season
+      );
       setPopularAnime(data.results);
     } catch (error) {
       console.error("Error fetching popular anime:", error);

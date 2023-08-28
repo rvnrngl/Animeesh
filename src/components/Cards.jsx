@@ -42,7 +42,7 @@ export const Cards = ({ animeList, type }) => {
     <>
       {animeList.map((anime, index) => {
         return (
-          <HoverCard key={index} openDelay={300} closeDelay={100}>
+          <HoverCard key={index} openDelay={600} closeDelay={100}>
             <HoverCardTrigger asChild>
               <div
                 onClick={() => handleNavigation(anime)}
@@ -71,11 +71,11 @@ export const Cards = ({ animeList, type }) => {
                       ? anime.title?.userPreferred
                       : anime.title?.english}
                   </span>
-                  <div className=" flex gap-2 text-[10px] xs:text-xs lg:text-sm text-gray-500 dark:text-gray-400">
+                  <div className=" flex gap-2 text-[10px] md:text-xs text-gray-500 dark:text-gray-400">
                     <span>{anime.type}</span>
                     <span>•</span>
                     {type === "recent" ? (
-                      <span>Latest Episode: {anime.episodeNumber}</span>
+                      <span>Latest Episode: {anime.currentEpisode}</span>
                     ) : (
                       <span>EPS: {anime.totalEpisodes}</span>
                     )}
@@ -111,10 +111,10 @@ export const Cards = ({ animeList, type }) => {
                       </span>
                     </div>
                     {/* description */}
-                    <p className="text-sm w-full text-gray-500 dark:text-gray-400 line-clamp-3">
-                      {anime.episodeTitle?.length > 60
-                        ? anime.episodeTitle.slice(0, 60) + "..."
-                        : anime.episodeTitle}
+                    <p className="text-xs w-full text-gray-500 dark:text-gray-400 leading-4 line-clamp-3">
+                      {anime.description
+                        ?.replace(/<\/?i\s*\/?>/g, "")
+                        .replace(/<\/?br\s*\/?>/g, "")}
                     </p>
                     <div className="flex flex-col items-start">
                       <span className="text-xs">
@@ -129,7 +129,7 @@ export const Cards = ({ animeList, type }) => {
                         <span className="text-gray-500 dark:text-gray-400">
                           Latest Episode:{" "}
                         </span>
-                        {anime.episodeNumber}
+                        {anime.currentEpisode}
                       </span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">
                         Genres:{" "}
@@ -189,7 +189,7 @@ export const Cards = ({ animeList, type }) => {
                       </div>
                     </div>
                     {/* description */}
-                    <p className="text-sm w-full text-gray-500 dark:text-gray-400 line-clamp-3">
+                    <p className="text-xs w-full text-gray-500 dark:text-gray-400 leading-4 line-clamp-3">
                       {anime.description
                         ?.replace(/<\/?i\s*\/?>/g, "")
                         .replace(/<\/?br\s*\/?>/g, "")}

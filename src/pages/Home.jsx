@@ -9,17 +9,38 @@ import { MdNavigateNext } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 
 export const Home = () => {
   const anilist = new META.Anilist();
   const [recentAnime, setRecentAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentDate] = useState(new Date());
+  const year = currentDate.getFullYear();
+  const season = getCurrentSeason(currentDate);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    getRecentAnime(1, 20, year, season);
+  }, []);
 
   //get recent anime episodes
-  const getRecentAnime = async () => {
+  const getRecentAnime = async (pageNumber, itemsPerPage, year, season) => {
     setIsLoading(true);
     try {
-      const data = await anilist.fetchRecentEpisodes("gogoanime", 1, 20);
+      const data = await anilist.advancedSearch(
+        undefined,
+        "ANIME",
+        pageNumber,
+        itemsPerPage,
+        undefined,
+        ["UPDATED_AT_DESC"],
+        undefined,
+        undefined,
+        year,
+        "RELEASING",
+        season
+      );
       setRecentAnime(data.results);
     } catch (error) {
       console.error("Error fetching recent anime:", error);
@@ -27,10 +48,6 @@ export const Home = () => {
       setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    getRecentAnime();
-  }, []);
 
   return (
     <div className="w-screen min-h-screen dark:bg-zinc-900">

@@ -4,11 +4,15 @@ import { META } from "@consumet/extensions";
 import ReactPaginate from "react-paginate";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 
 export const RecentAnime = () => {
   const anilist = new META.Anilist();
   const [recentAnime, setRecentAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentDate] = useState(new Date());
+  const year = currentDate.getFullYear();
+  const season = getCurrentSeason(currentDate);
   const [pagination, setPagination] = useState({
     currentPage: 0,
     hasNextPage: false,
@@ -18,18 +22,27 @@ export const RecentAnime = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getRecentAnime("gogoanime", 1, 30);
+    getRecentAnime(1, 30, year, season);
   }, []);
 
-  const getRecentAnime = async (provider, pageNumber, itemsPerPage) => {
+  const getRecentAnime = async (pageNumber, itemsPerPage, year, season) => {
     setIsLoading(true);
     try {
-      const data = await anilist.fetchRecentEpisodes(
-        provider,
+      const data = await anilist.advancedSearch(
+        undefined,
+        "ANIME",
         pageNumber,
-        itemsPerPage
+        itemsPerPage,
+        undefined,
+        ["UPDATED_AT_DESC"],
+        undefined,
+        undefined,
+        year,
+        "RELEASING",
+        season
       );
       setRecentAnime(data.results);
+      console.log(data);
       const limit = 250; // limit of anime to be displayed
       const dataTotalResults = data.totalResults;
       if (dataTotalResults > limit) {
@@ -60,7 +73,7 @@ export const RecentAnime = () => {
   const handlePageChange = (data) => {
     if (data.selected + 1 !== pagination.currentPage) {
       window.scrollTo({ top: 0 });
-      getRecentAnime("gogoanime", data.selected + 1, 30);
+      getRecentAnime(data.selected + 1, 30, year, season);
     }
   };
 

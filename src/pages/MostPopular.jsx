@@ -4,11 +4,15 @@ import { META } from "@consumet/extensions";
 import ReactPaginate from "react-paginate";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 
 export const MostPopular = () => {
   const anilist = new META.Anilist();
   const [popularAnime, setPopularAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentDate] = useState(new Date());
+  const year = currentDate.getFullYear();
+  const season = getCurrentSeason(currentDate);
   const [pagination, setPagination] = useState({
     currentPage: 0,
     hasNextPage: false,
@@ -18,10 +22,16 @@ export const MostPopular = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getPopularAnime(1, 30, ["POPULARITY_DESC"]);
+    getPopularAnime(1, 30, ["POPULARITY_DESC"], year, season);
   }, []);
 
-  const getPopularAnime = async (pageNumber, itemsPerPage, sort) => {
+  const getPopularAnime = async (
+    pageNumber,
+    itemsPerPage,
+    sort,
+    year,
+    season
+  ) => {
     setIsLoading(true);
     try {
       const data = await anilist.advancedSearch(
@@ -30,9 +40,15 @@ export const MostPopular = () => {
         pageNumber,
         itemsPerPage,
         undefined,
-        sort
+        sort,
+        undefined,
+        undefined,
+        year,
+        undefined,
+        season
       );
       setPopularAnime(data.results);
+      console.log(data.results);
       const limit = 500;
       const dataTotalResults = data.totalResults;
       if (dataTotalResults > limit) {
@@ -62,7 +78,7 @@ export const MostPopular = () => {
   const handlePageChange = (data) => {
     if (data.selected + 1 !== pagination.currentPage) {
       window.scrollTo({ top: 0 });
-      getPopularAnime(data.selected + 1, 30, ["POPULARITY_DESC"]);
+      getPopularAnime(data.selected + 1, 30, ["POPULARITY_DESC"], year, season);
     }
   };
 
