@@ -77,7 +77,11 @@ export const NavBar = () => {
   // handle navigate to page
   const handleNavigate = (route) => {
     setIsMenuClosed(!isMenuClosed);
-    navigate(route);
+    if (route === "/recent/page/" || route === "/popular/page/") {
+      navigate(route + 1);
+    } else {
+      navigate(route);
+    }
   };
 
   //handle search
@@ -118,7 +122,7 @@ export const NavBar = () => {
               {/* Other pages link */}
               <div className="hidden lg:flex dark:text-gray-300 items-center font-semibold ml-2">
                 <Link
-                  to="/recent"
+                  to={`/recent/page/${1}`}
                   onClick={() =>
                     isGenreClosed ? "" : setIsGenreClosed(!isGenreClosed)
                   }
@@ -130,7 +134,7 @@ export const NavBar = () => {
                   </span>
                 </Link>
                 <Link
-                  to="/popular"
+                  to={`/popular/page/${1}`}
                   onClick={() =>
                     isGenreClosed ? "" : setIsGenreClosed(!isGenreClosed)
                   }
@@ -264,13 +268,13 @@ export const NavBar = () => {
               Search
             </button>
             <button
-              onClick={() => handleNavigate("/recent")}
+              onClick={() => handleNavigate("/recent/page/")}
               className="border-b text-left border-zinc-600/50 py-3 px-6 font-semibold"
             >
               Recent
             </button>
             <button
-              onClick={() => handleNavigate("/popular")}
+              onClick={() => handleNavigate("/popular/page/")}
               className="border-b text-left border-zinc-600/50 py-3 px-6 font-semibold"
             >
               Popular

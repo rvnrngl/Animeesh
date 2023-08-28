@@ -5,6 +5,7 @@ import { META } from "@consumet/extensions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const RecentAnime = () => {
   const anilist = new META.Anilist();
@@ -19,11 +20,14 @@ export const RecentAnime = () => {
     currentPage: 0,
     hasNextPage: true,
   });
+  const navigate = useNavigate();
+  const page = useParams();
 
   useEffect(() => {
+    const pageNumber = parseInt(page.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getRecentAnime(1, 30, year, season, "next");
-  }, []);
+    getRecentAnime(pageNumber, 30, year, season, "next");
+  }, [page]);
 
   useEffect(() => {
     if (pagination.hasNextPage) {
@@ -79,15 +83,15 @@ export const RecentAnime = () => {
     }
   };
 
-  const handlePageChange = async (action) => {
+  const handlePageChange = (action) => {
     const currentPage = pagination.currentPage;
 
     if (action === "next" && pagination.hasNextPage) {
       window.scrollTo({ top: 0 });
-      await getRecentAnime(currentPage + 1, 30, year, season, action);
+      navigate(`/recent/page/${currentPage + 1}`);
     } else if (action === "prev" && currentPage > 1) {
       window.scrollTo({ top: 0 });
-      await getRecentAnime(currentPage - 1, 30, year, season, action);
+      navigate(`/recent/page/${currentPage - 1}`);
     }
   };
 

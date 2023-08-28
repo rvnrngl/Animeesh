@@ -5,6 +5,7 @@ import { META } from "@consumet/extensions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const MostPopular = () => {
   const anilist = new META.Anilist();
@@ -19,11 +20,14 @@ export const MostPopular = () => {
     currentPage: 0,
     hasNextPage: true,
   });
+  const navigate = useNavigate();
+  const page = useParams();
 
   useEffect(() => {
+    const pageNumber = parseInt(page.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getPopularAnime(1, 30, ["POPULARITY_DESC"], year, season, "next");
-  }, []);
+    getPopularAnime(pageNumber, 30, ["POPULARITY_DESC"], year, season, "next");
+  }, [page]);
 
   useEffect(() => {
     if (pagination.hasNextPage) {
@@ -80,29 +84,15 @@ export const MostPopular = () => {
     }
   };
 
-  const handlePageChange = async (action) => {
+  const handlePageChange = (action) => {
     const currentPage = pagination.currentPage;
 
     if (action === "next" && pagination.hasNextPage) {
       window.scrollTo({ top: 0 });
-      await getPopularAnime(
-        currentPage + 1,
-        30,
-        ["POPULARITY_DESC"],
-        year,
-        season,
-        action
-      );
+      navigate(`/popular/page/${currentPage + 1}`);
     } else if (action === "prev" && currentPage > 1) {
       window.scrollTo({ top: 0 });
-      await getPopularAnime(
-        currentPage - 1,
-        30,
-        ["POPULARITY_DESC"],
-        year,
-        season,
-        action
-      );
+      navigate(`/popular/page/${currentPage - 1}`);
     }
   };
 

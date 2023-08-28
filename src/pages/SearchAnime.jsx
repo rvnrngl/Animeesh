@@ -132,7 +132,7 @@ export const SearchAnime = () => {
           {/* paginate */}
           {isLoading ? (
             ""
-          ) : !query && !isLoading && searchedAnime.length < 1 ? (
+          ) : query && !isLoading && searchedAnime.length < 1 ? (
             <span
               className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80 
               col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5 xl:col-span-6"
