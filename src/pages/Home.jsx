@@ -70,7 +70,7 @@ export const Home = () => {
               Recent Updated
             </span>
             <Link
-              to="/recent"
+              to={`/recent/page/${1}`}
               className="text-[10px] xs:text-xs md:text-base lg:text-base text-gray-500 dark:text-gray-400 flex items-center gap-1 
             hover:text-gray-900 dark:hover:text-gray-100 ease-in-out duration-200"
             >
