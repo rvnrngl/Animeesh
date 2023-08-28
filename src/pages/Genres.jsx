@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { META } from "@consumet/extensions";
 import { Cards } from "../components/Cards";
-import ReactPaginate from "react-paginate";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { getCurrentSeason } from "@/utils/currentSeasonUtils";
+import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
 
 export const Genres = () => {
@@ -14,11 +15,11 @@ export const Genres = () => {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [animeList, setAnimeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [prevDisabled, setPrevDisabled] = useState(true);
+  const [nextDisabled, setNextDisabled] = useState(false);
   const [pagination, setPagination] = useState({
     currentPage: 0,
-    hasNextPage: false,
-    totalPages: 0,
-    totalResults: 0,
+    hasNextPage: true,
   });
 
   useEffect(() => {
@@ -30,11 +31,30 @@ export const Genres = () => {
 
   useEffect(() => {
     if (selectedGenres?.length > 0) {
-      getAnimeList(1, 30, ["POPULARITY_DESC"], selectedGenres);
+      getAnimeList(1, 30, ["POPULARITY_DESC"], selectedGenres, "next");
     }
   }, [selectedGenres]);
 
-  const getAnimeList = async (pageNumber, itemsPerPage, sort, genres) => {
+  useEffect(() => {
+    if (pagination.hasNextPage) {
+      setNextDisabled(false);
+    } else {
+      setNextDisabled(true);
+    }
+    if (pagination.currentPage > 1) {
+      setPrevDisabled(false);
+    } else {
+      setPrevDisabled(true);
+    }
+  }, [pagination.hasNextPage, pagination.currentPage]);
+
+  const getAnimeList = async (
+    pageNumber,
+    itemsPerPage,
+    sort,
+    genres,
+    action
+  ) => {
     setIsLoading(true);
     try {
       const data = await anilist.advancedSearch(
@@ -47,23 +67,15 @@ export const Genres = () => {
         genres
       );
       setAnimeList(data.results);
-      const limit = 1000;
-      const dataTotalResults = data.totalResults;
-      if (dataTotalResults > limit) {
+      if (action === "next") {
         setPagination({
           currentPage: data.currentPage,
           hasNextPage: data.hasNextPage,
-          totalPages: Math.ceil(
-            (data.totalResults - (data.totalResults - limit)) / 30
-          ),
-          totalResults: data.totalResults - (data.totalResults - limit),
         });
       } else {
         setPagination({
           currentPage: data.currentPage,
           hasNextPage: data.hasNextPage,
-          totalPages: data.totalPages,
-          totalResults: data.totalResults,
         });
       }
     } catch (error) {
@@ -73,14 +85,26 @@ export const Genres = () => {
     }
   };
 
-  const handlePageChange = (data) => {
-    if (data.selected + 1 !== pagination.currentPage) {
+  const handlePageChange = async (action) => {
+    const currentPage = pagination.currentPage;
+
+    if (action === "next" && pagination.hasNextPage) {
       window.scrollTo({ top: 0 });
-      getAnimeList(
-        data.selected + 1,
+      await getAnimeList(
+        currentPage + 1,
         30,
         ["POPULARITY_DESC", "SCORE_DESC"],
-        selectedGenres
+        selectedGenres,
+        action
+      );
+    } else if (action === "prev" && currentPage > 1) {
+      window.scrollTo({ top: 0 });
+      await getAnimeList(
+        currentPage - 1,
+        30,
+        ["POPULARITY_DESC", "SCORE_DESC"],
+        selectedGenres,
+        action
       );
     }
   };
@@ -109,7 +133,10 @@ export const Genres = () => {
               ""
             ) : (
               <span className="text-gray-600 dark:text-gray-400 text-[10px] xs:text-xs sm:text-sm lg:text-base font-thin">
-                {pagination.totalResults} Total Results
+                Page:{" "}
+                {pagination.currentPage < 10
+                  ? "0" + pagination.currentPage
+                  : pagination.currentPage}
               </span>
             )}
           </div>
@@ -135,36 +162,53 @@ export const Genres = () => {
             )}
           </div>
           {/* paginate */}
-          {animeList.length < 1 ? (
-            <span className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80">
+          {!isLoading && animeList.length > 0 ? (
+            <div className="w-full flex items-center justify-center gap-4 md:gap-8">
+              <button
+                disabled={prevDisabled}
+                onClick={() => handlePageChange("prev")}
+                className="relative p-2 px-4 text-xs dark:bg-zinc-800 border-b-4 group border-b-orange-400 rounded-none overflow-hidden 
+            uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
+            disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
+              >
+                <BiChevronsLeft className="text-base" />
+                <span>PREV</span>
+                {!prevDisabled ? (
+                  <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
+                ) : (
+                  ""
+                )}
+              </button>
+              <div className="text-xl md:text-2xl font-semibold lg:font-bold cursor-default text-orange-400">
+                {pagination.currentPage < 10
+                  ? "0" + pagination.currentPage
+                  : pagination.currentPage}
+              </div>
+              <button
+                disabled={nextDisabled}
+                onClick={() => handlePageChange("next")}
+                className="relative p-2 px-4 text-xs dark:bg-zinc-800 border-b-4 group border-b-orange-400 rounded-none overflow-hidden 
+            uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
+            disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
+              >
+                <span>NEXT</span>
+                <BiChevronsRight className="text-base" />
+                {!nextDisabled ? (
+                  <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
+                ) : (
+                  ""
+                )}
+              </button>
+            </div>
+          ) : !isLoading && animeList.length < 1 ? (
+            <span
+              className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80 
+              col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5 xl:col-span-6"
+            >
               No Results Found
             </span>
           ) : (
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel="next"
-              previousLabel="prev"
-              pageCount={pagination?.totalPages}
-              pageRangeDisplayed={3}
-              marginPagesDisplayed={3}
-              renderOnZeroPageCount={null}
-              onPageChange={handlePageChange}
-              className="w-full text-xs xs:text-sm dark:text-gray-300 flex justify-center items-center gap-1 xs:gap-2 md:gap-3 lg:gap-4 p-2"
-              pageClassName="border border-zinc-200 dark:border-zinc-800 rounded-sm group overflow-hidden"
-              previousClassName="mr-2 text-xs border border-zinc-200 dark:border-zinc-800 rounded-sm group uppercase"
-              nextClassName="ml-2 text-xs border border-zinc-200 dark:border-zinc-800 rounded-sm group uppercase"
-              pageLinkClassName="w-[15px] h-[15px] xs:w-[20px] xs:h-[20px] sm:w-[35px] sm:h-[35px] 
-            flex justify-center items-center h-full group-hover:font-semibold group-hover:bg-gradient-to-b from-transparent to-slate-800/10 
-            dark:group-hover:bg-gradient-to-b from-transparent to-slate-400/40 ease-in-out duration-200"
-              previousLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
-            flex justify-center items-center h-full group-hover:font-semibold group-hover:bg-gradient-to-b from-transparent to-slate-800/10 
-            dark:group-hover:bg-gradient-to-b from-transparent to-slate-400/40 ease-in-out duration-200"
-              nextLinkClassName="w-[30px] h-[15px] xs:w-[35px] xs:h-[20px] sm:w-[50px] sm:h-[35px] 
-            flex justify-center items-center h-full group-hover:font-semibold group-hover:bg-gradient-to-b from-transparent to-slate-800/10 
-            dark:group-hover:bg-gradient-to-b from-transparent to-slate-400/40 ease-in-out duration-200"
-              activeClassName="bg-zinc-700 dark:bg-zinc-400"
-              activeLinkClassName="text-gray-100 dark:text-gray-900"
-            />
+            ""
           )}
         </div>
       </div>

@@ -3,8 +3,8 @@ import { Search } from "../components/Search";
 import { META } from "@consumet/extensions";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 
-// react icons
 import { Cards } from "../components/Cards";
 import { useLocation } from "react-router-dom";
 
@@ -13,6 +13,12 @@ export const SearchAnime = () => {
   const [inputValue, setInputValue] = useState(""); // init input value stored in session storage
   const [searchedAnime, setSearchedAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [prevDisabled, setPrevDisabled] = useState(true);
+  const [nextDisabled, setNextDisabled] = useState(false);
+  const [pagination, setPagination] = useState({
+    currentPage: 0,
+    hasNextPage: true,
+  });
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const query = queryParams.get("q");
@@ -24,18 +30,56 @@ export const SearchAnime = () => {
   }, [query]);
 
   useEffect(() => {
-    getSearchedAnime();
+    if (inputValue) {
+      getSearchedAnime(1, 20, "next");
+    }
   }, [inputValue]);
 
-  const getSearchedAnime = async () => {
+  useEffect(() => {
+    if (pagination.hasNextPage) {
+      setNextDisabled(false);
+    } else {
+      setNextDisabled(true);
+    }
+    if (pagination.currentPage > 1) {
+      setPrevDisabled(false);
+    } else {
+      setPrevDisabled(true);
+    }
+  }, [pagination.hasNextPage, pagination.currentPage]);
+
+  const getSearchedAnime = async (pageNumber, itemsPerPage, action) => {
     setIsLoading(true);
     try {
-      const data = await anilist.search(inputValue, 1, 20);
+      const data = await anilist.search(inputValue, pageNumber, itemsPerPage);
       setSearchedAnime(data.results);
+      if (action === "next") {
+        setPagination({
+          currentPage: data.currentPage,
+          hasNextPage: data.hasNextPage,
+        });
+      } else {
+        setPagination({
+          currentPage: data.currentPage,
+          hasNextPage: data.hasNextPage,
+        });
+      }
     } catch (error) {
       console.error("Error fetching searched anime:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handlePageChange = async (action) => {
+    const currentPage = pagination.currentPage;
+
+    if (action === "next" && pagination.hasNextPage) {
+      window.scrollTo({ top: 0 });
+      await getSearchedAnime(currentPage + 1, 20, action);
+    } else if (action === "prev" && currentPage > 1) {
+      window.scrollTo({ top: 0 });
+      await getSearchedAnime(currentPage - 1, 20, action);
     }
   };
 
@@ -51,7 +95,7 @@ export const SearchAnime = () => {
             <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-500">
               Search Anime...
             </span>
-          ) : isLoading == true ? (
+          ) : isLoading ? (
             <Skeleton
               className="w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-3 xs:h-4 
             sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"
@@ -63,12 +107,12 @@ export const SearchAnime = () => {
           )}
         </div>
 
-        {/* items to be search */}
-        <div className="w-full lg:px-2">
+        {/* items */}
+        <div className="w-full flex flex-col gap-5 lg:gap-10 lg:px-2">
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
             {inputValue === "" ? (
               ""
-            ) : isLoading === true ? (
+            ) : isLoading ? (
               Array.from({ length: 20 }, (_, index) => {
                 return (
                   <div
@@ -81,17 +125,61 @@ export const SearchAnime = () => {
                   </div>
                 );
               })
-            ) : searchedAnime.length > 0 && isLoading === true ? (
-              <span
-                className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80 
-              col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5 xl:col-span-6"
-              >
-                No Results Found
-              </span>
             ) : (
               <Cards animeList={searchedAnime} type={"search"} />
             )}
           </div>
+          {/* paginate */}
+          {isLoading ? (
+            ""
+          ) : query && !isLoading && searchedAnime.length < 1 ? (
+            <span
+              className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80 
+              col-span-2 sm:col-span-3 md:col-span-4 lg:col-span-5 xl:col-span-6"
+            >
+              No Results Found
+            </span>
+          ) : query && !isLoading && searchedAnime.length > 0 ? (
+            <div className="w-full flex items-center justify-center gap-4 md:gap-8">
+              <button
+                disabled={prevDisabled}
+                onClick={() => handlePageChange("prev")}
+                className="relative p-2 px-4 text-xs dark:bg-zinc-800 border-b-4 group border-b-orange-400 rounded-none overflow-hidden 
+              uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
+              disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
+              >
+                <BiChevronsLeft className="text-base" />
+                <span>PREV</span>
+                {!prevDisabled ? (
+                  <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
+                ) : (
+                  ""
+                )}
+              </button>
+              <div className="text-xl md:text-2xl font-semibold lg:font-bold cursor-default text-orange-400">
+                {pagination.currentPage < 10
+                  ? "0" + pagination.currentPage
+                  : pagination.currentPage}
+              </div>
+              <button
+                disabled={nextDisabled}
+                onClick={() => handlePageChange("next")}
+                className="relative p-2 px-4 text-xs dark:bg-zinc-800 border-b-4 group border-b-orange-400 rounded-none overflow-hidden 
+              uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
+              disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
+              >
+                <span>NEXT</span>
+                <BiChevronsRight className="text-base" />
+                {!nextDisabled ? (
+                  <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
+                ) : (
+                  ""
+                )}
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

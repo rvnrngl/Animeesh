@@ -159,7 +159,7 @@ export const Cards = ({ animeList, type }) => {
               <HoverCardContent
                 side="right"
                 align="end"
-                className="bg-zinc-100/90  dark:bg-zinc-800/90 border dark:border-none w-[300px]"
+                className="bg-zinc-100/90 dark:bg-zinc-800/90 border dark:border-none w-[300px]"
               >
                 <div className="w-full flex justify-between space-x-4 text-gray-900 dark:text-gray-200">
                   <div className="space-y-1 flex flex-col gap-2 text-sm">
