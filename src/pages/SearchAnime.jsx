@@ -11,6 +11,13 @@ import { PaginateButtons } from "@/components/PaginateButtons";
 
 export const SearchAnime = () => {
   const anilist = new META.Anilist();
+  const location = useLocation();
+  const queryParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
+  const query = queryParams.get("keyword") || "";
+  const page = parseInt(queryParams.get("page"));
   const [searchedAnime, setSearchedAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [prevDisabled, setPrevDisabled] = useState(true);
@@ -19,25 +26,12 @@ export const SearchAnime = () => {
     currentPage: 0,
     hasNextPage: true,
   });
-  const location = useLocation();
-  const queryParams = useMemo(
-    () => new URLSearchParams(location.search),
-    [location.search]
-  );
-  const query = queryParams.get("keyword") || "";
-  const page = parseInt(queryParams.get("page") || 1);
 
   useEffect(() => {
-    if (query) {
-      getSearchedAnime(1, 20, "next");
-    }
-  }, [query]);
-
-  useEffect(() => {
-    if (page) {
+    if (query && page) {
       getSearchedAnime(page, 20, "next");
     }
-  }, [page]);
+  }, [query, page]);
 
   useEffect(() => {
     setNextDisabled(pagination.hasNextPage ? false : true);
