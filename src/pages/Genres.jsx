@@ -3,14 +3,17 @@ import { META } from "@consumet/extensions";
 import { Cards } from "../components/Cards";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
+import { useMemo } from "react";
 
 export const Genres = () => {
   const anilist = new META.Anilist();
   const location = useLocation();
-  const genreParams = new URLSearchParams(location.search);
+  const genreParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
   const encodedGenre = genreParams.get("g");
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [animeList, setAnimeList] = useState([]);

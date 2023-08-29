@@ -7,6 +7,7 @@ import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 
 import { Cards } from "../components/Cards";
 import { useLocation } from "react-router-dom";
+import { useMemo } from "react";
 
 export const SearchAnime = () => {
   const anilist = new META.Anilist();
@@ -20,7 +21,10 @@ export const SearchAnime = () => {
     hasNextPage: true,
   });
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
+  const queryParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
   const query = queryParams.get("q");
 
   useEffect(() => {
