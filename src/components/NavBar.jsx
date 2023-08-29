@@ -87,7 +87,7 @@ export const NavBar = () => {
   //handle search
   const handleSearch = () => {
     if (input.trim() !== "") {
-      const searchUrl = `/search?q=${encodeURIComponent(input)}`;
+      const searchUrl = `/search?keyword=${encodeURIComponent(input)}&page=1`;
       navigate(searchUrl);
     } else {
       console.log("Enter any keyword");
@@ -200,9 +200,14 @@ export const NavBar = () => {
               </button>
             </div>
             {/* appear in mobile */}
-            <Link to="search" className="lg:hidden mr-1 sm:mr-2">
+            <button
+              onClick={() =>
+                navigate(`/search?keyword=${encodeURIComponent(" ")}&page=1`)
+              }
+              className="lg:hidden mr-1 sm:mr-2"
+            >
               <ImSearch className="text-lg lg:text-xl dark:text-gray-300" />
-            </Link>
+            </button>
             {/* button to toggle theme */}
             <div className="flex justify-center items-center pl-3 sm:pl-4 border-l border-zinc-500/50">
               <button

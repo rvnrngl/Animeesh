@@ -12,7 +12,7 @@ export const Search = () => {
 
   const handleSearch = () => {
     if (input.trim() !== "") {
-      const searchUrl = `/search?q=${encodeURIComponent(input)}`;
+      const searchUrl = `/search?keyword=${encodeURIComponent(input)}&page=1`;
       navigate(searchUrl);
     } else {
       console.log("Enter any keyword");
