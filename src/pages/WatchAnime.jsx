@@ -198,7 +198,7 @@ export const WatchAnime = () => {
                           }
                           className={`w-full flex items-center justify-center rounded-sm p-2 cursor-pointer ${
                             currentEpisodeId === eps.id
-                              ? "bg-orange-400/80 dark:text-gray-950 font-semibold"
+                              ? "bg-orange-400/80 dark:bg-orange-400/50 dark:text-gray-950 font-semibold"
                               : `bg-zinc-200 dark:bg-zinc-800 text-gray-950 dark:text-gray-400 
                               lg:hover:bg-zinc-300 lg:dark:hover:bg-zinc-700`
                           }`}
@@ -231,9 +231,9 @@ export const WatchAnime = () => {
                             }
                             className={`relative w-full flex items-center px-3 pr-10 py-2 gap-2 cursor-pointer lg:text-sm ${
                               currentEpisodeId === eps.id
-                                ? "bg-zinc-300 dark:bg-zinc-700 text-gray-950 dark:text-gray-100 font-semibold"
+                                ? "bg-orange-400/80 dark:bg-orange-400/50 text-gray-950 font-semibold"
                                 : `odd:bg-zinc-200 dark:odd:bg-zinc-800 text-gray-900 dark:text-gray-400 even:bg-transparent dark:even:bg-transparent 
-                                lg:hover:bg-zinc-300 hover:text-gray-950 hover:font-semibold dark:lg:hover:bg-zinc-700 dark:hover:text-gray-100`
+                                lg:hover:bg-zinc-300 hover:text-gray-950 dark:lg:hover:bg-zinc-700 dark:hover:text-gray-100`
                             }`}
                           >
                             <span>{index + 1}.</span>
@@ -307,7 +307,7 @@ export const WatchAnime = () => {
                     ""
                   )}
                   <p
-                    className="mb-3 w-full cursor-pointer text-justify line-clamp-3 overflow-y-scroll 
+                    className="mb-3 w-full text-xs lg:text-sm cursor-pointer text-justify line-clamp-3 overflow-y-scroll 
                     overflow-x-hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
                   >
                     {animeInfo.description
