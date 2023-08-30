@@ -267,7 +267,10 @@ export const NavBar = () => {
               Home
             </button>
             <button
-              onClick={() => handleNavigate("/search")}
+              onClick={() => {
+                setIsMenuClosed(!isMenuClosed);
+                navigate(`/search?keyword=${encodeURIComponent(" ")}&page=1`);
+              }}
               className="border-b text-left border-zinc-600/50 py-3 px-6 font-semibold"
             >
               Search
