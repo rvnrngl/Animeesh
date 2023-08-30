@@ -3,9 +3,9 @@ import { META } from "@consumet/extensions";
 import { Cards } from "../components/Cards";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
+import { PaginateButtons } from "@/components/PaginateButtons";
 
 export const Genres = () => {
   const anilist = new META.Anilist();
@@ -14,7 +14,9 @@ export const Genres = () => {
     () => new URLSearchParams(location.search),
     [location.search]
   );
-  const encodedGenre = genreParams.get("g");
+  const queryGenre = genreParams.get("filter") || "";
+  const encodedGenres = JSON.parse(decodeURIComponent(queryGenre)); // convert to array
+  const page = genreParams.get("page");
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [animeList, setAnimeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,29 +28,15 @@ export const Genres = () => {
   });
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    if (encodedGenre) {
-      setSelectedGenres(JSON.parse(decodeURIComponent(encodedGenre)));
+    if (queryGenre && page) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      getAnimeList(page, 30, ["POPULARITY_DESC"], encodedGenres, "next");
     }
-  }, [encodedGenre]);
+  }, [queryGenre, page]);
 
   useEffect(() => {
-    if (selectedGenres?.length > 0) {
-      getAnimeList(1, 30, ["POPULARITY_DESC"], selectedGenres, "next");
-    }
-  }, [selectedGenres]);
-
-  useEffect(() => {
-    if (pagination.hasNextPage) {
-      setNextDisabled(false);
-    } else {
-      setNextDisabled(true);
-    }
-    if (pagination.currentPage > 1) {
-      setPrevDisabled(false);
-    } else {
-      setPrevDisabled(true);
-    }
+    setNextDisabled(pagination.hasNextPage ? false : true);
+    setPrevDisabled(pagination.currentPage > 1 ? false : true);
   }, [pagination.hasNextPage, pagination.currentPage]);
 
   const getAnimeList = async (
@@ -88,30 +76,6 @@ export const Genres = () => {
     }
   };
 
-  const handlePageChange = async (action) => {
-    const currentPage = pagination.currentPage;
-
-    if (action === "next" && pagination.hasNextPage) {
-      window.scrollTo({ top: 0 });
-      await getAnimeList(
-        currentPage + 1,
-        30,
-        ["POPULARITY_DESC", "SCORE_DESC"],
-        selectedGenres,
-        action
-      );
-    } else if (action === "prev" && currentPage > 1) {
-      window.scrollTo({ top: 0 });
-      await getAnimeList(
-        currentPage - 1,
-        30,
-        ["POPULARITY_DESC", "SCORE_DESC"],
-        selectedGenres,
-        action
-      );
-    }
-  };
-
   return (
     <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-8 justify-center items-center">
@@ -125,10 +89,10 @@ export const Genres = () => {
           <div className="w-full flex flex-col gap-1 justify-between items-center px-4 lg:mt-4">
             <span className="text-center text-xs xs:text-base sm:text-lg md:text-xl lg:text-2xl font-semibold lg:font-bold">
               Genre:{" "}
-              {selectedGenres.map((genre, index) => (
+              {encodedGenres.map((genre, index) => (
                 <span key={index}>
                   {genre}
-                  {index !== selectedGenres.length - 1 ? ", " : ""}
+                  {index !== encodedGenres.length - 1 ? ", " : ""}
                 </span>
               ))}
             </span>
@@ -166,43 +130,15 @@ export const Genres = () => {
           </div>
           {/* paginate */}
           {!isLoading && animeList.length > 0 ? (
-            <div className="w-full flex items-center justify-center gap-4 md:gap-8">
-              <button
-                disabled={prevDisabled}
-                onClick={() => handlePageChange("prev")}
-                className="relative p-2 px-4 text-xs dark:bg-zinc-800 border-b-4 group border-b-orange-400 rounded-none overflow-hidden 
-            uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
-            disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
-              >
-                <BiChevronsLeft className="text-base" />
-                <span>PREV</span>
-                {!prevDisabled ? (
-                  <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
-                ) : (
-                  ""
-                )}
-              </button>
-              <div className="text-xl md:text-2xl font-semibold lg:font-bold cursor-default text-orange-400">
-                {pagination.currentPage < 10
-                  ? "0" + pagination.currentPage
-                  : pagination.currentPage}
-              </div>
-              <button
-                disabled={nextDisabled}
-                onClick={() => handlePageChange("next")}
-                className="relative p-2 px-4 text-xs dark:bg-zinc-800 border-b-4 group border-b-orange-400 rounded-none overflow-hidden 
-            uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
-            disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
-              >
-                <span>NEXT</span>
-                <BiChevronsRight className="text-base" />
-                {!nextDisabled ? (
-                  <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
-                ) : (
-                  ""
-                )}
-              </button>
-            </div>
+            <PaginateButtons
+              page={pagination.currentPage}
+              hasNextPage={pagination.hasNextPage}
+              next={nextDisabled}
+              prev={prevDisabled}
+              route={`/genres?filter=${encodeURIComponent(
+                JSON.stringify(encodedGenres)
+              )}&`}
+            />
           ) : !isLoading && animeList.length < 1 ? (
             <span
               className="text-2xl lg:text-4xl font-bold text-center text-gray-600/80 

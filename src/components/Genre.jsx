@@ -37,7 +37,7 @@ export const Genre = ({ closeMenu, type }) => {
 
   const handleFilter = () => {
     const encodedGenre = encodeURIComponent(JSON.stringify(selectedGenres));
-    const newGenreUrl = `/genres?g=${encodedGenre}`;
+    const newGenreUrl = `/genres?filter=${encodedGenre}&page=1`;
     navigate(newGenreUrl);
     closeMenu();
     setSelectedGenres([]);
