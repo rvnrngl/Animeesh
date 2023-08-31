@@ -27,8 +27,8 @@ export const Search = () => {
   return (
     <div className="w-full flex items-center gap-2">
       <div
-        className="w-full dark:text-gray-200 border border-gray-500/50 
-        dark:border-transparent dark:bg-zinc-700/90 rounded-sm py-1 px-3"
+        className="w-full dark:text-gray-200 border border-zinc-400/50 
+        dark:border-transparent dark:bg-zinc-800 rounded-sm py-1 px-3"
       >
         <input
           ref={inputRef}
