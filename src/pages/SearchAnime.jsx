@@ -1,16 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Search } from "../components/Search";
-import { META } from "@consumet/extensions";
-
 import { Skeleton } from "@/components/ui/skeleton";
-
 import { Cards } from "../components/Cards";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import { PaginateButtons } from "@/components/PaginateButtons";
+import { fetchSearch } from "@/api/apiRequests";
 
 export const SearchAnime = () => {
-  const anilist = new META.Anilist();
   const location = useLocation();
   const queryParams = useMemo(
     () => new URLSearchParams(location.search),
@@ -41,7 +38,7 @@ export const SearchAnime = () => {
   const getSearchedAnime = async (pageNumber, itemsPerPage, action) => {
     setIsLoading(true);
     try {
-      const data = await anilist.search(query, pageNumber, itemsPerPage);
+      const data = await fetchSearch(query, pageNumber, itemsPerPage);
       setSearchedAnime(data.results);
       if (action === "next") {
         setPagination({
@@ -88,7 +85,7 @@ export const SearchAnime = () => {
         {/* items */}
         <div className="w-full flex flex-col gap-5 lg:gap-10 lg:px-2">
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
-            {isLoading && searchedAnime > 0 ? (
+            {isLoading && query !== " " ? (
               Array.from({ length: 20 }, (_, index) => {
                 return (
                   <div

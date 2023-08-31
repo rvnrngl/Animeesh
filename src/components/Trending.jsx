@@ -4,6 +4,7 @@ import { META } from "@consumet/extensions";
 import { Slider } from "./Slider";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { fetchTrending } from "@/api/apiRequests";
 
 export const Trending = () => {
   const anilist = new META.Anilist();
@@ -14,7 +15,7 @@ export const Trending = () => {
   const getTrendingAnime = async () => {
     setIsLoading(true);
     try {
-      const data = await anilist.fetchTrendingAnime();
+      const data = await fetchTrending();
       setTrendingAnime(data.results);
     } catch (error) {
       console.error("Error fetching trending anime:", error);

@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Cards } from "../components/Cards";
-import { META } from "@consumet/extensions";
-
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
+import { fetchAdvancedSearch } from "@/api/apiRequests";
 
 export const MostPopular = () => {
-  const anilist = new META.Anilist();
   const [popularAnime, setPopularAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentDate] = useState(new Date());
   const year = currentDate.getFullYear();
-  const season = getCurrentSeason(currentDate);
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [pagination, setPagination] = useState({
@@ -26,7 +22,7 @@ export const MostPopular = () => {
   useEffect(() => {
     const pageNumber = parseInt(page.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getPopularAnime(pageNumber, 30, ["POPULARITY_DESC"], year, season, "next");
+    getPopularAnime(pageNumber, 30, ["POPULARITY_DESC"], year, "next");
   }, [page]);
 
   useEffect(() => {
@@ -47,12 +43,11 @@ export const MostPopular = () => {
     itemsPerPage,
     sort,
     year,
-    season,
     action
   ) => {
     setIsLoading(true);
     try {
-      const data = await anilist.advancedSearch(
+      const data = await fetchAdvancedSearch(
         undefined,
         "ANIME",
         pageNumber,
@@ -63,7 +58,7 @@ export const MostPopular = () => {
         undefined,
         year,
         undefined,
-        season
+        undefined
       );
       setPopularAnime(data.results);
       if (action === "next") {

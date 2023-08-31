@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { META } from "@consumet/extensions";
 import axios from "axios";
-
 import "vidstack/styles/defaults.css";
 import "vidstack/styles/community-skin/video.css";
 import {
@@ -11,16 +9,13 @@ import {
   MediaPlayer,
   MediaPoster,
 } from "@vidstack/react";
-
 import { Recommendation } from "../components/Recommendation";
-
 import { GiPreviousButton, GiNextButton } from "react-icons/gi";
 import { BsPlayFill } from "react-icons/bs";
-
 import { Skeleton } from "@/components/ui/skeleton";
+import { fetchAnime, fetchEpisodeUrl } from "@/api/apiRequests";
 
 export const WatchAnime = () => {
-  const anilist = new META.Anilist(); // initialized provider
   const location = useLocation(); // get state anime data
   const fetchAnimeId = location.state.anime.id; // init anime id from location
   const [animeId, setAnimeId] = useState(fetchAnimeId);
@@ -46,7 +41,7 @@ export const WatchAnime = () => {
   const getAnimeInfo = async () => {
     setIsLoading(true);
     try {
-      const data = await anilist.fetchAnimeInfo(animeId);
+      const data = await fetchAnime(animeId);
       setAnimeInfo(data); // get anime info
       setEpisode(data.episodes); // get anime episodes
       setAnimeRecommendation(data.recommendations); // get anime recommendations
@@ -56,29 +51,11 @@ export const WatchAnime = () => {
   };
 
   // get the current episode
-  const getCurrentEpisode = async (id) => {
-    if (id !== undefined) {
+  const getCurrentEpisode = async (epsId) => {
+    if (epsId !== undefined) {
       try {
-        const url = `https://api.consumet.org/anime/gogoanime/watch/${id}`;
-        const response = await axios.get(url, {
-          params: { server: "gogocdn" },
-        });
-        const sources = response.data.sources;
-        let defaultSource = null;
-        // check if there is default quality
-        const hasDefaultQuality = sources.some(
-          (source) => source.quality === "default"
-        );
-        if (hasDefaultQuality) {
-          // if true get source where quality === default
-          defaultSource = sources.find(
-            (source) => source.quality === "default"
-          );
-        } else {
-          // if not then get the backup quality
-          defaultSource = sources.find((source) => source.quality === "backup");
-        }
-        setCurrentEpisode(defaultSource.url);
+        const data = await fetchEpisodeUrl(epsId);
+        setCurrentEpisode(data.url);
       } catch (err) {
         throw new Error(err.message);
       } finally {
@@ -88,7 +65,7 @@ export const WatchAnime = () => {
   };
 
   useEffect(() => {
-    const getType = window.localStorage.getItem("type"); // get the type of parameter in where the anime data came from "recent/search"
+    const getType = window.localStorage.getItem("type"); // get the type of parameter in where the anime data came from "recent/other"
     // note the api episodes array start from last item
     if (getType === "recent") {
       getCurrentEpisode(episode[0]?.id); // get recent episode of the anime
@@ -105,11 +82,12 @@ export const WatchAnime = () => {
 
   // get selected episode id
   const handleCurrentLyWatching = (eps, number) => {
-    // setIsLoading(true);
-    getCurrentEpisode(eps.id);
+    const player = document.querySelector("media-player");
+    player.pause();
     setCurrentEpisodeNumber(number);
     setCurrentEpisodeId(eps.id);
     setCurrentEpisodeTitle(eps.title);
+    getCurrentEpisode(eps.id);
   };
 
   return (
@@ -122,7 +100,7 @@ export const WatchAnime = () => {
               <Skeleton className="aspect-video bg-zinc-200 dark:bg-zinc-800"></Skeleton>
             ) : (
               <MediaPlayer
-                autoplay
+                autoplay={true}
                 src={currentEpisode}
                 aspectRatio={16 / 9}
                 crossorigin=""
@@ -198,7 +176,7 @@ export const WatchAnime = () => {
                           }
                           className={`w-full flex items-center justify-center rounded-sm p-2 cursor-pointer ${
                             currentEpisodeId === eps.id
-                              ? "bg-orange-400/80 dark:bg-orange-400/50 dark:text-gray-950 font-semibold"
+                              ? "bg-orange-400/80 dark:bg-orange-400/80 dark:text-gray-950 font-semibold"
                               : `bg-zinc-200 dark:bg-zinc-800 text-gray-950 dark:text-gray-400 
                               lg:hover:bg-zinc-300 lg:dark:hover:bg-zinc-700`
                           }`}
@@ -231,7 +209,7 @@ export const WatchAnime = () => {
                             }
                             className={`relative w-full flex items-center px-3 pr-10 py-2 gap-2 cursor-pointer lg:text-sm ${
                               currentEpisodeId === eps.id
-                                ? "bg-orange-400/80 dark:bg-orange-400/50 text-gray-950 font-semibold"
+                                ? "bg-orange-400/80 dark:bg-orange-400/80 text-gray-950 font-semibold"
                                 : `odd:bg-zinc-200 dark:odd:bg-zinc-800 text-gray-900 dark:text-gray-400 even:bg-transparent dark:even:bg-transparent 
                                 lg:hover:bg-zinc-300 hover:text-gray-950 dark:lg:hover:bg-zinc-700 dark:hover:text-gray-100`
                             }`}

@@ -2,17 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Cards } from "../components/Cards";
 import { Carousel } from "../components/Carousel";
 import { Trending } from "../components/Trending";
-
-import { META } from "@consumet/extensions";
-
 import { MdNavigateNext } from "react-icons/md";
 import { Link } from "react-router-dom";
-
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentSeason } from "@/utils/currentSeasonUtils";
+import { fetchAdvancedSearch } from "@/api/apiRequests";
 
 export const Home = () => {
-  const anilist = new META.Anilist();
   const [recentAnime, setRecentAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentDate] = useState(new Date());
@@ -28,7 +24,7 @@ export const Home = () => {
   const getRecentAnime = async (pageNumber, itemsPerPage, year, season) => {
     setIsLoading(true);
     try {
-      const data = await anilist.advancedSearch(
+      const data = await fetchAdvancedSearch(
         undefined,
         "ANIME",
         pageNumber,

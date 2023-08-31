@@ -8,13 +8,12 @@ import "swiper/css/pagination";
 import { Autoplay, Pagination } from "swiper/modules";
 
 import { PiTelevisionBold } from "react-icons/pi";
-import { META } from "@consumet/extensions";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentSeason } from "@/utils/currentSeasonUtils";
+import { fetchAdvancedSearch } from "@/api/apiRequests";
 
 export const Carousel = () => {
-  const anilist = new META.Anilist();
   const [popularAnime, setPopularAnime] = useState([]);
   const [currentDate] = useState(new Date());
   const year = currentDate.getFullYear();
@@ -30,7 +29,7 @@ export const Carousel = () => {
   const getPopularAnime = async () => {
     setIsLoading(true);
     try {
-      const data = await anilist.advancedSearch(
+      const data = await fetchAdvancedSearch(
         undefined,
         "ANIME",
         1,
