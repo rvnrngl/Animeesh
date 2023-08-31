@@ -30,6 +30,7 @@ export const WatchAnime = () => {
   const { title } = useParams();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     setAnimeId(fetchAnimeId);
   }, [title]);
 
@@ -231,7 +232,7 @@ export const WatchAnime = () => {
             </div>
           )}
           {/* anime details comment */}
-          <div className="lg:col-span-3 py-3 lg:pr-20 bg-zinc-100 border dark:border-none dark:bg-transparent dark:text-gray-300 rounded-md text-sm">
+          <div className="lg:col-span-3 px-2 dark:px-0 py-3 lg:pr-20 bg-zinc-100 border dark:border-none dark:bg-transparent dark:text-gray-300 rounded-md text-sm">
             <div className="flex flex-col xs:flex-row items-center xs:items-start gap-3 lg:gap-6">
               {/* image section comment */}
               {isLoading === true ? (

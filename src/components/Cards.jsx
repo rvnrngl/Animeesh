@@ -28,7 +28,6 @@ export const Cards = ({ animeList, type }) => {
   const handleNavigation = (anime) => {
     window.localStorage.setItem("type", type);
     if (anime.title?.english !== null) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
       navigate(
         `/watch/${anime.title?.english
           .replace(/[-:]/g, "")
@@ -37,7 +36,6 @@ export const Cards = ({ animeList, type }) => {
         { state: { anime } }
       );
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
       navigate(
         `/watch/${anime.title?.userPreferred
           .replace(/[-:]/g, "")
