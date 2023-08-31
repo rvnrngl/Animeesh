@@ -15,10 +15,18 @@ import {
 
 export const Cards = ({ animeList, type }) => {
   const navigate = useNavigate();
+  // filter the anime props
+  const filteredAnime = animeList.filter(
+    (anime) =>
+      anime.type === "TV" ||
+      anime.type === "TV_SHORT" ||
+      anime.type === "MOVIE" ||
+      anime.type === "OVA" ||
+      anime.type === "SPECIAL"
+  );
 
   const handleNavigation = (anime) => {
     window.localStorage.setItem("type", type);
-    window.scrollTo({ top: 0, behavior: "smooth" });
     if (anime.title?.english !== null) {
       navigate(
         `/watch/${anime.title?.english
@@ -40,19 +48,30 @@ export const Cards = ({ animeList, type }) => {
 
   return (
     <>
-      {animeList.map((anime, index) => {
+      {filteredAnime.map((anime, index) => {
         return (
           <HoverCard key={index} openDelay={600} closeDelay={100}>
             <HoverCardTrigger asChild>
               <div
-                onClick={() => handleNavigation(anime)}
-                className="flex flex-col items-center text-sm lg:text-base rounded-sm overflow-hidden group cursor-pointer"
+                onClick={() => {
+                  if (
+                    anime.status === "Completed" ||
+                    anime.status === "Ongoing"
+                  ) {
+                    handleNavigation(anime);
+                  }
+                }}
+                className={`flex flex-col items-center text-sm lg:text-base rounded-sm overflow-hidden group ${
+                  anime.status === "Completed" || anime.status === "Ongoing"
+                    ? "cursor-pointer"
+                    : "cursor-not-allowed"
+                }`}
               >
                 <div className="h-full w-full rounded-sm overflow-hidden relative">
                   <img
                     src={anime.image}
                     alt={anime.title?.english}
-                    className="h-full w-full object-cover object-center group-hover:scale-110 ease-in-out duration-300"
+                    className="h-full w-full object-cover object-center group-hover:scale-105 ease-in-out duration-300"
                   />
                   {/* hover */}
                   <div
@@ -74,10 +93,15 @@ export const Cards = ({ animeList, type }) => {
                   <div className=" flex gap-2 text-[10px] md:text-xs text-gray-500 dark:text-gray-400">
                     <span>{anime.type}</span>
                     <span>•</span>
-                    {type === "recent" ? (
-                      <span>Latest Episode: {anime.currentEpisode}</span>
+                    {anime.status === "Completed" ||
+                    anime.status === "Ongoing" ? (
+                      type === "recent" ? (
+                        <span>Latest Episode: {anime.currentEpisode}</span>
+                      ) : (
+                        <span>EPS: {anime.totalEpisodes}</span>
+                      )
                     ) : (
-                      <span>EPS: {anime.totalEpisodes}</span>
+                      <span>{anime.status}</span>
                     )}
                   </div>
                 </div>
@@ -145,9 +169,20 @@ export const Cards = ({ animeList, type }) => {
                       </span>
                     </div>
                     <button
-                      onClick={() => handleNavigation(anime)}
-                      className="bg-orange-500 py-2 rounded-full font-semibold flex justify-center items-center 
-                      gap-2 hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200"
+                      onClick={() => {
+                        if (
+                          anime.status === "Completed" ||
+                          anime.status === "Ongoing"
+                        ) {
+                          handleNavigation(anime);
+                        }
+                      }}
+                      className={`py-2 rounded-full font-semibold flex justify-center items-center gap-2 ${
+                        anime.status === "Completed" ||
+                        anime.status === "Ongoing"
+                          ? "bg-orange-500 hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200"
+                          : "cursor-not-allowed bg-zinc-400 dark:bg-zinc-500"
+                      }`}
                     >
                       <PiTelevisionBold size={20} />
                       <span>WATCH NOW</span>
@@ -229,9 +264,20 @@ export const Cards = ({ animeList, type }) => {
                       </span>
                     </div>
                     <button
-                      onClick={() => handleNavigation(anime)}
-                      className="bg-orange-500 py-2 rounded-full font-semibold flex justify-center items-center 
-                      gap-2 hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200"
+                      onClick={() => {
+                        if (
+                          anime.status === "Completed" ||
+                          anime.status === "Ongoing"
+                        ) {
+                          handleNavigation(anime);
+                        }
+                      }}
+                      className={`py-2 rounded-full font-semibold flex justify-center items-center gap-2 ${
+                        anime.status === "Completed" ||
+                        anime.status === "Ongoing"
+                          ? "bg-orange-500 hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200"
+                          : "cursor-not-allowed bg-zinc-400 dark:bg-zinc-500"
+                      }`}
                     >
                       <PiTelevisionBold size={20} />
                       <span>WATCH NOW</span>

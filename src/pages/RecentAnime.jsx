@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Cards } from "../components/Cards";
-import { META } from "@consumet/extensions";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
+import { fetchAdvancedSearch } from "@/api/apiRequests";
 
 export const RecentAnime = () => {
-  const anilist = new META.Anilist();
   const [recentAnime, setRecentAnime] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentDate] = useState(new Date());
@@ -51,7 +50,7 @@ export const RecentAnime = () => {
   ) => {
     setIsLoading(true);
     try {
-      const data = await anilist.advancedSearch(
+      const data = await fetchAdvancedSearch(
         undefined,
         "ANIME",
         pageNumber,

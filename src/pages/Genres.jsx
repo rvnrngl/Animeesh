@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { META } from "@consumet/extensions";
 import { Cards } from "../components/Cards";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import { PaginateButtons } from "@/components/PaginateButtons";
+import { fetchAdvancedSearch } from "@/api/apiRequests";
 
 export const Genres = () => {
-  const anilist = new META.Anilist();
   const location = useLocation();
   const genreParams = useMemo(
     () => new URLSearchParams(location.search),
@@ -17,7 +16,6 @@ export const Genres = () => {
   const queryGenre = genreParams.get("filter") || "";
   const encodedGenres = JSON.parse(decodeURIComponent(queryGenre)); // convert to array
   const page = genreParams.get("page");
-  const [selectedGenres, setSelectedGenres] = useState([]);
   const [animeList, setAnimeList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [prevDisabled, setPrevDisabled] = useState(true);
@@ -48,14 +46,18 @@ export const Genres = () => {
   ) => {
     setIsLoading(true);
     try {
-      const data = await anilist.advancedSearch(
+      const data = await fetchAdvancedSearch(
         undefined,
         "ANIME",
         pageNumber,
         itemsPerPage,
         undefined,
         sort,
-        genres
+        genres,
+        undefined,
+        undefined,
+        undefined,
+        undefined
       );
       setAnimeList(data.results);
       if (action === "next") {

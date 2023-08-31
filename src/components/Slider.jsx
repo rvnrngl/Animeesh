@@ -13,7 +13,6 @@ export const Slider = ({ animeList, type }) => {
   const navigate = useNavigate();
   const handleNavigation = (anime) => {
     window.localStorage.setItem("type", type);
-    window.scrollTo({ top: 0, behavior: "smooth" });
     if (anime.title?.english !== null) {
       navigate(
         `/watch/${anime.title?.english
