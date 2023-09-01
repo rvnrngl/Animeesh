@@ -1,8 +1,9 @@
 // api calls
 import axios from "axios";
-import { META } from "@consumet/extensions";
+import { ANIME, META } from "@consumet/extensions";
 
 const anilist = new META.Anilist();
+const provider = new ANIME.Gogoanime();
 
 // fetching anime using normal search method
 const fetchSearch = async (query, page, perPage) => {
@@ -54,23 +55,24 @@ const fetchAnime = async (id) => {
 
 // fetch episodes's streaming url
 const fetchEpisodeUrl = async (epsId) => {
-  const url = `https://api.consumet.org/anime/gogoanime/watch/${epsId}`;
-  // const responseType = await anilist.fetchEpisodeSources(epsId);
-  // console.log(responseType);
-  const response = await axios.get(url, {
-    params: { server: "gogocdn" },
-  });
-  const sources = response.data.sources;
-  let defaultSource = null;
-  const hasDefaultQuality = sources.some(
-    (source) => source.quality === "default"
-  );
-  if (hasDefaultQuality) {
-    defaultSource = sources.find((source) => source.quality === "default");
-  } else {
-    defaultSource = sources.find((source) => source.quality === "backup");
-  }
-  return defaultSource;
+  const response = await provider.fetchEpisodeSources(epsId);
+  console.log(response);
+  return response;
+  // const url = `https://api.consumet.org/anime/gogoanime/watch/${epsId}`;
+  // const response = await axios.get(url, {
+  //   params: { server: "gogocdn" },
+  // });
+  // const sources = response.data.sources;
+  // let defaultSource = null;
+  // const hasDefaultQuality = sources.some(
+  //   (source) => source.quality === "default"
+  // );
+  // if (hasDefaultQuality) {
+  //   defaultSource = sources.find((source) => source.quality === "default");
+  // } else {
+  //   defaultSource = sources.find((source) => source.quality === "backup");
+  // }
+  // return defaultSource;
 };
 
 export {
