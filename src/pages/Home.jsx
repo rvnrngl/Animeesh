@@ -5,7 +5,6 @@ import { Trending } from "../components/Trending";
 import { MdNavigateNext } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 import { fetchAdvancedSearch } from "@/api/apiRequests";
 
 export const Home = () => {
@@ -13,15 +12,14 @@ export const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentDate] = useState(new Date());
   const year = currentDate.getFullYear();
-  const season = getCurrentSeason(currentDate);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getRecentAnime(1, 20, year, season);
+    getRecentAnime(1, 20, year);
   }, []);
 
   //get recent anime episodes
-  const getRecentAnime = async (pageNumber, itemsPerPage, year, season) => {
+  const getRecentAnime = async (pageNumber, itemsPerPage, year) => {
     setIsLoading(true);
     try {
       const data = await fetchAdvancedSearch(
@@ -34,8 +32,7 @@ export const Home = () => {
         undefined,
         undefined,
         year,
-        "RELEASING",
-        season
+        "RELEASING"
       );
       setRecentAnime(data.results);
     } catch (error) {

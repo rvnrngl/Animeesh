@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Cards } from "../components/Cards";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { getCurrentSeason } from "@/utils/currentSeasonUtils";
 import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchAdvancedSearch } from "@/api/apiRequests";
@@ -12,7 +11,6 @@ export const RecentAnime = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentDate] = useState(new Date());
   const year = currentDate.getFullYear();
-  const season = getCurrentSeason(currentDate);
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [pagination, setPagination] = useState({
@@ -25,7 +23,7 @@ export const RecentAnime = () => {
   useEffect(() => {
     const pageNumber = parseInt(page.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getRecentAnime(pageNumber, 30, year, season, "next");
+    getRecentAnime(pageNumber, 30, year, "next");
   }, [page]);
 
   useEffect(() => {
@@ -41,13 +39,7 @@ export const RecentAnime = () => {
     }
   }, [pagination.hasNextPage, pagination.currentPage]);
 
-  const getRecentAnime = async (
-    pageNumber,
-    itemsPerPage,
-    year,
-    season,
-    action
-  ) => {
+  const getRecentAnime = async (pageNumber, itemsPerPage, year, action) => {
     setIsLoading(true);
     try {
       const data = await fetchAdvancedSearch(
@@ -61,7 +53,7 @@ export const RecentAnime = () => {
         undefined,
         year,
         "RELEASING",
-        season
+        undefined
       );
       setRecentAnime(data.results);
       if (action === "next") {
