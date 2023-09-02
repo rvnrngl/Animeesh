@@ -4,7 +4,7 @@ import { Cards } from "../components/Cards";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchAdvancedSearch, fetchRecent } from "@/api/apiRequests";
+import { fetchRecent } from "@/api/apiRequests";
 
 export const RecentAnime = () => {
   const [recentAnime, setRecentAnime] = useState([]);
@@ -27,16 +27,8 @@ export const RecentAnime = () => {
   }, [page]);
 
   useEffect(() => {
-    if (pagination.hasNextPage) {
-      setNextDisabled(false);
-    } else {
-      setNextDisabled(true);
-    }
-    if (pagination.currentPage > 1) {
-      setPrevDisabled(false);
-    } else {
-      setPrevDisabled(true);
-    }
+    setNextDisabled(pagination.hasNextPage ? false : true);
+    setPrevDisabled(pagination.currentPage > 1 ? false : true);
   }, [pagination.hasNextPage, pagination.currentPage]);
 
   const getRecentAnime = async (provider, pageNumber, itemsPerPage, action) => {
