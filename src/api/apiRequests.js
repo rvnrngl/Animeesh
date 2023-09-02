@@ -59,19 +59,23 @@ const fetchTrending = async () => {
 // fetch anime info of anilist and enime api
 const fetchAnime = async (id) => {
   const anilistRes = await anilist.fetchAnimeInfo(id);
-  const enimeRes = await axios.get(`/api/enime/mapping/anilist/${id}`);
+  const enimeRes = await axios.get(
+    `https://api.enime.moe/mapping/anilist/${id}`
+  );
   return { anilistRes, episode: enimeRes.data.episodes };
 };
 
 // fetch episodes's streaming url
 const fetchEpisodeUrl = async (epsId) => {
-  const urlEps = await axios.get(`/api/enime/source/${epsId}`);
+  const urlEps = await axios.get(`https://api.enime.moe/source/${epsId}`);
   return urlEps.data.url;
 };
 
 // fetch enime id using anilist id
 const fetchEnimeId = async (provider, epsId) => {
-  const response = await axios.get(`/api/enime/mapping/${provider}/${epsId}`);
+  const response = await axios.get(
+    `https://api.enime.moe/enime/mapping/${provider}/${epsId}`
+  );
   console.log(response.data.episodes);
   return response.data.episodes;
 };
