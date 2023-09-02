@@ -1,6 +1,6 @@
 {
     "rewrites": [
-        { "source": "/api/:path(.*)", "destination": "http://xxx.xxx.xxx.xxx:9998/:path" },
+        { "source": "/api/:path(.*)", "destination": "https://api.enime.moe/:path" },
         { "source": "/(.*)", "destination": "/index.html" }
     ]
 }
