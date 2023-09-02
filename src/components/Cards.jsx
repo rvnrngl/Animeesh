@@ -15,15 +15,6 @@ import {
 
 export const Cards = ({ animeList, type }) => {
   const navigate = useNavigate();
-  // filter the anime props
-  const filteredAnime = animeList.filter(
-    (anime) =>
-      anime.type === "TV" ||
-      anime.type === "TV_SHORT" ||
-      anime.type === "MOVIE" ||
-      anime.type === "OVA" ||
-      anime.type === "SPECIAL"
-  );
 
   const handleNavigation = (anime) => {
     window.localStorage.setItem("type", type);
@@ -48,23 +39,29 @@ export const Cards = ({ animeList, type }) => {
 
   return (
     <>
-      {filteredAnime.map((anime, index) => {
+      {animeList.map((anime, index) => {
         return (
           <HoverCard key={index} openDelay={600} closeDelay={100}>
             <HoverCardTrigger asChild>
               <div
                 onClick={() => {
-                  if (
-                    anime.status === "Completed" ||
-                    anime.status === "Ongoing"
-                  ) {
+                  if (type !== "recent") {
+                    if (
+                      anime.status === "Completed" ||
+                      anime.status === "Ongoing"
+                    ) {
+                      handleNavigation(anime);
+                    }
+                  } else {
                     handleNavigation(anime);
                   }
                 }}
                 className={`flex flex-col items-center text-sm lg:text-base rounded-sm overflow-hidden group ${
-                  anime.status === "Completed" || anime.status === "Ongoing"
+                  type === "recent"
                     ? "cursor-pointer"
-                    : "cursor-not-allowed"
+                    : anime.status === "Completed" || anime.status === "Ongoing"
+                    ? " cursor-pointer"
+                    : " cursor-not-allowed"
                 }`}
               >
                 <div className="h-full w-full rounded-sm overflow-hidden relative">
@@ -93,15 +90,15 @@ export const Cards = ({ animeList, type }) => {
                   <div className=" flex gap-2 text-[10px] md:text-xs text-gray-500 dark:text-gray-400">
                     <span>{anime.type}</span>
                     <span>•</span>
-                    {anime.status === "Completed" ||
-                    anime.status === "Ongoing" ? (
-                      type === "recent" ? (
-                        <span>Latest Episode: {anime.currentEpisode}</span>
-                      ) : (
-                        <span>EPS: {anime.totalEpisodes}</span>
-                      )
+                    {type === "recent" ? (
+                      <span>Latest Episode: {anime.episodeNumber}</span>
                     ) : (
-                      <span>{anime.status}</span>
+                      <span>
+                        {anime.status === "Completed" ||
+                        anime.status === "Ongoing"
+                          ? `EPS: ${anime.totalEpisodes}`
+                          : anime.status}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -124,7 +121,7 @@ export const Cards = ({ animeList, type }) => {
                       <div className="inline-flex items-center gap-2">
                         <span className="inline-flex items-center gap-[2px]">
                           <AiFillLike className=" text-blue-500" />
-                          {anime.rating}
+                          {anime.rating === null ? 0 : anime.rating}
                         </span>
                         <span className="bg-gray-400 text-gray-100 dark:bg-zinc-200 dark:text-gray-900 text-xs px-2 rounded-sm">
                           HD
@@ -136,9 +133,11 @@ export const Cards = ({ animeList, type }) => {
                     </div>
                     {/* description */}
                     <p className="text-xs w-full text-gray-500 dark:text-gray-400 leading-4 line-clamp-3">
-                      {anime.description
-                        ?.replace(/<\/?i\s*\/?>/g, "")
-                        .replace(/<\/?br\s*\/?>/g, "")}
+                      {anime.episodeTitle === null
+                        ? `Episode: ${anime.episodeNumber}`
+                        : anime.episodeTitle
+                            ?.replace(/<\/?i\s*\/?>/g, "")
+                            .replace(/<\/?br\s*\/?>/g, "")}
                     </p>
                     <div className="flex flex-col items-start">
                       <span className="text-xs">
@@ -153,7 +152,7 @@ export const Cards = ({ animeList, type }) => {
                         <span className="text-gray-500 dark:text-gray-400">
                           Latest Episode:{" "}
                         </span>
-                        {anime.currentEpisode}
+                        {anime.episodeNumber}
                       </span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">
                         Genres:{" "}
@@ -169,20 +168,9 @@ export const Cards = ({ animeList, type }) => {
                       </span>
                     </div>
                     <button
-                      onClick={() => {
-                        if (
-                          anime.status === "Completed" ||
-                          anime.status === "Ongoing"
-                        ) {
-                          handleNavigation(anime);
-                        }
-                      }}
-                      className={`py-2 rounded-full font-semibold flex justify-center items-center gap-2 ${
-                        anime.status === "Completed" ||
-                        anime.status === "Ongoing"
-                          ? "bg-orange-500 hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200"
-                          : "cursor-not-allowed bg-zinc-400 dark:bg-zinc-500"
-                      }`}
+                      onClick={() => handleNavigation(anime)}
+                      className={`py-2 rounded-full font-semibold flex justify-center items-center gap-2 bg-orange-500 
+                      hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200`}
                     >
                       <PiTelevisionBold size={20} />
                       <span>WATCH NOW</span>
@@ -276,7 +264,7 @@ export const Cards = ({ animeList, type }) => {
                         anime.status === "Completed" ||
                         anime.status === "Ongoing"
                           ? "bg-orange-500 hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200"
-                          : "cursor-not-allowed bg-zinc-400 dark:bg-zinc-500"
+                          : "bg-zinc-300 dark:bg-zinc-700 cursor-not-allowed"
                       }`}
                     >
                       <PiTelevisionBold size={20} />

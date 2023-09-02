@@ -26,16 +26,8 @@ export const MostPopular = () => {
   }, [page]);
 
   useEffect(() => {
-    if (pagination.hasNextPage) {
-      setNextDisabled(false);
-    } else {
-      setNextDisabled(true);
-    }
-    if (pagination.currentPage > 1) {
-      setPrevDisabled(false);
-    } else {
-      setPrevDisabled(true);
-    }
+    setNextDisabled(pagination.hasNextPage ? false : true);
+    setPrevDisabled(pagination.currentPage > 1 ? false : true);
   }, [pagination.hasNextPage, pagination.currentPage]);
 
   const getPopularAnime = async (

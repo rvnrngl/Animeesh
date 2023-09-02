@@ -10,4 +10,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // server: {
+  //   proxy: {
+  //     // Add the proxy middleware to the Vite server
+  //     "/api/enime": {
+  //       target: "https://api.enime.moe",
+  //       changeOrigin: true,
+  //       secure: false,
+  //       ws: true,
+  //       rewrite: (path) => path.replace(/^\/api\/enime/, ""),
+  //     },
+  //   },
+  // },
 });

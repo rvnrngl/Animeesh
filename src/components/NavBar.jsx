@@ -126,29 +126,31 @@ export const NavBar = () => {
                   onClick={() =>
                     isGenreClosed ? "" : setIsGenreClosed(!isGenreClosed)
                   }
-                  className="group/recent p-5 hover:animate-pulse hover:bg-zinc-100 dark:hover:bg-zinc-900 relative transition-all duration-100"
+                  className="relative group/recent p-5 hover:animate-pulse hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-all duration-100 overflow-hidden"
                 >
                   <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover/recent:block"></span>
                   <span className="group-hover/recent:text-orange-400">
                     Recent
                   </span>
+                  <div className="block absolute top-0 -inset-full h-full w-1/2 z-5 transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover/recent:animate-shine" />
                 </Link>
                 <Link
                   to={`/popular/page/${1}`}
                   onClick={() =>
                     isGenreClosed ? "" : setIsGenreClosed(!isGenreClosed)
                   }
-                  className="group/popular p-5 hover:animate-pulse hover:bg-zinc-100 dark:hover:bg-zinc-900 relative transition-all duration-100"
+                  className="group/popular p-5 hover:animate-pulse hover:bg-zinc-100 dark:hover:bg-zinc-900 relative transition-all duration-100 overflow-hidden"
                 >
                   <span className="absolute top-0 left-0 w-full h-[5px] bg-orange-500 hidden group-hover/popular:block"></span>
                   <span className="group-hover/popular:text-orange-400">
                     Popular
                   </span>
+                  <div className="block absolute top-0 -inset-full h-full w-1/2 z-5 transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover/popular:animate-shine" />
                 </Link>
                 <div
                   className={`group/genre hover:text-orange-400 cursor-pointer p-5 hover:bg-zinc-100 dark:hover:bg-zinc-900 relative transition-all duration-100 ${
                     isGenreClosed
-                      ? ""
+                      ? "overflow-hidden"
                       : "text-orange-400 bg-zinc-100 dark:bg-zinc-900"
                   }`}
                 >
@@ -181,6 +183,11 @@ export const NavBar = () => {
                   >
                     <Genre closeMenu={closeMenu} type={"laptop"} />
                   </div>
+                  {isGenreClosed ? (
+                    <div className="block absolute top-0 -inset-full h-full w-1/2 z-5 transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover/genre:animate-shine" />
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
             </div>
@@ -212,7 +219,8 @@ export const NavBar = () => {
             <div className="flex justify-center items-center pl-3 sm:pl-4 border-l border-zinc-500/50">
               <button
                 onClick={toggleTheme}
-                className="h-[25px] w-[25px] lg:h-[35px] lg:w-[35px] text-gray-900 bg-orange-400 xs:p-1 lg:p-4 relative overflow-hidden rounded-full shadow-sm"
+                className="h-[25px] w-[25px] lg:h-[35px] lg:w-[35px] text-gray-900 bg-orange-400 
+                xs:p-1 lg:p-4 relative overflow-hidden rounded-full shadow-sm group"
               >
                 <BiSolidSun
                   size={20}
@@ -230,6 +238,7 @@ export const NavBar = () => {
                       : "absolute top-[50px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
                   }
                 />
+                <div className="block absolute top-0 -inset-full h-full w-1/2 z-5 transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
               </button>
             </div>
           </ul>

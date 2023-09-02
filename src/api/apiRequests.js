@@ -1,9 +1,8 @@
 // api calls
 import axios from "axios";
-import { ANIME, META } from "@consumet/extensions";
+import { META } from "@consumet/extensions";
 
 const anilist = new META.Anilist();
-const provider = new ANIME.Gogoanime();
 
 // fetching anime using normal search method
 const fetchSearch = async (query, page, perPage) => {
@@ -41,44 +40,52 @@ const fetchAdvancedSearch = async (
   return response;
 };
 
+// fetch recent episode
+const fetchRecent = async (provider, pageNumber, itemsPerPage) => {
+  const response = await anilist.fetchRecentEpisodes(
+    provider,
+    pageNumber,
+    itemsPerPage
+  );
+  return response;
+};
+
 // fetch trending anime
 const fetchTrending = async () => {
   const response = await anilist.fetchTrendingAnime();
   return response;
 };
 
-// fetch anime info
+// fetch anime info of anilist and enime api
 const fetchAnime = async (id) => {
-  const response = await anilist.fetchAnimeInfo(id);
-  return response;
+  const anilistRes = await anilist.fetchAnimeInfo(id);
+  const enimeRes = await axios.get(
+    `https://api.enime.moe/mapping/anilist/${id}`
+  );
+  return { anilistRes, episode: enimeRes.data.episodes };
 };
 
 // fetch episodes's streaming url
 const fetchEpisodeUrl = async (epsId) => {
-  const response = await provider.fetchEpisodeSources(epsId);
-  console.log(response);
-  return response;
-  // const url = `https://api.consumet.org/anime/gogoanime/watch/${epsId}`;
-  // const response = await axios.get(url, {
-  //   params: { server: "gogocdn" },
-  // });
-  // const sources = response.data.sources;
-  // let defaultSource = null;
-  // const hasDefaultQuality = sources.some(
-  //   (source) => source.quality === "default"
-  // );
-  // if (hasDefaultQuality) {
-  //   defaultSource = sources.find((source) => source.quality === "default");
-  // } else {
-  //   defaultSource = sources.find((source) => source.quality === "backup");
-  // }
-  // return defaultSource;
+  const urlEps = await axios.get(`https://api.enime.moe/source/${epsId}`);
+  return urlEps.data.url;
+};
+
+// fetch enime id using anilist id
+const fetchEnimeId = async (provider, epsId) => {
+  const response = await axios.get(
+    `https://api.enime.moe/enime/mapping/${provider}/${epsId}`
+  );
+  console.log(response.data.episodes);
+  return response.data.episodes;
 };
 
 export {
   fetchSearch,
   fetchAdvancedSearch,
+  fetchRecent,
   fetchTrending,
   fetchAnime,
   fetchEpisodeUrl,
+  fetchEnimeId,
 };
