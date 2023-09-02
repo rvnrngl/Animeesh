@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import axios from "axios";
 import "vidstack/styles/defaults.css";
 import "vidstack/styles/community-skin/video.css";
 import {
@@ -22,7 +21,6 @@ export const WatchAnime = () => {
   const [animeInfo, setAnimeInfo] = useState({}); // anime info data from api
   const [episode, setEpisode] = useState([]); // get episodes
   const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
-  const [currentEpisodeId, setCurrentEpisodeId] = useState(""); // get current episode id
   const [currentEpisodeTitle, setCurrentEpisodeTitle] = useState("");
   const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(null); //set current episode number
   const [animeRecommendation, setAnimeRecommendation] = useState([]); // get list of anime recommendation
@@ -43,11 +41,14 @@ export const WatchAnime = () => {
     setIsLoading(true);
     try {
       const data = await fetchAnime(animeId);
-      setAnimeInfo(data); // get anime info
-      setEpisode(data.episodes); // get anime episodes
-      setAnimeRecommendation(data.recommendations); // get anime recommendations
+      setAnimeInfo(data.anilistRes); // get anime info
+      const sortedEpisode = data.episode?.sort((a, b) => a.number - b.number);
+      setEpisode(sortedEpisode); // get anime episodes
+      setAnimeRecommendation(data.anilistRes.recommendations); // get anime recommendations
     } catch (error) {
       console.error("Error fetching anime info:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -56,39 +57,46 @@ export const WatchAnime = () => {
     if (epsId !== undefined) {
       try {
         const data = await fetchEpisodeUrl(epsId);
-        setCurrentEpisode(data.url);
+        setCurrentEpisode(data);
       } catch (err) {
         throw new Error(err.message);
-      } finally {
-        setIsLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    const getType = window.localStorage.getItem("type"); // get the type of parameter in where the anime data came from "recent/other"
-    // note the api episodes array start from last item
-    if (getType === "recent") {
-      getCurrentEpisode(episode[0]?.id); // get recent episode of the anime
-      setCurrentEpisodeId(episode[0]?.id);
-      setCurrentEpisodeTitle(episode[0]?.title);
-      setCurrentEpisodeNumber(episode.length);
-    } else {
-      getCurrentEpisode(episode[episode.length - 1]?.id); // get first episode of the anime
-      setCurrentEpisodeId(episode[episode.length - 1]?.id);
-      setCurrentEpisodeTitle(episode[episode.length - 1]?.title);
-      setCurrentEpisodeNumber(episode.length - (episode.length - 1));
+    if (episode.length > 0 && isLoading === false) {
+      const getType = window.localStorage.getItem("type"); // get the type of parameter in where the anime data came from "recent/other"
+      if (getType === "recent") {
+        // get recent episode
+        const hasZero = episode.some((eps) => eps.number === 0);
+        const recent = hasZero ? episode.length - 1 : episode.length;
+        const recentEp = episode.find((eps) => eps.number === recent);
+        const source = recentEp?.sources[0];
+        getCurrentEpisode(source.id);
+        setCurrentEpisodeTitle(recentEp.title);
+        setCurrentEpisodeNumber(recentEp.number);
+      } else {
+        // get first episode
+        const hasZero = episode.some((eps) => eps.number === 0);
+        const first = hasZero ? 0 : 1;
+        const eps1 = episode.find((eps) => eps.number === first);
+        const source = eps1.sources[0];
+        getCurrentEpisode(source.id);
+        setCurrentEpisodeTitle(eps1.title);
+        setCurrentEpisodeNumber(eps1.number);
+      }
     }
   }, [episode]);
 
   // get selected episode id
   const handleCurrentLyWatching = (eps, number) => {
+    const episode = eps.sources[0];
     const player = document.querySelector("media-player");
     player.pause();
     setCurrentEpisodeNumber(number);
-    setCurrentEpisodeId(eps.id);
     setCurrentEpisodeTitle(eps.title);
-    getCurrentEpisode(eps.id);
+    getCurrentEpisode(episode.id);
   };
 
   return (
@@ -116,7 +124,9 @@ export const WatchAnime = () => {
             ) : (
               <div className="w-full flex justify-between rounded-md items-center text-gray-300 gap-4 p-2">
                 <p className="text-gray-900 dark:text-gray-300 text-xs lg:text-base line-clamp-1">
-                  Episode {currentEpisodeNumber} : {currentEpisodeTitle}
+                  {currentEpisodeTitle === null
+                    ? `Episode ${currentEpisodeNumber}`
+                    : `Episode ${currentEpisodeNumber} : ${currentEpisodeTitle}`}
                 </p>
                 <div className="flex items-center gap-4 text-lg lg:text-2xl text-zinc-600 dark:text-gray-400">
                   <button>
@@ -168,21 +178,21 @@ export const WatchAnime = () => {
                     className="w-full grid place-items-center grid-cols-6 py-2 max-h-[295px] lg:max-h-[290px] overflow-y-scroll overflow-x-hidden 
                 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] gap-2 px-3"
                   >
-                    {episode.toReversed().map((eps, index) => {
+                    {episode.map((eps, index) => {
                       return (
                         <div
                           key={index}
                           onClick={() =>
-                            handleCurrentLyWatching(eps, index + 1)
+                            handleCurrentLyWatching(eps, eps.number)
                           }
                           className={`w-full flex items-center justify-center rounded-sm p-2 cursor-pointer ${
-                            currentEpisodeId === eps.id
+                            currentEpisodeNumber === eps.number
                               ? "bg-orange-400/80 dark:bg-orange-400/80 dark:text-gray-950 font-semibold"
                               : `bg-zinc-200 dark:bg-zinc-800 text-gray-950 dark:text-gray-400 
                               lg:hover:bg-zinc-300 lg:dark:hover:bg-zinc-700`
                           }`}
                         >
-                          {index + 1}
+                          {eps.number}
                         </div>
                       );
                     })}
@@ -201,23 +211,27 @@ export const WatchAnime = () => {
                   [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"
                   >
                     <div className="w-full grid place-items-center">
-                      {episode.toReversed().map((eps, index) => {
+                      {episode.map((eps, index) => {
                         return (
                           <div
                             key={index}
                             onClick={() =>
-                              handleCurrentLyWatching(eps, index + 1)
+                              handleCurrentLyWatching(eps, eps.number)
                             }
                             className={`relative w-full flex items-center px-3 pr-10 py-2 gap-2 cursor-pointer lg:text-sm ${
-                              currentEpisodeId === eps.id
+                              currentEpisodeNumber === eps.number
                                 ? "bg-orange-400/80 dark:bg-orange-400/80 text-gray-950 font-semibold"
                                 : `odd:bg-zinc-200 dark:odd:bg-zinc-800 text-gray-900 dark:text-gray-400 even:bg-transparent dark:even:bg-transparent 
                                 lg:hover:bg-zinc-300 hover:text-gray-950 dark:lg:hover:bg-zinc-700 dark:hover:text-gray-100`
                             }`}
                           >
-                            <span>{index + 1}.</span>
-                            <span className="line-clamp-1">{eps.title}</span>
-                            {currentEpisodeId === eps.id ? (
+                            <span>{eps.number}.</span>
+                            <span className="line-clamp-1">
+                              {eps.title === null
+                                ? `Episode ${eps.number}`
+                                : eps.title}
+                            </span>
+                            {currentEpisodeNumber === eps.number ? (
                               <BsPlayFill className="absolute right-2 top-1/2 transform -translate-y-1/2 text-base xs:text-xl" />
                             ) : (
                               ""
@@ -384,9 +398,13 @@ export const WatchAnime = () => {
           </div>
           {/* recommendation anime */}
           <div className="lg:col-span-4 w-full">
-            <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
-              Recommendations
-            </h1>
+            {animeRecommendation.length > 0 ? (
+              <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
+                Recommendations
+              </h1>
+            ) : (
+              ""
+            )}
             {isLoading === true ? (
               <div
                 className="w-full h-[180px] xs:h-[240px] lg:h-[260px] xl:h-[300px] 
@@ -399,8 +417,10 @@ export const WatchAnime = () => {
                 <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden lg:block "></Skeleton>
                 <Skeleton className="w-full relative bg-zinc-200 dark:bg-zinc-800 hidden xl:block "></Skeleton>
               </div>
-            ) : (
+            ) : animeRecommendation.length > 0 ? (
               <Recommendation animeRecommendation={animeRecommendation} />
+            ) : (
+              ""
             )}
           </div>
           {/* end */}

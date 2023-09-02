@@ -5,7 +5,7 @@ import { Trending } from "../components/Trending";
 import { MdNavigateNext } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { fetchAdvancedSearch } from "@/api/apiRequests";
+import { fetchRecent } from "@/api/apiRequests";
 
 export const Home = () => {
   const [recentAnime, setRecentAnime] = useState([]);
@@ -15,26 +15,23 @@ export const Home = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getRecentAnime(1, 20, year);
+    getRecentAnime("gogoanime", 1, 50, year);
   }, []);
 
   //get recent anime episodes
-  const getRecentAnime = async (pageNumber, itemsPerPage, year) => {
+  const getRecentAnime = async (provider, pageNumber, itemsPerPage) => {
     setIsLoading(true);
     try {
-      const data = await fetchAdvancedSearch(
-        undefined,
-        "ANIME",
-        pageNumber,
-        itemsPerPage,
-        undefined,
-        ["UPDATED_AT_DESC"],
-        undefined,
-        undefined,
-        year,
-        "RELEASING"
+      const data = await fetchRecent(provider, pageNumber, itemsPerPage);
+      const filteredAnime = data.results?.filter(
+        (anime) =>
+          anime.type === "TV" ||
+          anime.type === "TV_SHORT" ||
+          anime.type === "MOVIE" ||
+          anime.type === "OVA" ||
+          anime.type === "SPECIAL"
       );
-      setRecentAnime(data.results);
+      setRecentAnime(filteredAnime.slice(0, 20));
     } catch (error) {
       console.error("Error fetching recent anime:", error);
     } finally {

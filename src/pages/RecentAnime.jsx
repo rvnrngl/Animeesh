@@ -4,7 +4,7 @@ import { Cards } from "../components/Cards";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchAdvancedSearch } from "@/api/apiRequests";
+import { fetchAdvancedSearch, fetchRecent } from "@/api/apiRequests";
 
 export const RecentAnime = () => {
   const [recentAnime, setRecentAnime] = useState([]);
@@ -23,7 +23,7 @@ export const RecentAnime = () => {
   useEffect(() => {
     const pageNumber = parseInt(page.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
-    getRecentAnime(pageNumber, 30, year, "next");
+    getRecentAnime("gogoanime", pageNumber, 30, "next");
   }, [page]);
 
   useEffect(() => {
@@ -39,22 +39,10 @@ export const RecentAnime = () => {
     }
   }, [pagination.hasNextPage, pagination.currentPage]);
 
-  const getRecentAnime = async (pageNumber, itemsPerPage, year, action) => {
+  const getRecentAnime = async (provider, pageNumber, itemsPerPage, action) => {
     setIsLoading(true);
     try {
-      const data = await fetchAdvancedSearch(
-        undefined,
-        "ANIME",
-        pageNumber,
-        itemsPerPage,
-        undefined,
-        ["UPDATED_AT_DESC"],
-        undefined,
-        undefined,
-        year,
-        "RELEASING",
-        undefined
-      );
+      const data = await fetchRecent(provider, pageNumber, itemsPerPage);
       setRecentAnime(data.results);
       if (action === "next") {
         setPagination({
