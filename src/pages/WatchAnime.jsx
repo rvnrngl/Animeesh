@@ -25,6 +25,9 @@ export const WatchAnime = () => {
   const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(null); //set current episode number
   const [animeRecommendation, setAnimeRecommendation] = useState([]); // get list of anime recommendation
   const [isLoading, setIsLoading] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
+  const [next, setNext] = useState(false);
+  const [prev, setPrev] = useState(true);
   const { title } = useParams();
 
   useEffect(() => {
@@ -54,12 +57,15 @@ export const WatchAnime = () => {
 
   // get the current episode
   const getCurrentEpisode = async (epsId) => {
+    setIsVideoLoading(true);
     if (epsId !== undefined) {
       try {
         const data = await fetchEpisodeUrl(epsId);
         setCurrentEpisode(data);
       } catch (err) {
         throw new Error(err.message);
+      } finally {
+        setIsVideoLoading(false);
       }
     }
   };
@@ -92,11 +98,38 @@ export const WatchAnime = () => {
   // get selected episode id
   const handleCurrentLyWatching = (eps, number) => {
     const episode = eps.sources[0];
-    const player = document.querySelector("media-player");
-    player.pause();
     setCurrentEpisodeNumber(number);
     setCurrentEpisodeTitle(eps.title);
     getCurrentEpisode(episode.id);
+  };
+
+  useEffect(() => {
+    const hasZero = episode.some((eps) => eps.number === 0);
+    const epsLengthNext = hasZero ? episode.length - 1 : episode.length;
+    const epsLengthPrev = hasZero ? 0 : 1;
+    setNext(currentEpisodeNumber < epsLengthNext ? false : true);
+    setPrev(currentEpisodeNumber > epsLengthPrev ? false : true);
+  }, [currentEpisodeNumber]);
+
+  const handleEpisodes = (action) => {
+    const hasZero = episode.some((eps) => eps.number === 0);
+    const epsLengthNext = hasZero ? episode.length - 1 : episode.length;
+    const epsLengthPrev = hasZero ? 0 : 1;
+    if (action === "next") {
+      if (currentEpisodeNumber < epsLengthNext) {
+        const currentEpisode = episode.find(
+          (eps) => eps.number === currentEpisodeNumber + 1
+        );
+        handleCurrentLyWatching(currentEpisode, currentEpisodeNumber + 1);
+      }
+    } else {
+      if (currentEpisodeNumber > epsLengthPrev) {
+        const currentEpisode = episode.find(
+          (eps) => eps.number === currentEpisodeNumber - 1
+        );
+        handleCurrentLyWatching(currentEpisode, currentEpisodeNumber - 1);
+      }
+    }
   };
 
   return (
@@ -110,7 +143,7 @@ export const WatchAnime = () => {
             ) : (
               <MediaPlayer
                 autoplay={true}
-                src={currentEpisode}
+                src={isVideoLoading === false ? currentEpisode : ""}
                 aspectRatio={16 / 9}
                 crossorigin=""
               >
@@ -128,12 +161,27 @@ export const WatchAnime = () => {
                     ? `Episode ${currentEpisodeNumber}`
                     : `Episode ${currentEpisodeNumber} : ${currentEpisodeTitle}`}
                 </p>
-                <div className="flex items-center gap-4 text-lg lg:text-2xl text-zinc-600 dark:text-gray-400">
-                  <button>
-                    <GiPreviousButton />
+                <div className="flex items-center justify-center gap-2 md:gap-3 lg:gap-4 text-zinc-600 dark:text-gray-300">
+                  <button
+                    disabled={prev}
+                    onClick={() => handleEpisodes("prev")}
+                    className="flex items-center gap-1 disabled:cursor-not-allowed disabled:text-zinc-400 disabled:dark:text-zinc-500 enabled:hover:text-orange-400"
+                  >
+                    <GiPreviousButton className="text-lg lg:text-xl" />
+                    <span className="hidden sm:block uppercase text-xs md:text-base">
+                      prev
+                    </span>
                   </button>
-                  <button>
-                    <GiNextButton />
+                  <span className="cursor-default text-xs md:text-base">|</span>
+                  <button
+                    disabled={next}
+                    onClick={() => handleEpisodes("next")}
+                    className="flex items-center gap-2 disabled:cursor-not-allowed disabled:text-zinc-400 disabled:dark:text-zinc-500 enabled:hover:text-orange-400"
+                  >
+                    <span className="hidden sm:block uppercase text-xs md:text-base">
+                      next
+                    </span>
+                    <GiNextButton className="text-lg lg:text-xl" />
                   </button>
                 </div>
               </div>
