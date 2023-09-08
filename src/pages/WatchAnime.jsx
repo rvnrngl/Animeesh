@@ -168,7 +168,7 @@ export const WatchAnime = () => {
                     className="flex items-center gap-1 disabled:cursor-not-allowed disabled:text-zinc-400 disabled:dark:text-zinc-500 enabled:hover:text-orange-400"
                   >
                     <GiPreviousButton className="text-lg lg:text-xl" />
-                    <span className="hidden sm:block uppercase text-xs lg:text-base">
+                    <span className="hidden sm:block uppercase text-xs md:text-base">
                       prev
                     </span>
                   </button>
