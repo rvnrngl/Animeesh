@@ -58,7 +58,8 @@ const fetchTrending = async () => {
 
 // fetch anime info of anilist and enime api
 const fetchAnime = async (id) => {
-  const anilistRes = await anilist.fetchAnimeInfo(id);
+  // const anilistRes = await anilist.fetchAnimeInfo(id);
+  const anilistRes = await anilist.fetchAnilistInfoById(id);
   const enimeRes = await axios.get(
     `https://api.enime.moe/mapping/anilist/${id}`
   );

@@ -16,8 +16,6 @@ import {
 export const Cards = ({ animeList, type }) => {
   const navigate = useNavigate();
 
-  console.log(animeList);
-
   const handleNavigation = (anime) => {
     window.localStorage.setItem("type", type);
     if (anime.title?.english !== null) {

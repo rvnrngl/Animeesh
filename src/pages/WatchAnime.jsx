@@ -13,6 +13,7 @@ import { GiPreviousButton, GiNextButton } from "react-icons/gi";
 import { BsPlayFill } from "react-icons/bs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchAnime, fetchEpisodeUrl } from "@/api/apiRequests";
+import { Relations } from "@/components/Relations";
 
 export const WatchAnime = () => {
   const location = useLocation(); // get state anime data
@@ -23,6 +24,7 @@ export const WatchAnime = () => {
   const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
   const [currentEpisodeTitle, setCurrentEpisodeTitle] = useState("");
   const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(null); //set current episode number
+  const [relations, setRelations] = useState([]);
   const [animeRecommendation, setAnimeRecommendation] = useState([]); // get list of anime recommendation
   const [isLoading, setIsLoading] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
@@ -45,8 +47,14 @@ export const WatchAnime = () => {
     try {
       const data = await fetchAnime(animeId);
       setAnimeInfo(data.anilistRes); // get anime info
-      const sortedEpisode = data.episode?.sort((a, b) => a.number - b.number);
+      const sortedEpisode = data.episode?.sort((a, b) => a.number - b.number); // sort episodes
+      const filteredRelations = data.anilistRes.relations?.filter(
+        (item) =>
+          (item.relationType === "PREQUEL" || item.relationType === "SEQUEL") &&
+          (item.status === "Completed" || item.status === "Ongoing")
+      ); // filter relations
       setEpisode(sortedEpisode); // get anime episodes
+      setRelations(filteredRelations); // get anime relations
       setAnimeRecommendation(data.anilistRes.recommendations); // get anime recommendations
     } catch (error) {
       console.error("Error fetching anime info:", error);
@@ -61,7 +69,13 @@ export const WatchAnime = () => {
     if (epsId !== undefined) {
       try {
         const data = await fetchEpisodeUrl(epsId);
-        setCurrentEpisode(data);
+        if (data.includes("https://ec.netmagcdn.com:2228")) {
+          setCurrentEpisode(
+            data.replace("https://ec.netmagcdn.com:2228", "/source")
+          );
+        } else {
+          setCurrentEpisode(data);
+        }
       } catch (err) {
         throw new Error(err.message);
       } finally {
@@ -403,15 +417,15 @@ export const WatchAnime = () => {
                     </div>
                     <div className="flex flex-col items-start">
                       <li className=" text-gray-500">
-                        Sub/Dub:{" "}
+                        Current Episodes:{" "}
                         <span className="text-black dark:text-gray-300">
-                          {animeInfo.subOrDub}
+                          {animeInfo.currentEpisode}
                         </span>
                       </li>
                       <li className=" text-gray-500">
-                        Episodes:{" "}
+                        Total Episodes:{" "}
                         <span className="text-black dark:text-gray-300">
-                          {animeInfo.currentEpisode}
+                          {animeInfo.totalEpisodes}
                         </span>
                       </li>
                       <li className=" text-gray-500">
@@ -444,6 +458,19 @@ export const WatchAnime = () => {
               )}
             </div>
           </div>
+          {/* relations */}
+          {relations.length > 0 ? (
+            <div className="lg:col-span-3 px-2 dark:px-0 py-3 lg:pr-20 bg-zinc-100 border dark:border-none dark:bg-transparent dark:text-gray-300 rounded-md text-sm">
+              <h1 className="mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
+                Related
+              </h1>
+              <div className="w-full grid gap-2">
+                <Relations relations={relations} type={"relation"} />
+              </div>
+            </div>
+          ) : (
+            ""
+          )}
           {/* recommendation anime */}
           <div className="lg:col-span-4 w-full">
             {animeRecommendation.length > 0 ? (
