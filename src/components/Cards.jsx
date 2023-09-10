@@ -16,6 +16,8 @@ import {
 export const Cards = ({ animeList, type }) => {
   const navigate = useNavigate();
 
+  console.log(animeList);
+
   const handleNavigation = (anime) => {
     window.localStorage.setItem("type", type);
     if (anime.title?.english !== null) {
@@ -23,6 +25,7 @@ export const Cards = ({ animeList, type }) => {
         `/watch/${anime.title?.english
           .replace(/[-:]/g, "")
           .replace(/\s+/g, "-")
+          .replace(/\//g, "-")
           .toLowerCase()}`,
         { state: { anime } }
       );
@@ -31,6 +34,7 @@ export const Cards = ({ animeList, type }) => {
         `/watch/${anime.title?.userPreferred
           .replace(/[-:]/g, "")
           .replace(/\s+/g, "-")
+          .replace(/\//g, "-")
           .toLowerCase()}`,
         { state: { anime } }
       );
