@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "vidstack/styles/defaults.css";
 import "vidstack/styles/community-skin/video.css";
 import {
@@ -17,6 +17,7 @@ import { Relations } from "@/components/Relations";
 
 export const WatchAnime = () => {
   const location = useLocation(); // get state anime data
+  const navigate = useNavigate();
   const fetchAnimeId = location.state.anime.id; // init anime id from location
   const [animeId, setAnimeId] = useState(fetchAnimeId);
   const [animeInfo, setAnimeInfo] = useState({}); // anime info data from api
