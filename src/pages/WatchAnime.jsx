@@ -41,54 +41,21 @@ export const WatchAnime = () => {
     getAnimeInfo();
   }, [animeId]);
 
-  // get anime info using anime id
-  const getAnimeInfo = async () => {
-    setIsLoading(true);
-    try {
-      const data = await fetchAnime(animeId);
-      setAnimeInfo(data.anilistRes); // get anime info
-      const sortedEpisode = data.episode?.sort((a, b) => a.number - b.number); // sort episodes
-      const filteredRelations = data.anilistRes.relations?.filter(
-        (item) =>
-          (item.relationType === "PREQUEL" || item.relationType === "SEQUEL") &&
-          (item.status === "Completed" || item.status === "Ongoing")
-      ); // filter relations
-      setEpisode(sortedEpisode); // get anime episodes
-      setRelations(filteredRelations); // get anime relations
-      setAnimeRecommendation(data.anilistRes.recommendations); // get anime recommendations
-    } catch (error) {
-      console.error("Error fetching anime info:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  /*--------------------Check if episode list has episode 0------------------------*/
+  useEffect(() => {
+    const hasZero = episode.some((eps) => eps.number === 0);
+    const epsLengthNext = hasZero ? episode.length - 1 : episode.length;
+    const epsLengthPrev = hasZero ? 0 : 1;
+    setNext(currentEpisodeNumber < epsLengthNext ? false : true);
+    setPrev(currentEpisodeNumber > epsLengthPrev ? false : true);
+  }, [currentEpisodeNumber]);
 
-  // get the current episode
-  const getCurrentEpisode = async (epsId) => {
-    setIsVideoLoading(true);
-    if (epsId !== undefined) {
-      try {
-        const data = await fetchEpisodeUrl(epsId);
-        if (data.includes("https://ec.netmagcdn.com:2228")) {
-          setCurrentEpisode(
-            data.replace("https://ec.netmagcdn.com:2228", "/source")
-          );
-        } else {
-          setCurrentEpisode(data);
-        }
-      } catch (err) {
-        throw new Error(err.message);
-      } finally {
-        setIsVideoLoading(false);
-      }
-    }
-  };
-
+  /*--------------------Check if props came from recent or other types------------------------*/
   useEffect(() => {
     if (episode.length > 0 && isLoading === false) {
-      const getType = window.localStorage.getItem("type"); // get the type of parameter in where the anime data came from "recent/other"
+      const getType = window.localStorage.getItem("type");
       if (getType === "recent") {
-        // get recent episode
+        // if type is recent get recent episode instead
         const hasZero = episode.some((eps) => eps.number === 0);
         const recent = hasZero ? episode.length - 1 : episode.length;
         const recentEp = episode.find((eps) => eps.number === recent);
@@ -109,7 +76,49 @@ export const WatchAnime = () => {
     }
   }, [episode]);
 
-  // get selected episode id
+  /*--------------------get anime info using anime id from location state------------------------*/
+  const getAnimeInfo = async () => {
+    setIsLoading(true);
+    try {
+      const data = await fetchAnime(animeId);
+      setAnimeInfo(data.anilistRes); // get anime info
+      const sortedEpisode = data.episode?.sort((a, b) => a.number - b.number); // sort episodes asc
+      const filteredRelations = data.anilistRes.relations?.filter(
+        (item) =>
+          (item.relationType === "PREQUEL" || item.relationType === "SEQUEL") &&
+          (item.status === "Completed" || item.status === "Ongoing")
+      ); // filter relations
+      setEpisode(sortedEpisode); // get anime episodes
+      setRelations(filteredRelations); // get anime relations
+      setAnimeRecommendation(data.anilistRes.recommendations); // get anime recommendations
+    } catch (error) {
+      console.error("Error fetching anime info:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  /*--------------------Get the current episode url------------------------*/
+  const getCurrentEpisode = async (epsId) => {
+    setIsVideoLoading(true);
+    if (epsId !== undefined) {
+      try {
+        const data = await fetchEpisodeUrl(epsId);
+        if (data.includes("https://ec.netmagcdn.com:2228")) {
+          setCurrentEpisode(
+            data.replace("https://ec.netmagcdn.com:2228", "/source")
+          );
+        } else {
+          setCurrentEpisode(data);
+        }
+      } catch (err) {
+        throw new Error(err.message);
+      } finally {
+        setIsVideoLoading(false);
+      }
+    }
+  };
+
   const handleCurrentLyWatching = (eps, number) => {
     if (currentEpisodeNumber !== number) {
       const episode = eps.sources[0];
@@ -118,14 +127,6 @@ export const WatchAnime = () => {
       getCurrentEpisode(episode.id);
     }
   };
-
-  useEffect(() => {
-    const hasZero = episode.some((eps) => eps.number === 0);
-    const epsLengthNext = hasZero ? episode.length - 1 : episode.length;
-    const epsLengthPrev = hasZero ? 0 : 1;
-    setNext(currentEpisodeNumber < epsLengthNext ? false : true);
-    setPrev(currentEpisodeNumber > epsLengthPrev ? false : true);
-  }, [currentEpisodeNumber]);
 
   const handleEpisodes = (action) => {
     const hasZero = episode.some((eps) => eps.number === 0);
