@@ -111,10 +111,12 @@ export const WatchAnime = () => {
 
   // get selected episode id
   const handleCurrentLyWatching = (eps, number) => {
-    const episode = eps.sources[0];
-    setCurrentEpisodeNumber(number);
-    setCurrentEpisodeTitle(eps.title);
-    getCurrentEpisode(episode.id);
+    if (currentEpisodeNumber !== number) {
+      const episode = eps.sources[0];
+      setCurrentEpisodeNumber(number);
+      setCurrentEpisodeTitle(eps.title);
+      getCurrentEpisode(episode.id);
+    }
   };
 
   useEffect(() => {
@@ -461,12 +463,21 @@ export const WatchAnime = () => {
           {/* relations */}
           {relations.length > 0 ? (
             <div className="lg:col-span-3 px-2 dark:px-0 py-3 lg:pr-20 bg-zinc-100 border dark:border-none dark:bg-transparent dark:text-gray-300 rounded-md text-sm">
-              <h1 className="mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
-                Related
-              </h1>
-              <div className="w-full grid gap-2">
-                <Relations relations={relations} type={"relation"} />
-              </div>
+              {isLoading ? (
+                <>
+                  <Skeleton className="mb-4 h-8 w-20 lg:font-semibold dark:text-gray-300" />
+                  <Skeleton className="h-20 w-full lg:font-semibold dark:text-gray-300" />
+                </>
+              ) : (
+                <>
+                  <h1 className="mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
+                    Related
+                  </h1>
+                  <div className="w-full grid gap-2">
+                    <Relations relations={relations} type={"relation"} />
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             ""

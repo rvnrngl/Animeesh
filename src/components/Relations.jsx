@@ -11,6 +11,7 @@ export const Relations = ({ relations, type }) => {
         `/watch/${anime.title?.english
           .replace(/[-:]/g, "")
           .replace(/\s+/g, "-")
+          .replace(/\//g, "-")
           .toLowerCase()}`,
         { state: { anime } }
       );
@@ -19,6 +20,7 @@ export const Relations = ({ relations, type }) => {
         `/watch/${anime.title?.userPreferred
           .replace(/[-:]/g, "")
           .replace(/\s+/g, "-")
+          .replace(/\//g, "-")
           .toLowerCase()}`,
         { state: { anime } }
       );
@@ -32,7 +34,7 @@ export const Relations = ({ relations, type }) => {
           <div
             key={index}
             onClick={() => handleNavigation(item)}
-            className="dark:bg-zinc-800 h-[80px] flex gap-2 sm:gap-4 cursor-pointer hover:brightness-150"
+            className="dark:bg-zinc-800 h-[80px] flex gap-2 sm:gap-4 cursor-pointer hover:brightness-110"
           >
             <img
               src={item.image}
