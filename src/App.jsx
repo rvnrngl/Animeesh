@@ -9,6 +9,7 @@ import { SearchAnime } from "./pages/SearchAnime";
 import { ScrollToTopButton } from "./components/ScrollToTopButton";
 import { RecentAnime } from "./pages/RecentAnime";
 import { Footer } from "./components/Footer";
+import { NotFound } from "./components/NotFound";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/watch/:title" element={<WatchAnime />}></Route>
           <Route path="/search" element={<SearchAnime />}></Route>
           <Route path="/recent/page/:id" element={<RecentAnime />}></Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
         <Footer />
         <ScrollToTopButton />

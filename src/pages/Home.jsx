@@ -70,7 +70,7 @@ export const Home = () => {
           </div>
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
             {isLoading === true ? (
-              Array.from({ length: 6 }, (_, index) => {
+              Array.from({ length: 10 }, (_, index) => {
                 return (
                   <div
                     key={index}
