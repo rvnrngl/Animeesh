@@ -3,6 +3,7 @@ import axios from "axios";
 import { META } from "@consumet/extensions";
 
 const anilist = new META.Anilist();
+const url = import.meta.env.VITE_API;
 
 // fetching anime using normal search method
 const fetchSearch = async (query, page, perPage) => {
@@ -58,27 +59,16 @@ const fetchTrending = async () => {
 
 // fetch anime info of anilist and enime api
 const fetchAnime = async (id) => {
-  // const anilistRes = await anilist.fetchAnimeInfo(id);
-  const anilistRes = await anilist.fetchAnilistInfoById(id);
-  const enimeRes = await axios.get(
-    `https://api.enime.moe/mapping/anilist/${id}`
-  );
-  return { anilistRes, episode: enimeRes.data.episodes };
+  const res = await axios.get(`${url}/api/info?id=${id}`);
+  return { anime: res.data, episode: res.data.episodes };
 };
 
 // fetch episodes's streaming url
-const fetchEpisodeUrl = async (epsId) => {
-  const urlEps = await axios.get(`https://api.enime.moe/source/${epsId}`);
-  return urlEps.data.url;
-};
-
-// fetch enime id using anilist id
-const fetchEnimeId = async (provider, epsId) => {
-  const response = await axios.get(
-    `https://api.enime.moe/enime/mapping/${provider}/${epsId}`
-  );
-  console.log(response.data.episodes);
-  return response.data.episodes;
+const fetchEpisodeUrl = async (episodeId) => {
+  const res = await axios.get(`${url}/api/episode?id=${episodeId}`);
+  const sources = res.data.sources;
+  const [defaultUrl] = sources.filter((source) => source.quality === "default");
+  return { data: res.data, url: defaultUrl.url };
 };
 
 export {
@@ -88,5 +78,4 @@ export {
   fetchTrending,
   fetchAnime,
   fetchEpisodeUrl,
-  fetchEnimeId,
 };

@@ -59,8 +59,8 @@ export const WatchAnime = () => {
         const hasZero = episode.some((eps) => eps.number === 0);
         const recent = hasZero ? episode.length - 1 : episode.length;
         const recentEp = episode.find((eps) => eps.number === recent);
-        const source = recentEp?.sources[0];
-        getCurrentEpisode(source.id);
+        // const source = recentEp?.sources[0];
+        getCurrentEpisode(recentEp.id);
         setCurrentEpisodeTitle(recentEp.title);
         setCurrentEpisodeNumber(recentEp.number);
       } else {
@@ -68,8 +68,8 @@ export const WatchAnime = () => {
         const hasZero = episode.some((eps) => eps.number === 0);
         const first = hasZero ? 0 : 1;
         const eps1 = episode.find((eps) => eps.number === first);
-        const source = eps1.sources[0];
-        getCurrentEpisode(source.id);
+        // const source = eps1.sources[0];
+        getCurrentEpisode(eps1.id);
         setCurrentEpisodeTitle(eps1.title);
         setCurrentEpisodeNumber(eps1.number);
       }
@@ -81,16 +81,16 @@ export const WatchAnime = () => {
     setIsLoading(true);
     try {
       const data = await fetchAnime(animeId);
-      setAnimeInfo(data.anilistRes); // get anime info
       const sortedEpisode = data.episode?.sort((a, b) => a.number - b.number); // sort episodes asc
-      const filteredRelations = data.anilistRes.relations?.filter(
+      const filteredRelations = data.anime.relations?.filter(
         (item) =>
           (item.relationType === "PREQUEL" || item.relationType === "SEQUEL") &&
           (item.status === "Completed" || item.status === "Ongoing")
       ); // filter relations
+      setAnimeInfo(data.anime); // get anime info
       setEpisode(sortedEpisode); // get anime episodes
       setRelations(filteredRelations); // get anime relations
-      setAnimeRecommendation(data.anilistRes.recommendations); // get anime recommendations
+      setAnimeRecommendation(data.anime.recommendations); // get anime recommendations
     } catch (error) {
       console.error("Error fetching anime info:", error);
     } finally {
@@ -103,14 +103,8 @@ export const WatchAnime = () => {
     setIsVideoLoading(true);
     if (epsId !== undefined) {
       try {
-        const data = await fetchEpisodeUrl(epsId);
-        if (data.includes("https://ec.netmagcdn.com:2228")) {
-          setCurrentEpisode(
-            data.replace("https://ec.netmagcdn.com:2228", "/source")
-          );
-        } else {
-          setCurrentEpisode(data);
-        }
+        const res = await fetchEpisodeUrl(epsId);
+        setCurrentEpisode(res.url);
       } catch (err) {
         throw new Error(err.message);
       } finally {
@@ -121,10 +115,9 @@ export const WatchAnime = () => {
 
   const handleCurrentLyWatching = (eps, number) => {
     if (currentEpisodeNumber !== number) {
-      const episode = eps.sources[0];
-      setCurrentEpisodeNumber(number);
+      setCurrentEpisodeNumber(eps.number);
       setCurrentEpisodeTitle(eps.title);
-      getCurrentEpisode(episode.id);
+      getCurrentEpisode(eps.id);
     }
   };
 
