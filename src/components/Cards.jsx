@@ -93,7 +93,10 @@ export const Cards = ({ animeList, type }) => {
                     <span>{anime.type}</span>
                     <span>•</span>
                     {type === "recent" ? (
-                      <span>Latest Episode: {anime.episodeNumber}</span>
+                      <span>
+                        Latest Episode:{" "}
+                        {anime.episodeNumber || anime.currentEpisode}
+                      </span>
                     ) : (
                       <span>
                         {anime.status === "Completed" ||
@@ -154,7 +157,7 @@ export const Cards = ({ animeList, type }) => {
                         <span className="text-gray-500 dark:text-gray-400">
                           Latest Episode:{" "}
                         </span>
-                        {anime.episodeNumber}
+                        {anime.episodeNumber || anime.currentEpisode}
                       </span>
                       <span className="text-xs text-gray-500 dark:text-gray-400">
                         Genres:{" "}

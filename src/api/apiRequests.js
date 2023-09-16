@@ -43,12 +43,15 @@ const fetchAdvancedSearch = async (
 
 // fetch recent episode
 const fetchRecent = async (provider, pageNumber, itemsPerPage) => {
-  const response = await anilist.fetchRecentEpisodes(
-    provider,
-    pageNumber,
-    itemsPerPage
+  const res = await axios.get(
+    `${url}/api/recent?provider=${provider}&pageNumber=${pageNumber}&itemsPerPage=${itemsPerPage}`
   );
-  return response;
+
+  if (res.data?.hasOwnProperty("retry")) {
+    return res.data;
+  }
+
+  return res;
 };
 
 // fetch trending anime
