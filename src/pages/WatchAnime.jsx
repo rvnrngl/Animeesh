@@ -155,7 +155,7 @@ export const WatchAnime = () => {
               <Skeleton className="aspect-video bg-zinc-200 dark:bg-zinc-800"></Skeleton>
             ) : (
               <MediaPlayer
-                autoplay={true}
+                autoplay
                 src={isVideoLoading === false ? currentEpisode : ""}
                 aspectRatio={16 / 9}
                 crossorigin=""
