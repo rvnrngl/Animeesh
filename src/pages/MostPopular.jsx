@@ -7,7 +7,7 @@ import { fetchAdvancedSearch } from "@/api/apiRequests";
 
 export const MostPopular = () => {
   const [popularAnime, setPopularAnime] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentDate] = useState(new Date());
   const year = currentDate.getFullYear();
   const [prevDisabled, setPrevDisabled] = useState(true);
@@ -19,9 +19,10 @@ export const MostPopular = () => {
   const navigate = useNavigate();
   const page = useParams();
 
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   useEffect(() => {
     const pageNumber = parseInt(page.id);
-    window.scrollTo({ top: 0, behavior: "smooth" });
     getPopularAnime(pageNumber, 30, ["POPULARITY_DESC"], year, "next");
   }, [page]);
 
@@ -75,10 +76,8 @@ export const MostPopular = () => {
     const currentPage = pagination.currentPage;
 
     if (action === "next" && pagination.hasNextPage) {
-      window.scrollTo({ top: 0 });
       navigate(`/popular/page/${currentPage + 1}`);
     } else if (action === "prev" && currentPage > 1) {
-      window.scrollTo({ top: 0 });
       navigate(`/popular/page/${currentPage - 1}`);
     }
   };

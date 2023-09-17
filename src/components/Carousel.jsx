@@ -12,7 +12,7 @@ export const Carousel = () => {
   const [popularAnime, setPopularAnime] = useState([]);
   const [currentDate] = useState(new Date());
   const year = currentDate.getFullYear();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,7 +61,6 @@ export const Carousel = () => {
         { state: { anime } }
       );
     }
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

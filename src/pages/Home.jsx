@@ -9,18 +9,16 @@ import { fetchRecent } from "@/api/apiRequests";
 
 export const Home = () => {
   const [recentAnime, setRecentAnime] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentDate] = useState(new Date());
   const year = currentDate.getFullYear();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
     getRecentAnime("gogoanime", 1, 50, year);
   }, []);
 
   //get recent anime episodes
   const getRecentAnime = async (provider, pageNumber, itemsPerPage) => {
-    setIsLoading(true);
     try {
       const data = await fetchRecent(provider, pageNumber, itemsPerPage);
       const filteredAnime = data.results?.filter(

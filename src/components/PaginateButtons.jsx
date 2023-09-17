@@ -7,10 +7,8 @@ export const PaginateButtons = ({ page, hasNextPage, next, prev, route }) => {
 
   const handlePageChange = (action) => {
     if (action === "next" && hasNextPage) {
-      window.scrollTo({ top: 0 });
       navigate(route + `page=${page + 1}`);
     } else if (action === "prev" && page > 1) {
-      window.scrollTo({ top: 0 });
       navigate(route + `page=${page - 1}`);
     }
   };
@@ -21,8 +19,8 @@ export const PaginateButtons = ({ page, hasNextPage, next, prev, route }) => {
         disabled={prev}
         onClick={() => handlePageChange("prev")}
         className="relative p-2 px-4 text-xs dark:bg-zinc-800 border-b-4 group border-b-orange-400 rounded-none overflow-hidden 
-  uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
-  disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
+        uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
+      disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
       >
         <BiChevronsLeft className="text-base" />
         <span>PREV</span>
@@ -39,8 +37,8 @@ export const PaginateButtons = ({ page, hasNextPage, next, prev, route }) => {
         disabled={next}
         onClick={() => handlePageChange("next")}
         className="relative p-2 px-4 text-xs dark:bg-zinc-800 border-b-4 group border-b-orange-400 rounded-none overflow-hidden 
-  uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
-  disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
+        uppercase flex items-center gap-1 shadow-lg disabled:text-gray-500 disabled:cursor-not-allowed
+      disabled:dark:bg-zinc-800/50 disabled:border-zinc-400 disabled:dark:border-zinc-500 enabled:hover:animate-pulse"
       >
         <span>NEXT</span>
         <BiChevronsRight className="text-base" />

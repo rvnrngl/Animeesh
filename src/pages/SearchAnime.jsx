@@ -16,13 +16,15 @@ export const SearchAnime = () => {
   const query = queryParams.get("keyword") || "";
   const page = parseInt(queryParams.get("page"));
   const [searchedAnime, setSearchedAnime] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [pagination, setPagination] = useState({
     currentPage: 0,
     hasNextPage: true,
   });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
   useEffect(() => {
     if (query && page) {
@@ -71,14 +73,26 @@ export const SearchAnime = () => {
               Search Anime...
             </span>
           ) : isLoading ? (
-            <Skeleton
-              className="w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-3 xs:h-4 
-            sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"
-            ></Skeleton>
+            <div className="w-full flex flex-col gap-1 justify-between items-center px-4 lg:mt-4">
+              <Skeleton className="w-[150px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+              <Skeleton className="w-[50px] sm:w-[100px] h-3 xs:h-4 sm:h-5 md:h-6 lg:h-7 rounded-sm bg-zinc-200 dark:bg-zinc-800"></Skeleton>
+            </div>
           ) : (
-            <span className="text-xs xs:text-base sm:text-lg md:text-xl lg:text-2xl">
-              Search Results for "{query}"
-            </span>
+            <div className="w-full flex flex-col gap-1 justify-between items-center px-4 lg:mt-4">
+              <span className="text-center text-xs xs:text-base sm:text-lg md:text-xl lg:text-2xl">
+                Search Results for "{query}"
+              </span>
+              {searchedAnime.length < 1 ? (
+                ""
+              ) : (
+                <span className="text-gray-600 dark:text-gray-400 text-[10px] xs:text-xs sm:text-sm lg:text-base font-thin">
+                  Page:{" "}
+                  {pagination.currentPage < 10
+                    ? "0" + pagination.currentPage
+                    : pagination.currentPage}
+                </span>
+              )}
+            </div>
           )}
         </div>
 

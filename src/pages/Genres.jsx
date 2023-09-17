@@ -17,7 +17,7 @@ export const Genres = () => {
   const encodedGenres = JSON.parse(decodeURIComponent(queryGenre)); // convert to array
   const page = genreParams.get("page");
   const [animeList, setAnimeList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [prevDisabled, setPrevDisabled] = useState(true);
   const [nextDisabled, setNextDisabled] = useState(false);
   const [pagination, setPagination] = useState({
@@ -25,9 +25,10 @@ export const Genres = () => {
     hasNextPage: true,
   });
 
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   useEffect(() => {
     if (queryGenre && page) {
-      window.scrollTo({ top: 0, behavior: "smooth" });
       getAnimeList(page, 30, ["POPULARITY_DESC"], encodedGenres, "next");
     }
   }, [queryGenre, page]);

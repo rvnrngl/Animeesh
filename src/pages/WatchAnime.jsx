@@ -27,14 +27,16 @@ export const WatchAnime = () => {
   const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(null); //set current episode number
   const [relations, setRelations] = useState([]);
   const [animeRecommendation, setAnimeRecommendation] = useState([]); // get list of anime recommendation
-  const [isLoading, setIsLoading] = useState(false);
-  const [isVideoLoading, setIsVideoLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [next, setNext] = useState(false);
   const [prev, setPrev] = useState(true);
   const { title } = useParams();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    setIsLoading(true);
+    setIsVideoLoading(true);
     setAnimeId(fetchAnimeId);
   }, [title]);
 
@@ -101,7 +103,6 @@ export const WatchAnime = () => {
 
   /*--------------------Get the current episode url------------------------*/
   const getCurrentEpisode = async (epsId) => {
-    setIsVideoLoading(true);
     if (epsId !== undefined) {
       try {
         const res = await fetchEpisodeUrl(epsId);
@@ -116,6 +117,7 @@ export const WatchAnime = () => {
 
   const handleCurrentLyWatching = (eps, number) => {
     if (currentEpisodeNumber !== number) {
+      setIsVideoLoading(true);
       setCurrentEpisodeNumber(eps.number);
       setCurrentEpisodeTitle(eps.title);
       getCurrentEpisode(eps.id);
