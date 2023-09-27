@@ -11,24 +11,12 @@ import "swiper/css/pagination";
 
 export const Slider = ({ animeList, type }) => {
   const navigate = useNavigate();
-  const handleNavigation = (anime) => {
+  const handleNavigation = (id) => {
     window.localStorage.setItem("type", type);
-    if (anime.title?.english !== null) {
-      navigate(
-        `/watch/${anime.title?.english
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+    if (id) {
+      navigate(`/watch/${id}`);
     } else {
-      navigate(
-        `/watch/${anime.title?.userPreferred
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+      console.log("No id found!");
     }
   };
 
@@ -68,7 +56,7 @@ export const Slider = ({ animeList, type }) => {
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                   }}
-                  onClick={() => handleNavigation(anime)}
+                  onClick={() => handleNavigation(anime.id)}
                 >
                   {/* badge */}
                   <div

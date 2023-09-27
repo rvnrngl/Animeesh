@@ -15,24 +15,10 @@ export const Footer = () => {
 
   const handleNavigate = () => {
     window.localStorage.setItem("type", "footer");
-    if (anime.title?.english !== null) {
-      navigate(
-        `/watch/${anime.title?.english
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .replace(/\//g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+    if (anime.id) {
+      navigate(`/watch/${anime.id}`);
     } else {
-      navigate(
-        `/watch/${anime.title?.userPreferred
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .replace(/\//g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+      console.log("No id found!");
     }
   };
 

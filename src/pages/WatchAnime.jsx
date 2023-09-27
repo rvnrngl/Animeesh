@@ -16,10 +16,6 @@ import { fetchAnime, fetchEpisodeUrl } from "@/api/apiRequests";
 import { Relations } from "@/components/Relations";
 
 export const WatchAnime = () => {
-  const location = useLocation(); // get state anime data
-  const navigate = useNavigate();
-  const fetchAnimeId = location.state.anime.id; // init anime id from location
-  const [animeId, setAnimeId] = useState(fetchAnimeId);
   const [animeInfo, setAnimeInfo] = useState({}); // anime info data from api
   const [episode, setEpisode] = useState([]); // get episodes
   const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
@@ -31,18 +27,16 @@ export const WatchAnime = () => {
   const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [next, setNext] = useState(false);
   const [prev, setPrev] = useState(true);
-  const { title } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setIsLoading(true);
-    setIsVideoLoading(true);
-    setAnimeId(fetchAnimeId);
-  }, [title]);
-
-  useEffect(() => {
-    getAnimeInfo();
-  }, [animeId]);
+    if (id) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setIsLoading(true);
+      setIsVideoLoading(true);
+      getAnimeInfo(id);
+    }
+  }, [id]);
 
   /*--------------------Check if episode list has episode 0------------------------*/
   useEffect(() => {
@@ -80,10 +74,10 @@ export const WatchAnime = () => {
   }, [episode]);
 
   /*--------------------get anime info using anime id from location state------------------------*/
-  const getAnimeInfo = async () => {
+  const getAnimeInfo = async (id) => {
     setIsLoading(true);
     try {
-      const data = await fetchAnime(animeId);
+      const data = await fetchAnime(id);
       const sortedEpisode = data.episode?.sort((a, b) => a.number - b.number); // sort episodes asc
       const filteredRelations = data.anime.relations?.filter(
         (item) =>
@@ -246,7 +240,7 @@ export const WatchAnime = () => {
                           onClick={() =>
                             handleCurrentLyWatching(eps, eps.number)
                           }
-                          className={`w-full flex items-center justify-center rounded-sm p-2 cursor-pointer ${
+                          className={`w-full flex-shrink-0 flex items-center justify-center rounded-sm p-2 cursor-pointer ${
                             currentEpisodeNumber === eps.number
                               ? "bg-orange-400/80 dark:bg-orange-400/80 dark:text-gray-950 font-semibold"
                               : `bg-zinc-200 dark:bg-zinc-800 text-gray-950 dark:text-gray-400 

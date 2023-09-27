@@ -23,7 +23,7 @@ function App() {
     "^/$",
     "^/popular/page/\\d+$",
     "^/genres",
-    "^/watch/.+",
+    "^/watch/\\d+$",
     "^/search",
     "^/recent/page/\\d+$",
   ];
@@ -39,7 +39,7 @@ function App() {
         <Route exact path="/" element={<Home />}></Route>
         <Route path="/popular/page/:id" element={<MostPopular />}></Route>
         <Route path="/genres" element={<Genres />}></Route>
-        <Route path="/watch/:title" element={<WatchAnime />}></Route>
+        <Route path="/watch/:id" element={<WatchAnime />}></Route>
         <Route path="/search" element={<SearchAnime />}></Route>
         <Route path="/recent/page/:id" element={<RecentAnime />}></Route>
         <Route path="*" element={<NotFound />}></Route>

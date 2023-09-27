@@ -43,23 +43,11 @@ export const Carousel = () => {
     }
   };
 
-  const handleNavigate = (anime) => {
-    if (anime.title?.english !== null) {
-      navigate(
-        `/watch/${anime.title?.english
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+  const handleNavigate = (id) => {
+    if (id) {
+      navigate(`/watch/${id}`);
     } else {
-      navigate(
-        `/watch/${anime.title?.userPreferred
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+      console.log("No id found!");
     }
   };
 
@@ -143,7 +131,7 @@ export const Carousel = () => {
                   </div>
                   <div className="flex items-center gap-2 text-gray-900 text-sm lg:text-lg mt-3">
                     <button
-                      onClick={() => handleNavigate(anime)}
+                      onClick={() => handleNavigate(anime.id)}
                       className="w-fit flex items-center gap-1 py-px px-2 font-semibold shadow-md 
                   uppercase rounded-sm bg-orange-400 border-b border-orange-400 hover:text-gray-200
                   duration-200 ease-out"

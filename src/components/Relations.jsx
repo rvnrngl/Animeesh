@@ -4,26 +4,12 @@ import { useNavigate } from "react-router-dom";
 export const Relations = ({ relations, type }) => {
   const navigate = useNavigate();
 
-  const handleNavigation = (anime) => {
+  const handleNavigation = (id) => {
     window.localStorage.setItem("type", type);
-    if (anime.title?.english !== null) {
-      navigate(
-        `/watch/${anime.title?.english
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .replace(/\//g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+    if (id) {
+      navigate(`/watch/${id}`);
     } else {
-      navigate(
-        `/watch/${anime.title?.userPreferred
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .replace(/\//g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+      console.log("No id found!");
     }
   };
 
@@ -33,7 +19,7 @@ export const Relations = ({ relations, type }) => {
         return (
           <div
             key={index}
-            onClick={() => handleNavigation(item)}
+            onClick={() => handleNavigation(item.id)}
             className="dark:bg-zinc-800 h-[80px] flex gap-2 sm:gap-4 cursor-pointer hover:brightness-110"
           >
             <img

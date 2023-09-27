@@ -16,26 +16,12 @@ import {
 export const Cards = ({ animeList, type }) => {
   const navigate = useNavigate();
 
-  const handleNavigation = (anime) => {
+  const handleNavigation = (id) => {
     window.localStorage.setItem("type", type);
-    if (anime.title?.english !== null) {
-      navigate(
-        `/watch/${anime.title?.english
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .replace(/\//g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+    if (id) {
+      navigate(`/watch/${id}`);
     } else {
-      navigate(
-        `/watch/${anime.title?.userPreferred
-          .replace(/[-:]/g, "")
-          .replace(/\s+/g, "-")
-          .replace(/\//g, "-")
-          .toLowerCase()}`,
-        { state: { anime } }
-      );
+      console.log("No id found!");
     }
   };
 
@@ -52,7 +38,7 @@ export const Cards = ({ animeList, type }) => {
                       anime.status === "Completed" ||
                       anime.status === "Ongoing"
                     ) {
-                      handleNavigation(anime);
+                      handleNavigation(anime.id);
                     }
                   } else {
                     handleNavigation(anime);
