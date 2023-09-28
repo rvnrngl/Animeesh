@@ -150,6 +150,7 @@ export const WatchAnime = () => {
             ) : (
               <MediaPlayer
                 autoplay
+                playsinline
                 src={isVideoLoading === false ? currentEpisode : ""}
                 aspectRatio={16 / 9}
                 crossorigin=""
