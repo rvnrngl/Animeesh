@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { ImSearch } from "react-icons/im";
-import { BsFillMoonStarsFill } from "react-icons/bs";
-import { BiSolidSun } from "react-icons/bi";
+import { BsArrowRightSquareFill } from "react-icons/bs";
+import { BiSolidUser } from "react-icons/bi";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CgLogOut } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import ImageTitle from "../assets/animeesh-title.png";
 import { Genre } from "./Genre";
 import { FiChevronDown } from "react-icons/fi";
+import { useCookies } from "react-cookie";
 
 export const NavBar = () => {
   const [isDark, setIsDark] = useState(false);
@@ -16,6 +18,10 @@ export const NavBar = () => {
   const [isMenuClosed, setIsMenuClosed] = useState(true); // if dropdown menu is closed
   const [isGenreClosed, setIsGenreClosed] = useState(true); // if dropdown genre is closed
   const [input, setInput] = useState(""); // store input field
+  const [userID, setUserID] = useState(
+    window.localStorage.getItem("userID") || ""
+  );
+  const [cookies, setCookie, removeCookie] = useCookies(["access-token"]);
   const navigate = useNavigate();
 
   // check preffered theme by the system
@@ -99,6 +105,15 @@ export const NavBar = () => {
     if (event.key === "Enter") {
       handleSearch();
     }
+  };
+
+  // logout user
+  const logOutUser = () => {
+    removeCookie("access-token", { path: "/" });
+    window.localStorage.removeItem("userID");
+    window.localStorage.removeItem("userName");
+    setUserID("");
+    navigate("/");
   };
 
   return (
@@ -211,36 +226,32 @@ export const NavBar = () => {
               onClick={() =>
                 navigate(`/search?keyword=${encodeURIComponent(" ")}&page=1`)
               }
-              className="lg:hidden mr-1 sm:mr-2"
+              className="hidden sm:block lg:hidden mr-1 sm:mr-2"
             >
               <ImSearch className="text-lg lg:text-xl dark:text-gray-300" />
             </button>
-            {/* button to toggle theme */}
-            <div className="flex justify-center items-center pl-3 sm:pl-4 border-l border-zinc-500/50">
-              <button
-                onClick={toggleTheme}
-                className="h-[25px] w-[25px] lg:h-[35px] lg:w-[35px] text-gray-900 bg-orange-400 
-                xs:p-1 lg:p-4 relative overflow-hidden rounded-full shadow-sm group"
+            {/* Avatar/login */}
+            {!cookies.hasOwnProperty("access-token") ? (
+              <Link
+                to={"/auth"}
+                className="flex items-center gap-1 lg:gap-2 bg-orange-400 text-zinc-800 px-3 lg:px-4 py-1 lg:py-2 
+              rounded-sm lg:rounded-md text-sm lg:text-base flex-shrink-0 hover:animate-pulse"
               >
-                <BiSolidSun
-                  size={20}
-                  className={
-                    isDark === true
-                      ? "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
-                      : "absolute -top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
-                  }
-                />
-                <BsFillMoonStarsFill
-                  size={15}
-                  className={
-                    isDark === false
-                      ? "absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
-                      : "absolute top-[50px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
-                  }
-                />
-                <div className="block absolute top-0 -inset-full h-full w-1/2 z-5 transform -skew-x-12 bg-gradient-to-r from-transparent to-white opacity-20 group-hover:animate-shine" />
+                <span className="font-semibold lg:font-bold uppercase">
+                  Login
+                </span>
+                <BsArrowRightSquareFill />
+              </Link>
+            ) : (
+              <button onClick={logOutUser}>
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback className="border bg-orange-400 text-zinc-900">
+                    <BiSolidUser className="text-md lg:text-2xl text-zinc-800" />
+                  </AvatarFallback>
+                </Avatar>
               </button>
-            </div>
+            )}
           </ul>
         </nav>
         {/* menu */}

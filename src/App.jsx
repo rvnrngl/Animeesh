@@ -15,6 +15,7 @@ import { ScrollToTopButton } from "./components/ScrollToTopButton";
 import { RecentAnime } from "./pages/RecentAnime";
 import { Footer } from "./components/Footer";
 import { NotFound } from "./components/NotFound";
+import { Auth } from "./pages/Auth";
 
 function App() {
   const location = useLocation();
@@ -42,6 +43,7 @@ function App() {
         <Route path="/watch/:id" element={<WatchAnime />}></Route>
         <Route path="/search" element={<SearchAnime />}></Route>
         <Route path="/recent/page/:id" element={<RecentAnime />}></Route>
+        <Route path="/auth" element={<Auth />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
       {isShowed ? <Footer /> : ""}
