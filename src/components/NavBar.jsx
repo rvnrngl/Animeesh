@@ -4,13 +4,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { ImSearch } from "react-icons/im";
 import { BsArrowRightSquareFill } from "react-icons/bs";
 import { BiSolidUser } from "react-icons/bi";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CgLogOut } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
 import ImageTitle from "../assets/animeesh-title.png";
 import { Genre } from "./Genre";
 import { FiChevronDown } from "react-icons/fi";
 import { useCookies } from "react-cookie";
+import { AvatarComponent } from "./AvatarComponent";
 
 export const NavBar = () => {
   const [isDark, setIsDark] = useState(false);
@@ -18,9 +18,6 @@ export const NavBar = () => {
   const [isMenuClosed, setIsMenuClosed] = useState(true); // if dropdown menu is closed
   const [isGenreClosed, setIsGenreClosed] = useState(true); // if dropdown genre is closed
   const [input, setInput] = useState(""); // store input field
-  const [userID, setUserID] = useState(
-    window.localStorage.getItem("userID") || ""
-  );
   const [cookies, setCookie, removeCookie] = useCookies(["access-token"]);
   const navigate = useNavigate();
 
@@ -120,7 +117,7 @@ export const NavBar = () => {
     <>
       <div className="w-screen dark:bg-zinc-900 lg:px-5 relative z-[999]">
         <nav className="w-full border-b dark:border-none bg-white dark:bg-zinc-800 px-4 lg:px-7 z-50 shadow-md lg:rounded-b-[40px] py-2 md:py-3 lg:py-0">
-          <ul className="text-lg flex justify-between items-center gap-2">
+          <ul className="relative text-lg flex justify-between items-center gap-2">
             <div className="flex w-full dark:text-gray-200 items-center gap-2 lg:gap-4">
               <button onClick={toggleMenu} className="lg:hidden">
                 <GiHamburgerMenu className="text-[21px] xs:text-[25px] lg:text-2xl" />
@@ -226,7 +223,7 @@ export const NavBar = () => {
               onClick={() =>
                 navigate(`/search?keyword=${encodeURIComponent(" ")}&page=1`)
               }
-              className="hidden sm:block lg:hidden mr-1 sm:mr-2"
+              className="lg:hidden mr-1 sm:mr-2"
             >
               <ImSearch className="text-lg lg:text-xl dark:text-gray-300" />
             </button>
@@ -243,14 +240,17 @@ export const NavBar = () => {
                 <BsArrowRightSquareFill />
               </Link>
             ) : (
-              <button onClick={logOutUser}>
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback className="border bg-orange-400 text-zinc-900">
-                    <BiSolidUser className="text-md lg:text-2xl text-zinc-800" />
-                  </AvatarFallback>
-                </Avatar>
-              </button>
+              <>
+                {/* <button onClick={logOutUser}>
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback className="border bg-orange-400 text-zinc-900">
+                      <BiSolidUser className="text-md lg:text-2xl text-zinc-800" />
+                    </AvatarFallback>
+                  </Avatar>
+                </button> */}
+                <AvatarComponent />
+              </>
             )}
           </ul>
         </nav>

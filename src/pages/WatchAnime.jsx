@@ -10,12 +10,17 @@ import {
 } from "@vidstack/react";
 import { Recommendation } from "../components/Recommendation";
 import { GiPreviousButton, GiNextButton } from "react-icons/gi";
-import { BsPlayFill } from "react-icons/bs";
+import { BsPlayFill, BsFillBookmarkFill } from "react-icons/bs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchAnime, fetchEpisodeUrl } from "@/api/apiRequests";
 import { Relations } from "@/components/Relations";
+import { addToWatchlist } from "@/features/addToWatchlist";
+import { getWatchlist } from "@/features/getWatchlist";
+import { ToolTip } from "@/components/ToolTip";
+import { removeToWatchlist } from "@/features/removeToWatchlist";
 
 export const WatchAnime = () => {
+  const userID = window.localStorage.getItem("userID");
   const [animeInfo, setAnimeInfo] = useState({}); // anime info data from api
   const [episode, setEpisode] = useState([]); // get episodes
   const [currentEpisode, setCurrentEpisode] = useState(""); // get current episode url
@@ -23,6 +28,7 @@ export const WatchAnime = () => {
   const [currentEpisodeNumber, setCurrentEpisodeNumber] = useState(null); //set current episode number
   const [relations, setRelations] = useState([]);
   const [animeRecommendation, setAnimeRecommendation] = useState([]); // get list of anime recommendation
+  const [isAdded, setIsAdded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [next, setNext] = useState(false);
@@ -37,6 +43,12 @@ export const WatchAnime = () => {
       getAnimeInfo(id);
     }
   }, [id]);
+
+  useEffect(() => {
+    if (animeInfo.id && userID) {
+      getUserWatchList(animeInfo.id);
+    }
+  }, [animeInfo.id]);
 
   /*--------------------Check if episode list has episode 0------------------------*/
   useEffect(() => {
@@ -95,6 +107,13 @@ export const WatchAnime = () => {
     }
   };
 
+  /*--------------------get user's watchlist------------------------*/
+  const getUserWatchList = async (id) => {
+    const { watchList } = await getWatchlist();
+    const isAdded = watchList.some((anime) => anime.animeID === id);
+    setIsAdded(isAdded);
+  };
+
   /*--------------------Get the current episode url------------------------*/
   const getCurrentEpisode = async (epsId) => {
     if (epsId !== undefined) {
@@ -139,6 +158,22 @@ export const WatchAnime = () => {
     }
   };
 
+  const handleWatchlist = async () => {
+    if (userID) {
+      if (!isAdded) {
+        const response = await addToWatchlist(animeInfo);
+        setIsAdded(true);
+        console.log(response);
+      } else {
+        const response = await removeToWatchlist(animeInfo);
+        setIsAdded(false);
+        console.log(response);
+      }
+    } else {
+      alert("Login first to use this feature.");
+    }
+  };
+
   return (
     <>
       <div className="w-screen min-h-screen dark:bg-zinc-900">
@@ -164,12 +199,12 @@ export const WatchAnime = () => {
               <Skeleton className="w-full bg-zinc-200 dark:bg-zinc-800 h-6 xs:h-7 lg:h-10 p-2"></Skeleton>
             ) : (
               <div className="w-full flex justify-between rounded-md items-center text-gray-300 gap-4 p-2">
-                <p className="text-gray-900 dark:text-gray-300 text-xs lg:text-base line-clamp-1">
+                <p className="text-gray-900 flex-grow dark:text-gray-300 text-xs lg:text-base line-clamp-1">
                   {currentEpisodeTitle === null
                     ? `Episode ${currentEpisodeNumber}`
                     : `Episode ${currentEpisodeNumber} : ${currentEpisodeTitle}`}
                 </p>
-                <div className="flex items-center justify-center gap-2 md:gap-3 lg:gap-4 text-zinc-600 dark:text-gray-300">
+                <div className="flex flex-shrink-0 items-center justify-center gap-2 md:gap-3 lg:gap-4 text-zinc-600 dark:text-gray-300">
                   <button
                     disabled={prev}
                     onClick={() => handleEpisodes("prev")}
@@ -327,13 +362,30 @@ export const WatchAnime = () => {
                 </div>
               ) : (
                 <div className="text-sm text-center xs:text-left">
-                  <h1 className="text-lg lg:text-2xl uppercase font-bold leading-5 mb-2">
-                    {animeInfo.title?.english === null
-                      ? animeInfo.title?.userPreferred !== undefined
-                        ? animeInfo.title?.userPreferred
-                        : animeInfo.title?.romaji
-                      : animeInfo.title?.english}
-                  </h1>
+                  <div className="flex items-start w-full justify-between gap-2">
+                    <h1 className="text-lg lg:text-2xl uppercase font-bold leading-5 mb-2">
+                      {animeInfo.title?.english === null
+                        ? animeInfo.title?.userPreferred !== undefined
+                          ? animeInfo.title?.userPreferred
+                          : animeInfo.title?.romaji
+                        : animeInfo.title?.english}
+                    </h1>
+                    {/* add to watch list */}
+                    <button
+                      onClick={handleWatchlist}
+                      className={`relative flex items-center gap-1 group uppercase text ${
+                        isAdded ? "text-orange-400" : ""
+                      }`}
+                    >
+                      <BsFillBookmarkFill className="text-xl sm:text-2xl" />
+                      <ToolTip
+                        title={
+                          isAdded ? "Added to Watchlist" : "Add to Watchlist"
+                        }
+                      />
+                    </button>
+                  </div>
+
                   {animeInfo.synonyms?.length > 0 ? (
                     <h1 className=" text-xs sm:text-sm mb-2 text-gray-500 line-clamp-2">
                       {" "}

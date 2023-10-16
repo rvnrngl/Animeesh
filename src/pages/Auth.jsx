@@ -106,7 +106,7 @@ export const Login = () => {
         window.localStorage.setItem("userID", response.data.userID);
         window.localStorage.setItem("userName", response.data.username);
         alert(response.data.message);
-        navigate("/");
+        navigate(-1);
       } else {
         alert(response.data.message);
       }
