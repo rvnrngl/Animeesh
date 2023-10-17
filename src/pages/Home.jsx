@@ -5,15 +5,18 @@ import { Trending } from "../components/Trending";
 import { MdNavigateNext } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { fetchRecent } from "@/api/apiRequests";
+import { fetchRecent, findAnimeUsingId } from "@/api/apiRequests";
+import { getWatchlist } from "@/features/getWatchlist";
 
 export const Home = () => {
   const [recentAnime, setRecentAnime] = useState([]);
+  const [userWatchList, setUserWatchList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentDate] = useState(new Date());
+  const currentDate = new Date();
   const year = currentDate.getFullYear();
 
   useEffect(() => {
+    getUserWatchList();
     getRecentAnime("gogoanime", 1, 50, year);
   }, []);
 
@@ -37,6 +40,17 @@ export const Home = () => {
     }
   };
 
+  //if user Login get user's watchlist
+  const getUserWatchList = async () => {
+    const { watchList } = await getWatchlist();
+    let animeList = [];
+    for (let i in watchList) {
+      const anime = await findAnimeUsingId(watchList[i].animeID);
+      animeList.push(anime);
+    }
+    setUserWatchList(animeList);
+  };
+
   return (
     <div className="w-screen min-h-screen dark:bg-zinc-900">
       <div className="w-full flex flex-col justify-center items-center gap-3 px-3 lg:px-5">
@@ -51,6 +65,27 @@ export const Home = () => {
           </h1>
           <Trending />
         </div>
+        {/* UserWatchlist Animes container */}
+        {!isLoading && userWatchList.length > 0 && (
+          <div className="w-full mt-[15px]">
+            <div className="w-full flex items-center justify-between mb-4  dark:text-gray-300">
+              <span className="text-lg lg:text-2xl lg:font-semibold">
+                My Favourites
+              </span>
+              <Link
+                to={`/user/watch-list`}
+                className="text-[10px] xs:text-xs md:text-base lg:text-base text-gray-500 dark:text-gray-400 flex items-center gap-1 
+            hover:text-gray-900 dark:hover:text-gray-100 ease-in-out duration-200"
+              >
+                <span className="uppercase">View more</span>
+                <MdNavigateNext />
+              </Link>
+            </div>
+            <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
+              <Cards animeList={userWatchList} type={"watchlist"} />
+            </div>
+          </div>
+        )}
         {/* Recent Updated Animes container */}
         <div className="w-full mt-[15px]">
           <div className="w-full flex items-center justify-between mb-4  dark:text-gray-300">
@@ -67,7 +102,7 @@ export const Home = () => {
             </Link>
           </div>
           <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
-            {isLoading === true ? (
+            {isLoading ? (
               Array.from({ length: 10 }, (_, index) => {
                 return (
                   <div

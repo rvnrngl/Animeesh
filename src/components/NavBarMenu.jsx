@@ -5,11 +5,13 @@ import { NavBarMenuButton } from "./NavBarMenuButton";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
-export const NavBarMenu = ({ isOpen }) => {
+export const NavBarMenu = ({ isOpen, setIsOpen }) => {
   const [_, setCookie, removeCookie] = useCookies(["access-token"]);
   const navigate = useNavigate();
+
   const navigateToProfile = () => {
-    console.log("clicked");
+    navigate("/user");
+    setIsOpen(false);
   };
 
   const navigateToWatchList = () => {

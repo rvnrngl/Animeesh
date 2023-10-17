@@ -12,7 +12,10 @@ export const AvatarComponent = () => {
   };
   return (
     <>
-      <button onClick={handleClick}>
+      <button
+        onClick={handleClick}
+        className="h-8 w-8 lg:h-10 lg:w-10 flex-shrink-0"
+      >
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback className="border bg-orange-400 text-zinc-900">
@@ -20,7 +23,7 @@ export const AvatarComponent = () => {
           </AvatarFallback>
         </Avatar>
       </button>
-      <NavBarMenu isOpen={isOpen} />
+      <NavBarMenu isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 };

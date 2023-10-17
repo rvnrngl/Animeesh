@@ -241,14 +241,6 @@ export const NavBar = () => {
               </Link>
             ) : (
               <>
-                {/* <button onClick={logOutUser}>
-                  <Avatar>
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback className="border bg-orange-400 text-zinc-900">
-                      <BiSolidUser className="text-md lg:text-2xl text-zinc-800" />
-                    </AvatarFallback>
-                  </Avatar>
-                </button> */}
                 <AvatarComponent />
               </>
             )}

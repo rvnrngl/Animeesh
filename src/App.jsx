@@ -16,6 +16,9 @@ import { RecentAnime } from "./pages/RecentAnime";
 import { Footer } from "./components/Footer";
 import { NotFound } from "./components/NotFound";
 import { Auth } from "./pages/Auth";
+import { User } from "./pages/User";
+import { UserProfile } from "./pages/UserProfile";
+import { UserWatchList } from "./pages/UserWatchList";
 
 function App() {
   const location = useLocation();
@@ -27,6 +30,7 @@ function App() {
     "^/watch/\\d+$",
     "^/search",
     "^/recent/page/\\d+$",
+    "^/user",
   ];
 
   const isShowed = routes.some((route) =>
@@ -45,6 +49,10 @@ function App() {
         <Route path="/recent/page/:id" element={<RecentAnime />}></Route>
         <Route path="/auth" element={<Auth />}></Route>
         <Route path="*" element={<NotFound />}></Route>
+        <Route path="/user" element={<User />}>
+          <Route index path="profile" element={<UserProfile />}></Route>
+          <Route path="watch-list" element={<UserWatchList />}></Route>
+        </Route>
       </Routes>
       {isShowed ? <Footer /> : ""}
       <ScrollToTopButton />

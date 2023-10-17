@@ -11,6 +11,12 @@ const fetchSearch = async (query, page, perPage) => {
   return response;
 };
 
+// find anime using id
+const findAnimeUsingId = async (id) => {
+  const response = await anilist.fetchAnilistInfoById(id);
+  return response;
+};
+
 // fetching anime using advanced search method
 const fetchAdvancedSearch = async (
   query,
@@ -81,4 +87,5 @@ export {
   fetchTrending,
   fetchAnime,
   fetchEpisodeUrl,
+  findAnimeUsingId,
 };
