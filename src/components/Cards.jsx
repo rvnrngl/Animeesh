@@ -80,8 +80,9 @@ export const Cards = ({ animeList, type }) => {
                     <span>•</span>
                     {type === "recent" ? (
                       <span>
-                        Latest Episode:{" "}
-                        {anime.episodeNumber || anime.currentEpisode}
+                        {!isNaN(anime.currentEpisode)
+                          ? `Latest Epsiode: ${anime.currentEpisode}`
+                          : "Not Available"}
                       </span>
                     ) : (
                       <span>

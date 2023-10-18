@@ -5,7 +5,7 @@ import { Trending } from "../components/Trending";
 import { MdNavigateNext } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { fetchRecent, findAnimeUsingId } from "@/api/apiRequests";
+import { fetchAdvancedSearch } from "@/api/apiRequests";
 import { getWatchlist } from "@/features/getWatchlist";
 
 export const Home = () => {
@@ -16,15 +16,26 @@ export const Home = () => {
   const year = currentDate.getFullYear();
 
   useEffect(() => {
-    getUserWatchList();
-    getRecentAnime("gogoanime", 1, 50, year);
+    getRecentAnime(1, 50, year);
   }, []);
 
   //get recent anime episodes
-  const getRecentAnime = async (provider, pageNumber, itemsPerPage) => {
+  const getRecentAnime = async (pageNumber, itemsPerPage, year) => {
     try {
-      const data = await fetchRecent(provider, pageNumber, itemsPerPage);
-      const filteredAnime = data.results?.filter(
+      const { results } = await fetchAdvancedSearch(
+        undefined,
+        "ANIME",
+        pageNumber,
+        itemsPerPage,
+        undefined,
+        ["UPDATED_AT_DESC"],
+        undefined,
+        undefined,
+        year,
+        "RELEASING",
+        undefined
+      );
+      const filteredAnime = results?.filter(
         (anime) =>
           anime.type === "TV" ||
           anime.type === "TV_SHORT" ||
@@ -32,23 +43,14 @@ export const Home = () => {
           anime.type === "OVA" ||
           anime.type === "SPECIAL"
       );
-      setRecentAnime(filteredAnime.slice(0, 20));
-    } catch (error) {
-      console.error("Error fetching recent anime:", error);
-    } finally {
+      setRecentAnime(filteredAnime);
       setIsLoading(false);
-    }
-  };
 
-  //if user Login get user's watchlist
-  const getUserWatchList = async () => {
-    const { watchList } = await getWatchlist();
-    let animeList = [];
-    for (let i in watchList) {
-      const anime = await findAnimeUsingId(watchList[i].animeID);
-      animeList.push(anime);
+      const watchList = await getWatchlist();
+      setUserWatchList(watchList);
+    } catch (error) {
+      console.log(error);
     }
-    setUserWatchList(animeList);
   };
 
   return (
@@ -66,7 +68,7 @@ export const Home = () => {
           <Trending />
         </div>
         {/* UserWatchlist Animes container */}
-        {!isLoading && userWatchList.length > 0 && (
+        {userWatchList.length > 0 ? (
           <div className="w-full mt-[15px]">
             <div className="w-full flex items-center justify-between mb-4  dark:text-gray-300">
               <span className="text-lg lg:text-2xl lg:font-semibold">
@@ -85,6 +87,8 @@ export const Home = () => {
               <Cards animeList={userWatchList} type={"watchlist"} />
             </div>
           </div>
+        ) : (
+          ""
         )}
         {/* Recent Updated Animes container */}
         <div className="w-full mt-[15px]">
