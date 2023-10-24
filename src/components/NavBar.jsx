@@ -104,15 +104,6 @@ export const NavBar = () => {
     }
   };
 
-  // logout user
-  const logOutUser = () => {
-    removeCookie("access-token", { path: "/" });
-    window.localStorage.removeItem("userID");
-    window.localStorage.removeItem("userName");
-    setUserID("");
-    navigate("/");
-  };
-
   return (
     <>
       <div className="w-screen dark:bg-zinc-900 lg:px-5 relative z-[999]">

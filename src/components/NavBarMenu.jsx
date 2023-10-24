@@ -10,13 +10,14 @@ export const NavBarMenu = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
 
   const navigateToProfile = () => {
-    navigate("/user");
+    navigate("/user/watch-list");
     setIsOpen(false);
   };
 
-  const navigateToWatchList = () => {
-    console.log("clicked");
-  };
+  // const navigateToWatchList = () => {
+  //   navigate("/user/watch-list");
+  //   setIsOpen(false);
+  // };
 
   const handleLogOut = () => {
     removeCookie("access-token", { path: "/" });
@@ -42,9 +43,9 @@ export const NavBarMenu = ({ isOpen, setIsOpen }) => {
               <NavBarMenuButton onClick={navigateToProfile} title="Profile">
                 <BiSolidUser size={20} />
               </NavBarMenuButton>
-              <NavBarMenuButton onClick={navigateToWatchList} title="Watchlist">
+              {/* <NavBarMenuButton onClick={navigateToWatchList} title="Watchlist">
                 <BsFillBookmarkFill size={15} />
-              </NavBarMenuButton>
+              </NavBarMenuButton> */}
               <NavBarMenuButton onClick={handleLogOut} title="Logout">
                 <BiLogOut size={20} />
               </NavBarMenuButton>

@@ -11,7 +11,7 @@ export const UserCard = ({ userInfo }) => {
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback className="border bg-zinc-900/50">
             <span className="font-black text-9xl uppercase -translate-y-1">
-              {username.charAt(0)}
+              {username?.charAt(0)}
             </span>
           </AvatarFallback>
         </Avatar>
@@ -27,7 +27,7 @@ export const UserCard = ({ userInfo }) => {
         </div>
         <div className="w-full text-sm flex justify-between items-center text-zinc-500">
           <span>Watch ist</span>
-          <span>{watchList.length}</span>
+          <span>{watchList?.length}</span>
         </div>
       </div>
     </div>
