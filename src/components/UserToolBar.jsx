@@ -11,12 +11,12 @@ export const UserToolBar = () => {
       >
         Watchlist
       </Link>
-      {/* <Link
+      <Link
         to={"/user/profile"}
         className={currentpath === "#/user/profile" ? "text-orange-400" : ""}
       >
         Profile
-      </Link> */}
+      </Link>
     </div>
   );
 };
