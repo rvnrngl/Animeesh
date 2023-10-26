@@ -13,6 +13,7 @@ import { useCookies } from "react-cookie";
 import { AvatarComponent } from "./AvatarComponent";
 
 export const NavBar = () => {
+  const userID = window.localStorage.getItem("userID");
   const [isDark, setIsDark] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light"); // change to null
   const [isMenuClosed, setIsMenuClosed] = useState(true); // if dropdown menu is closed
@@ -219,7 +220,7 @@ export const NavBar = () => {
               <ImSearch className="text-lg lg:text-xl dark:text-gray-300" />
             </button>
             {/* Avatar/login */}
-            {!cookies.hasOwnProperty("access-token") ? (
+            {!cookies.hasOwnProperty("access-token") && !userID ? (
               <Link
                 to={"/auth"}
                 className="flex items-center gap-1 lg:gap-2 bg-orange-400 text-zinc-800 px-3 lg:px-4 py-1 lg:py-2 
