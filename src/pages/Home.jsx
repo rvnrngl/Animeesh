@@ -7,8 +7,10 @@ import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchAdvancedSearch } from "@/api/apiRequests";
 import { getWatchlist } from "@/features/getWatchlist";
+import { UserWatchListAll } from "@/components/UserWatchListAll";
 
 export const Home = () => {
+  const userID = window.localStorage.getItem("userID");
   const [recentAnime, setRecentAnime] = useState([]);
   const [userWatchList, setUserWatchList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,12 +46,15 @@ export const Home = () => {
           anime.type === "SPECIAL"
       );
       setRecentAnime(filteredAnime);
-      setIsLoading(false);
 
-      const watchList = await getWatchlist();
-      setUserWatchList(watchList);
+      if (userID) {
+        const { watchList } = await getWatchlist();
+        setUserWatchList(watchList);
+      }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -68,28 +73,17 @@ export const Home = () => {
           <Trending />
         </div>
         {/* UserWatchlist Animes container */}
-        {userWatchList.length > 0 ? (
-          <div className="w-full mt-[15px]">
-            <div className="w-full flex items-center justify-between mb-4  dark:text-gray-300">
-              <span className="text-lg lg:text-2xl lg:font-semibold">
-                My Favourites
-              </span>
-              <Link
-                to={`/user/watch-list`}
-                className="text-[10px] xs:text-xs md:text-base lg:text-base text-gray-500 dark:text-gray-400 flex items-center gap-1 
-            hover:text-gray-900 dark:hover:text-gray-100 ease-in-out duration-200"
-              >
-                <span className="uppercase">View more</span>
-                <MdNavigateNext />
-              </Link>
-            </div>
-            <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 lg:gap-4">
-              <Cards animeList={userWatchList} type={"watchlist"} />
-            </div>
+        {userWatchList?.length > 0 ? (
+          <div className="w-full flex flex-col items-start">
+            <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
+              Anime Favourites
+            </h1>
+            <UserWatchListAll watchList={userWatchList} />
           </div>
         ) : (
           ""
         )}
+
         {/* Recent Updated Animes container */}
         <div className="w-full mt-[15px]">
           <div className="w-full flex items-center justify-between mb-4  dark:text-gray-300">

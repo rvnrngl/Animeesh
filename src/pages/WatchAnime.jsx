@@ -45,7 +45,7 @@ export const WatchAnime = () => {
   }, [id]);
 
   useEffect(() => {
-    if (animeInfo.id && userID) {
+    if (userID) {
       getUserWatchList(animeInfo.id);
     }
   }, [animeInfo.id]);

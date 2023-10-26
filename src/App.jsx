@@ -19,6 +19,7 @@ import { Auth } from "./pages/Auth";
 import { User } from "./pages/User";
 import { UserProfile } from "./pages/UserProfile";
 import { UserWatchList } from "./pages/UserWatchList";
+import { useEffect } from "react";
 
 function App() {
   const location = useLocation();
@@ -36,6 +37,12 @@ function App() {
   const isShowed = routes.some((route) =>
     new RegExp(route).test(location.pathname)
   );
+
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+    document.body.style.backgroundColor = "#18181b";
+    localStorage.setItem("theme", "dark");
+  });
 
   return (
     <>

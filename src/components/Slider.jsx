@@ -42,7 +42,7 @@ export const Slider = ({ animeList, type }) => {
           }}
           className="mySwiper"
         >
-          {animeList.map((anime, index) => {
+          {animeList?.map((anime, index) => {
             return (
               <SwiperSlide
                 key={index}
@@ -56,7 +56,11 @@ export const Slider = ({ animeList, type }) => {
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                   }}
-                  onClick={() => handleNavigation(anime.id)}
+                  onClick={() =>
+                    handleNavigation(
+                      type === "watchList" ? anime.animeID : anime.id
+                    )
+                  }
                 >
                   {/* badge */}
                   <div
@@ -78,11 +82,17 @@ export const Slider = ({ animeList, type }) => {
                       className="h-full w-full -rotate-180 [writing-mode:vertical-lr] text-left pl-2
                       bg-gradient-to-t from-orange-100 to-orange-500/90 bg-clip-text text-transparent uppercase"
                     >
-                      <span className="h-full line-clamp-1">
-                        {anime.title?.english === null
-                          ? anime.title?.userPreferred
-                          : anime.title?.english}
-                      </span>
+                      {type === "watchList" ? (
+                        <span className="h-full line-clamp-1">
+                          {anime.title}
+                        </span>
+                      ) : (
+                        <span className="h-full line-clamp-1">
+                          {anime.title?.english === null
+                            ? anime.title?.userPreferred
+                            : anime.title?.english}
+                        </span>
+                      )}
                     </p>
                   </div>
                 </div>

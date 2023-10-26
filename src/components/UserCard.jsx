@@ -26,7 +26,7 @@ export const UserCard = ({ userInfo }) => {
           <span>{joinDate}</span>
         </div>
         <div className="w-full text-sm flex justify-between items-center text-zinc-500">
-          <span>Watch ist</span>
+          <span>Watch List</span>
           <span>{watchList?.length}</span>
         </div>
       </div>

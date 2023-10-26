@@ -10,20 +10,20 @@ export const NavBarMenu = ({ isOpen, setIsOpen }) => {
   const navigate = useNavigate();
 
   const navigateToProfile = () => {
-    navigate("/user/watch-list");
+    navigate("/user/profile");
     setIsOpen(false);
   };
 
-  // const navigateToWatchList = () => {
-  //   navigate("/user/watch-list");
-  //   setIsOpen(false);
-  // };
+  const navigateToWatchList = () => {
+    navigate("/user/watch-list");
+    setIsOpen(false);
+  };
 
   const handleLogOut = () => {
     removeCookie("access-token", { path: "/" });
     window.localStorage.removeItem("userID");
     window.localStorage.removeItem("userName");
-    navigate("/");
+    navigate(0);
   };
 
   return (
@@ -43,9 +43,9 @@ export const NavBarMenu = ({ isOpen, setIsOpen }) => {
               <NavBarMenuButton onClick={navigateToProfile} title="Profile">
                 <BiSolidUser size={20} />
               </NavBarMenuButton>
-              {/* <NavBarMenuButton onClick={navigateToWatchList} title="Watchlist">
+              <NavBarMenuButton onClick={navigateToWatchList} title="Watchlist">
                 <BsFillBookmarkFill size={15} />
-              </NavBarMenuButton> */}
+              </NavBarMenuButton>
               <NavBarMenuButton onClick={handleLogOut} title="Logout">
                 <BiLogOut size={20} />
               </NavBarMenuButton>
