@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { DeleteUserComponent } from "@/components/DeleteUserComponent";
 
 const url = import.meta.env.VITE_API;
 
@@ -19,6 +20,7 @@ export const UserProfile = () => {
     currentIsVisible: false,
     newIsVisible: false,
   });
+  const [isDeleteWindowOpen, setIsDeleteWindowOpen] = useState(false);
   const navigate = useNavigate();
 
   /*-----------------------update username-----------------------*/
@@ -87,122 +89,131 @@ export const UserProfile = () => {
     }
   };
 
-  const deleteUser = async () => {
-    alert("not yet implemented!");
-  };
-
   const handleSubmit = async (type) => {
     if (type === "username") {
       await changeUsername();
     } else if (type === "password") {
       await updatePassword();
-    } else if (type === "delete") {
-      await deleteUser();
     }
   };
 
+  const handleWindow = () => {
+    setIsDeleteWindowOpen(true);
+  };
+
   return (
-    <div className="w-full h-full flex flex-col items-center gap-5 justify-center bg-zinc-800 p-4 rounded-md shadow-sm text-zinc-300">
-      <h1 className="font-semibold text-lg">Settings</h1>
-      <div className="w-full text-sm flex items-end gap-3 justify-around md:px-5">
-        <div className="w-full max-w-xs flex flex-col gap-4">
-          <p>Update Username</p>
-          <input
-            type="text"
-            value={form.newUsername}
-            placeholder={userInfo.username}
-            onChange={(event) =>
-              setForm((prev) => ({
-                ...prev,
-                newUsername: event.target.value,
-              }))
-            }
-            className="bg-transparent outline-none border py-2 px-4 border-zinc-600 focus:border-zinc-400 rounded-md placeholder:text-zinc-500 placeholder:font-[400]"
-          />
-        </div>
-        <button
-          onClick={() => handleSubmit("username")}
-          className="text-zinc-800 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br hover:text-white/80 font-medium rounded-lg text-sm px-5 py-2 text-center"
-        >
-          Update
-        </button>
-      </div>
-      <div className="w-full text-sm flex items-end gap-3 justify-around md:px-5">
-        <div className="w-full max-w-xs flex flex-col gap-4">
-          <p>Current password</p>
-          <div className="w-full h-full flex items-center gap-1 border px-4 border-zinc-600 rounded-md overflow-hidden">
+    <>
+      <div className="w-full h-full flex flex-col items-center gap-5 justify-center bg-zinc-800 p-4 rounded-md shadow-sm text-zinc-300">
+        <h1 className="font-semibold text-lg">Settings</h1>
+        <div className="w-full text-sm flex items-end gap-3 justify-around md:px-5">
+          <div className="w-full max-w-xs flex flex-col gap-4">
+            <p>Update Username</p>
             <input
-              type={peekGroup.currentIsVisible ? "text" : "password"}
-              value={form.currentPassword}
-              placeholder="Enter current password"
+              type="text"
+              value={form.newUsername}
+              placeholder={userInfo.username}
               onChange={(event) =>
                 setForm((prev) => ({
                   ...prev,
-                  currentPassword: event.target.value,
+                  newUsername: event.target.value,
                 }))
               }
-              className="w-full bg-transparent outline-none py-2 placeholder:text-zinc-500 placeholder:font-[400]"
+              className="bg-transparent outline-none border py-2 px-4 border-zinc-600 focus:border-zinc-400 rounded-md placeholder:text-zinc-500 placeholder:font-[400]"
             />
-            <button
-              className="flex-shrink-0"
-              onClick={() =>
-                setPeekGroup((prev) => ({
-                  ...prev,
-                  currentIsVisible: !peekGroup.currentIsVisible,
-                }))
-              }
-            >
-              {peekGroup.currentIsVisible ? (
-                <AiOutlineEye />
-              ) : (
-                <AiOutlineEyeInvisible />
-              )}
-            </button>
           </div>
-          <p>New password</p>
-          <div className="w-full h-full flex items-center gap-1 border px-4 border-zinc-600 rounded-md overflow-hidden">
-            <input
-              type={peekGroup.newIsVisible ? "text" : "password"}
-              value={form.newPassword}
-              placeholder="Enter current password"
-              onChange={(event) =>
-                setForm((prev) => ({
-                  ...prev,
-                  newPassword: event.target.value,
-                }))
-              }
-              className="w-full bg-transparent outline-none py-2 placeholder:text-zinc-500 placeholder:font-[400]"
-            />
-            <button
-              className="flex-shrink-0"
-              onClick={() =>
-                setPeekGroup((prev) => ({
-                  ...prev,
-                  newIsVisible: !peekGroup.newIsVisible,
-                }))
-              }
-            >
-              {peekGroup.newIsVisible ? (
-                <AiOutlineEye />
-              ) : (
-                <AiOutlineEyeInvisible />
-              )}
-            </button>
+          <button
+            onClick={() => handleSubmit("username")}
+            className="text-zinc-800 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br hover:text-white/80 font-medium rounded-lg text-sm px-5 py-2 text-center"
+          >
+            Update
+          </button>
+        </div>
+        <div className="w-full text-sm flex items-end gap-3 justify-around md:px-5">
+          <div className="w-full max-w-xs flex flex-col gap-4">
+            <p>Current password</p>
+            <div className="w-full h-full flex items-center gap-1 border px-4 border-zinc-600 rounded-md overflow-hidden">
+              <input
+                type={peekGroup.currentIsVisible ? "text" : "password"}
+                value={form.currentPassword}
+                placeholder="Enter current password"
+                onChange={(event) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    currentPassword: event.target.value,
+                  }))
+                }
+                className="w-full bg-transparent outline-none py-2 placeholder:text-zinc-500 placeholder:font-[400]"
+              />
+              <button
+                className="flex-shrink-0 text-zinc-500 hover:text-zinc-200"
+                onClick={() =>
+                  setPeekGroup((prev) => ({
+                    ...prev,
+                    currentIsVisible: !peekGroup.currentIsVisible,
+                  }))
+                }
+              >
+                {peekGroup.currentIsVisible ? (
+                  <AiOutlineEye />
+                ) : (
+                  <AiOutlineEyeInvisible />
+                )}
+              </button>
+            </div>
+            <p>New password</p>
+            <div className="w-full h-full flex items-center gap-1 border px-4 border-zinc-600 rounded-md overflow-hidden">
+              <input
+                type={peekGroup.newIsVisible ? "text" : "password"}
+                value={form.newPassword}
+                placeholder="Enter current password"
+                onChange={(event) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    newPassword: event.target.value,
+                  }))
+                }
+                className="w-full bg-transparent outline-none py-2 placeholder:text-zinc-500 placeholder:font-[400]"
+              />
+              <button
+                className="flex-shrink-0 text-zinc-500 hover:text-zinc-200"
+                onClick={() =>
+                  setPeekGroup((prev) => ({
+                    ...prev,
+                    newIsVisible: !peekGroup.newIsVisible,
+                  }))
+                }
+              >
+                {peekGroup.newIsVisible ? (
+                  <AiOutlineEye />
+                ) : (
+                  <AiOutlineEyeInvisible />
+                )}
+              </button>
+            </div>
           </div>
+          <button
+            onClick={() => handleSubmit("password")}
+            className="text-zinc-800 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br hover:text-white/80 font-medium rounded-lg text-sm px-5 py-2 text-center"
+          >
+            Update
+          </button>
         </div>
         <button
-          onClick={() => handleSubmit("password")}
-          className="text-zinc-800 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:bg-gradient-to-br hover:text-white/80 font-medium rounded-lg text-sm px-5 py-2 text-center"
+          onClick={handleWindow}
+          className="text-zinc-800 my-5 hover:text-white/80 bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
         >
-          Update
+          Delete account
         </button>
       </div>
-      <button
-        onClick={() => handleSubmit("delete")}
-        className="text-zinc-800 my-5 hover:text-white/80 bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-      >
-        Delete account
-      </button>
-    </div>
+      {isDeleteWindowOpen ? (
+        <DeleteUserComponent
+          username={userInfo.username}
+          userID={userID}
+          setIsDeleteWindowOpen={setIsDeleteWindowOpen}
+        />
+      ) : (
+        ""
+      )}
+    </>
   );
 };

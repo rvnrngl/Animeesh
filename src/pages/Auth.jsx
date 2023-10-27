@@ -5,6 +5,7 @@ import { BiLock, BiSolidUserCircle } from "react-icons/bi";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const url = import.meta.env.VITE_API;
 
@@ -82,6 +83,7 @@ export const Auth = () => {
 export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [_, setCookie] = useCookies(["access-token"]);
   const navigate = useNavigate();
@@ -120,15 +122,12 @@ export const Login = () => {
 
   return (
     <div className="w-full py-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full flex flex-col gap-4 text-base"
-      >
+      <div className="w-full flex flex-col gap-4 text-base">
         <h1 className="w-full text-center text-gray-400 text-lg lg:text-xl font-semibold">
           Welcome back!
         </h1>
         <div className="border border-zinc-700 rounded-sm flex items-center gap-2 p-2">
-          <BiSolidUserCircle className="text-zinc-500 text-xl lg:text-2xl" />
+          <BiSolidUserCircle className="flex-shrink-0 text-zinc-500 text-xl lg:text-2xl" />
           <input
             type="text"
             id="username"
@@ -140,9 +139,9 @@ export const Login = () => {
           />
         </div>
         <div className="border border-zinc-700 rounded-sm flex items-center gap-2 p-2 mb-2">
-          <BiLock className="text-zinc-500 text-xl lg:text-2xl" />
+          <BiLock className="flex-shrink-0 text-zinc-500 text-xl lg:text-2xl" />
           <input
-            type="password"
+            type={isPasswordVisible ? "text" : "password"}
             id="pass"
             name="password"
             value={password}
@@ -150,16 +149,22 @@ export const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-transparent outline-none placeholder:text-zinc-500 placeholder:font-[400]"
           />
+          <button
+            className="flex-shrink-0 text-xl text-zinc-500 hover:text-zinc-200"
+            onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+          >
+            {isPasswordVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+          </button>
         </div>
         <button
-          type="submit"
+          onClick={handleSubmit}
           disabled={buttonDisabled}
           className="bg-orange-400 text-gray-900 p-2 px-4 font-semibold rounded-sm shadow-sm 
           disabled:bg-zinc-600 disabled:cursor-wait"
         >
           Login
         </button>
-      </form>
+      </div>
     </div>
   );
 };
@@ -169,6 +174,10 @@ export const Register = ({ changeAuthType }) => {
   const [password, setPassword] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [peekGroup, setPeekGroup] = useState({
+    isPasswordVisible: false,
+    isConfirmPasswordVisible: false,
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -209,10 +218,7 @@ export const Register = ({ changeAuthType }) => {
 
   return (
     <div className="w-full py-4">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full flex flex-col gap-4 text-base"
-      >
+      <div className="w-full flex flex-col gap-4 text-base">
         <h1 className="w-full text-center text-gray-400 text-lg lg:text-xl font-semibold">
           Create an account.
         </h1>
@@ -231,7 +237,7 @@ export const Register = ({ changeAuthType }) => {
         <div className="border border-zinc-700 rounded-sm flex items-center gap-2 p-2">
           <BiLock className="text-zinc-500 text-xl lg:text-2xl" />
           <input
-            type="password"
+            type={peekGroup.isPasswordVisible ? "text" : "password"}
             id="pass"
             name="password"
             value={password}
@@ -239,11 +245,26 @@ export const Register = ({ changeAuthType }) => {
             onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-transparent outline-none placeholder:text-zinc-500 placeholder:font-[400]"
           />
+          <button
+            className="flex-shrink-0 text-xl text-zinc-500 hover:text-zinc-200"
+            onClick={() =>
+              setPeekGroup((prev) => ({
+                ...prev,
+                isPasswordVisible: !peekGroup.isPasswordVisible,
+              }))
+            }
+          >
+            {peekGroup.isPasswordVisible ? (
+              <AiOutlineEye />
+            ) : (
+              <AiOutlineEyeInvisible />
+            )}
+          </button>
         </div>
         <div className="border border-zinc-700 rounded-sm flex items-center gap-2 p-2 mb-2">
           <BiLock className="text-zinc-500 text-xl lg:text-2xl" />
           <input
-            type="password"
+            type={peekGroup.isConfirmPasswordVisible ? "text" : "password"}
             id="password"
             name="password"
             value={confirmPassword}
@@ -251,16 +272,31 @@ export const Register = ({ changeAuthType }) => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-full bg-transparent outline-none placeholder:text-zinc-500 placeholder:font-[400]"
           />
+          <button
+            className="flex-shrink-0 text-xl text-zinc-500 hover:text-zinc-200"
+            onClick={() =>
+              setPeekGroup((prev) => ({
+                ...prev,
+                isConfirmPasswordVisible: !peekGroup.isConfirmPasswordVisible,
+              }))
+            }
+          >
+            {peekGroup.isConfirmPasswordVisible ? (
+              <AiOutlineEye />
+            ) : (
+              <AiOutlineEyeInvisible />
+            )}
+          </button>
         </div>
         <button
-          type="submit"
+          onClick={handleSubmit}
           disabled={buttonDisabled}
           className="bg-orange-400 text-gray-900 p-2 px-4 font-semibold rounded-sm shadow-sm 
           disabled:bg-zinc-600 disabled:cursor-wait"
         >
           Register
         </button>
-      </form>
+      </div>
     </div>
   );
 };

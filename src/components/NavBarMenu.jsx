@@ -23,7 +23,7 @@ export const NavBarMenu = ({ isOpen, setIsOpen }) => {
     removeCookie("access-token", { path: "/" });
     window.localStorage.removeItem("userID");
     window.localStorage.removeItem("userName");
-    navigate(0);
+    navigate("/");
   };
 
   return (

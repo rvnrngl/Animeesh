@@ -18,6 +18,7 @@ import { addToWatchlist } from "@/features/addToWatchlist";
 import { getWatchlist } from "@/features/getWatchlist";
 import { ToolTip } from "@/components/ToolTip";
 import { removeToWatchlist } from "@/features/removeToWatchlist";
+import { updateAnimeEpisode } from "@/features/updateAnimeEpisode";
 
 export const WatchAnime = () => {
   const userID = window.localStorage.getItem("userID");
@@ -72,6 +73,9 @@ export const WatchAnime = () => {
         getCurrentEpisode(recentEp.id);
         setCurrentEpisodeTitle(recentEp.title);
         setCurrentEpisodeNumber(recentEp.number);
+        if (userID && animeInfo.id && recentEp.number) {
+          updateAnimeEpisode(userID, animeInfo.id, recentEp.number);
+        }
       } else {
         // get first episode
         const hasZero = episode.some((eps) => eps.number === 0);

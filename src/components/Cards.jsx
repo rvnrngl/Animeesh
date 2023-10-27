@@ -41,7 +41,7 @@ export const Cards = ({ animeList, type }) => {
                       handleNavigation(anime.id);
                     }
                   } else {
-                    handleNavigation(anime);
+                    handleNavigation(anime.id);
                   }
                 }}
                 className={`flex flex-col items-center text-sm lg:text-base rounded-sm overflow-hidden group ${
