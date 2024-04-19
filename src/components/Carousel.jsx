@@ -7,39 +7,48 @@ import { Autoplay, Pagination } from "swiper/modules";
 import { PiTelevisionBold } from "react-icons/pi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchAdvancedSearch } from "@/api/apiRequests";
+import { UseLoading } from "@/hooks/UseLoading";
+import { fetchTopTenAnimeAiring } from "@/api/jikanAPI/apiRequest";
 
 export const Carousel = () => {
-  const [popularAnime, setPopularAnime] = useState([]);
-  const [currentDate] = useState(new Date());
-  const year = currentDate.getFullYear();
-  const [isLoading, setIsLoading] = useState(true);
+  const [topAnime, setTopAnime] = useState([]);
+  const { isLoading, startLoading, stopLoading } = UseLoading();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getPopularAnime();
-  }, []);
-
   // get top 10 popular anime of this season
-  const getPopularAnime = async () => {
-    setIsLoading(true);
+  // const getPopularAnime = async () => {
+  //   setIsLoading(true);
+  //   try {
+  //     const data = await fetchAdvancedSearch(
+  //       undefined,
+  //       "ANIME",
+  //       1,
+  //       10,
+  //       undefined,
+  //       ["POPULARITY_DESC"],
+  //       undefined,
+  //       undefined,
+  //       year,
+  //       undefined
+  //     );
+  //     setPopularAnime(data.results);
+  //   } catch (error) {
+  //     console.error("Error fetching popular anime:", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const getTopAnime = async () => {
+    startLoading();
     try {
-      const data = await fetchAdvancedSearch(
-        undefined,
-        "ANIME",
-        1,
-        10,
-        undefined,
-        ["POPULARITY_DESC"],
-        undefined,
-        undefined,
-        year,
-        undefined
-      );
-      setPopularAnime(data.results);
+      const response = await fetchTopTenAnimeAiring();
+      setTopAnime(response.data);
     } catch (error) {
-      console.error("Error fetching popular anime:", error);
+      stopLoading();
+      console.error("Error fetching in fetchTopAnime:", error);
     } finally {
-      setIsLoading(false);
+      stopLoading();
     }
   };
 
@@ -50,6 +59,11 @@ export const Carousel = () => {
       console.log("No id found!");
     }
   };
+
+  useEffect(() => {
+    // getPopularAnime();
+    getTopAnime();
+  }, []);
 
   return (
     <>
@@ -77,23 +91,18 @@ export const Carousel = () => {
           modules={[Autoplay, Pagination]}
           className="mySwiper w-full h-full text-sm lg:text-base rounded-lg"
         >
-          {popularAnime.map((anime, index) => {
+          {topAnime.map((anime, index) => {
             return (
               <SwiperSlide
-                key={anime.id}
+                key={anime.mal_id}
                 className="flex flex-col justify-end items-start text-white transition-all duration-300 cursor-grab"
               >
                 {/* image bg */}
                 <div className="absolute w-full h-full brightness-75 border-gray-900/10 top-0 left-0 -z-[1]">
                   <img
-                    src={anime.cover}
-                    alt={anime.title.english}
-                    className="h-full w-full object-cover object-center hidden lg:block"
-                  />
-                  <img
-                    src={anime.image}
-                    alt={anime.title.english}
-                    className="w-full object-cover object-center lg:hidden"
+                    src={anime.images.jpg.large_image_url}
+                    alt={anime.title}
+                    className="h-full w-full object-cover object-center"
                   />
                 </div>
                 {/* anime description */}
@@ -102,7 +111,7 @@ export const Carousel = () => {
                     #{index + 1} Top Anime
                   </span>
                   <p className="w-3/4 lg:w-2/4 text-lg font-semibold lg:text-3xl break-words leading-5">
-                    {anime.title.english}
+                    {anime.title}
                   </p>
                   <div className="flex items-center gap-2 text-[10px] lg:text-base text-white/90 font-thin">
                     <p>
@@ -110,9 +119,7 @@ export const Carousel = () => {
                     </p>
                     <p>
                       Episodes:{" "}
-                      <span className=" font-semibold">
-                        {anime.totalEpisodes}
-                      </span>
+                      <span className=" font-semibold">{anime.episodes}</span>
                     </p>
                     <p>
                       Rating:{" "}
@@ -121,20 +128,20 @@ export const Carousel = () => {
                   </div>
                   <div
                     className="text-[10px] lg:text-base text-white/90 font-thin max-h-[40px] lg:max-h-[75px] 
-                  w-3/4 sm:w-2/4 break-words leading-3 overflow-hidden mt-1"
+              w-3/4 sm:w-2/4 break-words leading-3 overflow-hidden mt-1"
                   >
                     <p className="line-clamp-3">
-                      {anime.description
+                      {anime.synopsis
                         .replace(/<\/?i\s*\/?>/g, "")
                         .replace(/<\/?br\s*\/?>/g, "")}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-gray-900 text-sm lg:text-lg mt-3">
                     <button
-                      onClick={() => handleNavigate(anime.id)}
+                      onClick={() => handleNavigate(anime.mal_id)}
                       className="w-fit flex items-center gap-1 py-px px-2 font-semibold shadow-md 
-                  uppercase rounded-sm bg-orange-400 border-b border-orange-400 hover:text-gray-200
-                  duration-200 ease-out"
+              uppercase rounded-sm bg-orange-400 border-b border-orange-400 hover:text-gray-200
+              duration-200 ease-out"
                     >
                       <PiTelevisionBold />
                       Play
