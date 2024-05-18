@@ -1,8 +1,7 @@
 import { create } from "zustand";
 
-const useAnimeStore = create((set) => ({
-  anime: null,
-  setAnime: (newAnime) => set({ anime: newAnime }),
+export const useAnimeStore = create((set) => ({
+  currentEpisode: undefined,
+  setCurrentEpisode: (data) => set({ currentEpisode: data }),
+  removeCurrentEpisode: () => set({ currentEpisode: undefined }),
 }));
-
-export default useAnimeStore;

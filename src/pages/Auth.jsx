@@ -2,12 +2,10 @@ import React from "react";
 import ImageTitle from "../assets/animeesh-title.png";
 import { useState } from "react";
 import { BiLock, BiSolidUserCircle } from "react-icons/bi";
-import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-
-const url = import.meta.env.VITE_API;
+import { userService } from "@/services/userService";
 
 export const Auth = () => {
   const [auth, setAuth] = useState("login");
@@ -99,7 +97,7 @@ export const Login = () => {
     }
 
     try {
-      const response = await axios.post(`${url}/auth/login`, {
+      const response = await userService.post("/auth/login", {
         username,
         password,
       });
@@ -198,7 +196,7 @@ export const Register = ({ changeAuthType }) => {
     }
 
     try {
-      const response = await axios.post(`${url}/auth/register`, {
+      const response = await userService.post("/auth/register", {
         username,
         password,
       });

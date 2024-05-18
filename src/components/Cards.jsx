@@ -1,28 +1,24 @@
-import React from "react";
-
 import { FaPlay } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
-//icons
 import { AiFillLike, AiFillStar } from "react-icons/ai";
 import { PiTelevisionBold } from "react-icons/pi";
-
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { NotFound } from "./NotFound";
 
-export const Cards = ({ animeList, type }) => {
+export const Cards = ({ animeList, isRecent }) => {
   const navigate = useNavigate();
 
-  const handleNavigation = (id) => {
-    window.localStorage.setItem("type", type);
-    if (id) {
-      navigate(`/watch/${id}`);
-    } else {
-      console.log("No id found!");
+  const handleNavigationWithRecent = (id) => {
+    if (!id) {
+      return <NotFound />;
     }
+
+    navigate(`/watch/${id}`, { state: { isIdRecent: isRecent } });
+    window.scrollTo({ top: 0 });
   };
 
   return (
@@ -33,19 +29,19 @@ export const Cards = ({ animeList, type }) => {
             <HoverCardTrigger asChild>
               <div
                 onClick={() => {
-                  if (type !== "recent") {
+                  if (isRecent) {
                     if (
                       anime.status === "Completed" ||
                       anime.status === "Ongoing"
                     ) {
-                      handleNavigation(anime.id);
+                      handleNavigationWithRecent(anime.id);
                     }
                   } else {
-                    handleNavigation(anime.id);
+                    handleNavigationWithRecent(anime.id);
                   }
                 }}
                 className={`flex flex-col items-center text-sm lg:text-base rounded-sm overflow-hidden group ${
-                  type === "recent"
+                  isRecent
                     ? "cursor-pointer"
                     : anime.status === "Completed" || anime.status === "Ongoing"
                     ? " cursor-pointer"
@@ -78,10 +74,10 @@ export const Cards = ({ animeList, type }) => {
                   <div className=" flex gap-2 text-[10px] md:text-xs text-gray-500 dark:text-gray-400">
                     <span>{anime.type}</span>
                     <span>•</span>
-                    {type === "recent" ? (
+                    {isRecent ? (
                       <span>
                         {!isNaN(anime.currentEpisode)
-                          ? `Latest Epsiode: ${anime.currentEpisode}`
+                          ? `Episode: ${anime.currentEpisode}`
                           : "Not Available"}
                       </span>
                     ) : (
@@ -96,7 +92,7 @@ export const Cards = ({ animeList, type }) => {
                 </div>
               </div>
             </HoverCardTrigger>
-            {type === "recent" ? (
+            {isRecent ? (
               <HoverCardContent
                 side="right"
                 align="end"
@@ -161,8 +157,7 @@ export const Cards = ({ animeList, type }) => {
                     </div>
                     <button
                       onClick={() => handleNavigation(anime)}
-                      className={`py-2 rounded-full font-semibold flex justify-center items-center gap-2 bg-orange-500 
-                      hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200`}
+                      className={`py-2 rounded-full font-semibold flex justify-center items-center gap-2 bg-orange-400/90 text-gray-800 hover:bg-orange-400 ease-in-out duration-200`}
                     >
                       <PiTelevisionBold size={20} />
                       <span>WATCH NOW</span>
@@ -255,7 +250,7 @@ export const Cards = ({ animeList, type }) => {
                       className={`py-2 rounded-full font-semibold flex justify-center items-center gap-2 ${
                         anime.status === "Completed" ||
                         anime.status === "Ongoing"
-                          ? "bg-orange-500 hover:text-gray-200 dark:hover:text-gray-900 ease-in-out duration-200"
+                          ? "bg-orange-400/90 text-gray-800 hover:bg-orange-400 ease-in-out duration-200"
                           : "bg-zinc-300 dark:bg-zinc-700 cursor-not-allowed"
                       }`}
                     >

@@ -1,10 +1,9 @@
-import axios from "axios";
+import { userService } from "@/services/userService";
 
 export const getWatchlist = async () => {
   const userID = window.localStorage.getItem("userID");
-  const url = import.meta.env.VITE_API;
   try {
-    const { data } = await axios.get(`${url}/watch-list/${userID}`);
+    const { data } = await userService.get(`/watch-list/${userID}`);
     return data;
   } catch (error) {
     console.log(error);

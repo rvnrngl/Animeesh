@@ -1,12 +1,10 @@
 import { UseFetchUserInfo } from "@/hooks/UseFetchUserInfo";
 import React from "react";
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { DeleteUserComponent } from "@/components/DeleteUserComponent";
-
-const url = import.meta.env.VITE_API;
+import { userService } from "@/services/userService";
 
 export const UserProfile = () => {
   const userID = window.localStorage.getItem("userID");
@@ -43,7 +41,7 @@ export const UserProfile = () => {
 
     // if username is valid
     try {
-      const { data } = await axios.put(`${url}/user/update/username`, {
+      const { data } = await userService.put("/user/update/username", {
         userID,
         newUsername,
       });
@@ -77,7 +75,7 @@ export const UserProfile = () => {
 
     // if passwords is valid
     try {
-      const { data } = await axios.put(`${url}/user/update/password`, {
+      const { data } = await userService.put("/user/update/password", {
         userID,
         currentPassword,
         newPassword,

@@ -23,7 +23,7 @@ export const Footer = () => {
   };
 
   return (
-    <div className="w-screen h-[150px] md:h-[200px] dark:bg-zinc-800/30 md:px-5 border-t mt-10">
+    <div className="w-screen h-[150px] md:h-[200px] bg-zinc-900 md:px-5 border-t">
       <div
         className="w-full h-full flex flex-col items-center md:items-start justify-center 
       gap-2 relative"

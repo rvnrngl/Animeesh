@@ -107,8 +107,8 @@ export const NavBar = () => {
 
   return (
     <>
-      <div className="w-screen dark:bg-zinc-900 lg:px-5 relative z-[999]">
-        <nav className="w-full border-b dark:border-none bg-white dark:bg-zinc-800 px-4 lg:px-7 z-50 shadow-md lg:rounded-b-[40px] py-2 md:py-3 lg:py-0">
+      <div className="w-screen bg-zinc-950 lg:px-5 relative z-[999]">
+        <nav className="w-full border-b dark:border-none bg-zinc-900 px-4 lg:px-7 z-50 shadow-md lg:rounded-b-[40px] py-2 md:py-3 lg:py-0">
           <ul className="relative text-lg flex justify-between items-center gap-2">
             <div className="flex w-full dark:text-gray-200 items-center gap-2 lg:gap-4">
               <button onClick={toggleMenu} className="lg:hidden">
@@ -196,7 +196,7 @@ export const NavBar = () => {
               </div>
             </div>
             {/* search bar */}
-            <div className="hidden lg:flex w-[380px] items-center gap-2 dark:text-gray-200 border border-gray-400 dark:border-none dark:bg-zinc-700/90 rounded-lg py-2 px-4 mr-2">
+            <div className="hidden lg:flex w-[380px] items-center gap-2 text-gray-200 border-none bg-zinc-800 rounded-lg py-2 px-4 mr-2">
               <input
                 id="searchpc"
                 type="text"

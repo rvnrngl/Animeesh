@@ -1,151 +1,113 @@
-import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
+// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
 import "swiper/css";
-import "swiper/css/pagination";
-import { Autoplay, Pagination } from "swiper/modules";
-import { PiTelevisionBold } from "react-icons/pi";
-import { Skeleton } from "@/components/ui/skeleton";
-import { fetchAdvancedSearch } from "@/api/apiRequests";
+import "swiper/css/effect-cards";
+
+// import required modules
+import { Autoplay, EffectCards, Pagination } from "swiper/modules";
+
+import { useQuery } from "@tanstack/react-query";
+import { getTopAnimeList } from "@/api/requestList";
+import { useNavigationById } from "@/hooks/UseNavigationById";
+import { CarouselLoader } from "@/Loaders/CarouselLoader";
+import { removeTags } from "@/utils/removeTags";
+import { Link } from "react-router-dom";
+import { FaPlay } from "react-icons/fa";
 
 export const Carousel = () => {
-  const [popularAnime, setPopularAnime] = useState([]);
-  const [currentDate] = useState(new Date());
-  const year = currentDate.getFullYear();
-  const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate();
+  const navigate = useNavigationById();
+  const [anime, setAnime] = useState(null);
 
-  useEffect(() => {
-    getPopularAnime();
-  }, []);
+  const { isPending, isError, data } = useQuery({
+    queryKey: ["top-anime"],
+    queryFn: async () => {
+      const res = await getTopAnimeList(1, 10);
+      return res.results;
+    },
+  });
 
-  // get top 10 popular anime of this season
-  const getPopularAnime = async () => {
-    setIsLoading(true);
-    try {
-      const data = await fetchAdvancedSearch(
-        undefined,
-        "ANIME",
-        1,
-        10,
-        undefined,
-        ["POPULARITY_DESC"],
-        undefined,
-        undefined,
-        year,
-        undefined
-      );
-      setPopularAnime(data.results);
-    } catch (error) {
-      console.error("Error fetching popular anime:", error);
-    } finally {
-      setIsLoading(false);
-    }
+  const defaultAnime = data ? data[0] : null;
+
+  const handleSlideChange = (swiper) => {
+    const currentAnime = data[swiper.activeIndex];
+    setAnime(currentAnime);
   };
 
-  const handleNavigate = (id) => {
-    if (id) {
-      navigate(`/watch/${id}`);
-    } else {
-      console.log("No id found!");
-    }
-  };
+  if (isPending) {
+    return <CarouselLoader />;
+  }
 
   return (
     <>
-      {isLoading === true ? (
-        <Skeleton className="w-full bg-zinc-200 dark:bg-zinc-800 h-full flex flex-col justify-end items-start">
-          <div className="w-full flex flex-col gap-3 px-3 lg:px-9 py-8">
-            <Skeleton className="w-[50px] lg:w-[100px] h-3 lg:h-5 bg-zinc-400/50 dark:bg-zinc-700/50" />
-            <Skeleton className="w-3/4 lg:w-2/4 h-4 lg:h-6 bg-zinc-400/50 dark:bg-zinc-700/50" />
-            <Skeleton className="w-[150px] lg:w-[200px] h-3 lg:h-5 bg-zinc-400/50 dark:bg-zinc-700/50" />
-            <Skeleton className="w-3/4 lg:w-2/4 h-10 lg:h-12 bg-zinc-400/50 dark:bg-zinc-700/50" />
-            <Skeleton className="w-[40px] lg:w-[100px] h-3 lg:h-5 bg-zinc-400/50 dark:bg-zinc-700/50" />
+      <div className="h-full w-full grid grid-cols-4 relative overflow-hidden rounded-sm shadow-lg">
+        <div className="h-full hidden col-span-2 lg:flex flex-col gap-y-4 items-start justify-center px-5 z-10">
+          <h1 className="text-6xl text-zinc-200 font-mono font-bold line-clamp-2">
+            {anime ? anime.title?.english : defaultAnime.title?.english}
+          </h1>
+          <div className="inline-flex gap-x-2">
+            <span className="px-2 bg-zinc-500 font-bold rounded-sm text-zinc-800 uppercase text-[8px] text-xs cursor-default">
+              {anime ? anime.status : defaultAnime.status}
+            </span>
+            <span className="px-2 bg-zinc-500 font-bold rounded-sm text-zinc-800 uppercase text-[8px] text-xs cursor-default">
+              {anime ? anime.type : defaultAnime.type}
+            </span>
+            <span className="px-2 bg-zinc-500 font-bold rounded-sm text-zinc-800 uppercase text-[8px] text-xs cursor-default">
+              EPS {anime ? anime.totalEpisodes : defaultAnime.totalEpisodes}
+            </span>
           </div>
-        </Skeleton>
-      ) : (
-        <Swiper
-          loop="true"
-          pagination={{
-            dynamicBullets: true,
-          }}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
-          navigation={true}
-          modules={[Autoplay, Pagination]}
-          className="mySwiper w-full h-full text-sm lg:text-base rounded-lg"
-        >
-          {popularAnime.map((anime, index) => {
-            return (
-              <SwiperSlide
-                key={anime.id}
-                className="flex flex-col justify-end items-start text-white transition-all duration-300 cursor-grab"
-              >
-                {/* image bg */}
-                <div className="absolute w-full h-full brightness-75 border-gray-900/10 top-0 left-0 -z-[1]">
-                  <img
-                    src={anime.cover}
-                    alt={anime.title.english}
-                    className="h-full w-full object-cover object-center hidden lg:block"
-                  />
-                  <img
-                    src={anime.image}
-                    alt={anime.title.english}
-                    className="w-full object-cover object-center lg:hidden"
-                  />
-                </div>
-                {/* anime description */}
-                <div className="w-full flex flex-col px-3 lg:px-9 py-8 bg-gradient-to-b from-transparent to-zinc-900/90">
-                  <span className="text-orange-400">
-                    #{index + 1} Top Anime
-                  </span>
-                  <p className="w-3/4 lg:w-2/4 text-lg font-semibold lg:text-3xl break-words leading-5">
-                    {anime.title.english}
-                  </p>
-                  <div className="flex items-center gap-2 text-[10px] lg:text-base text-white/90 font-thin">
-                    <p>
-                      Type: <span className=" font-semibold">{anime.type}</span>
-                    </p>
-                    <p>
-                      Episodes:{" "}
-                      <span className=" font-semibold">
-                        {anime.totalEpisodes}
-                      </span>
-                    </p>
-                    <p>
-                      Rating:{" "}
-                      <span className=" font-semibold">{anime.rating}</span>
-                    </p>
-                  </div>
-                  <div
-                    className="text-[10px] lg:text-base text-white/90 font-thin max-h-[40px] lg:max-h-[75px] 
-                  w-3/4 sm:w-2/4 break-words leading-3 overflow-hidden mt-1"
+          <p className="text-zinc-400 line-clamp-4 text-justify">
+            {removeTags(anime ? anime.description : defaultAnime.description)}
+          </p>
+          <Link
+            to={`/watch/${anime ? anime.id : defaultAnime.id}`}
+            className="bg-orange-400/90 py-3 px-10 uppercase text-2xl font-mono font-bold rounded-md text-gray-800 flex items-center justify-center gap-x-3 hover:bg-orange-400"
+          >
+            <FaPlay />
+            Play Now
+          </Link>
+        </div>
+        <div className="col-span-full lg:col-span-2 z-10">
+          <div className="w-full h-full flex items-center justify-center p-5 relative">
+            <Swiper
+              effect={"cards"}
+              autoplay={{
+                delay: 5000,
+                disableOnInteraction: false,
+              }}
+              pagination={{
+                clickable: true,
+              }}
+              modules={[Autoplay, EffectCards, Pagination]}
+              onSlideChange={handleSlideChange}
+              className="mySwiper w-[230px] lg:w-[320px] h-full"
+            >
+              {data.map((anime, index) => {
+                return (
+                  <SwiperSlide
+                    key={index}
+                    onClick={() => navigate(anime.id)}
+                    className="flex items-center justify-center rounded-md text-lg font-bold text-white brightness-75"
                   >
-                    <p className="line-clamp-3">
-                      {anime.description
-                        .replace(/<\/?i\s*\/?>/g, "")
-                        .replace(/<\/?br\s*\/?>/g, "")}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-900 text-sm lg:text-lg mt-3">
-                    <button
-                      onClick={() => handleNavigate(anime.id)}
-                      className="w-fit flex items-center gap-1 py-px px-2 font-semibold shadow-md 
-                  uppercase rounded-sm bg-orange-400 border-b border-orange-400 hover:text-gray-200
-                  duration-200 ease-out"
-                    >
-                      <PiTelevisionBold />
-                      Play
-                    </button>
-                  </div>
-                </div>
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
-      )}
+                    <img
+                      src={anime.image}
+                      alt={anime.id}
+                      className="w-full h-full"
+                    />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
+        </div>
+        <img
+          src={anime ? anime.cover : defaultAnime.cover}
+          alt={anime ? anime.id : defaultAnime.id}
+          className="absolute hidden lg:block w-full h-full top-0 left-0 bg-cover opacity-20 z-0"
+        />
+      </div>
     </>
   );
 };

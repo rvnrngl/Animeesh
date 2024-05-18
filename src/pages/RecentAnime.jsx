@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
 import { fetchRecent } from "@/api/apiRequests";
+import { getRecentAnimeList } from "@/api/requestList";
 
 export const RecentAnime = () => {
   const [recentAnime, setRecentAnime] = useState([]);
@@ -25,6 +26,7 @@ export const RecentAnime = () => {
   useEffect(() => {
     const pageNumber = parseInt(page.id);
     getRecentAnime("gogoanime", pageNumber, 30, "next");
+    getRecentAnimeList();
   }, [page]);
 
   useEffect(() => {
@@ -66,7 +68,7 @@ export const RecentAnime = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
+    <div className="w-screen min-h-screen bg-zinc-950 text-gray-300">
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-8 justify-center items-center">
         {/* Title */}
         {isLoading === true ? (
@@ -108,7 +110,7 @@ export const RecentAnime = () => {
                 );
               })
             ) : (
-              <Cards animeList={recentAnime} type={"recent"} />
+              <Cards animeList={recentAnime} isRecent={true} />
             )}
           </div>
           {/* paginate */}
