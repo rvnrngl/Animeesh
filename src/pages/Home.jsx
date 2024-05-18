@@ -59,12 +59,13 @@ export const Home = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen dark:bg-zinc-900">
+    <div className="w-screen min-h-screen bg-zinc-950">
       <div className="w-full flex flex-col justify-center items-center gap-3 px-3 lg:px-5">
         {/* Slider */}
-        <div className="h-[300px] md:h-[400px] lg:h-[75vh] mt-3 lg:mt-5 w-full shadow-lg">
+        <div className="h-[350px] md:h-[400px] lg:h-[500px] w-full mt-3 lg:mt-5">
           <Carousel />
         </div>
+
         {/* Trending Animes container */}
         <div className="w-full flex flex-col items-start">
           <h1 className="mt-[15px] mb-4 text-lg lg:text-2xl lg:font-semibold dark:text-gray-300">
@@ -114,7 +115,7 @@ export const Home = () => {
                 );
               })
             ) : (
-              <Cards animeList={recentAnime} type={"recent"} />
+              <Cards animeList={recentAnime} isRecent={true} />
             )}
           </div>
         </div>

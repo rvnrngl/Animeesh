@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const apiService = axios.create({
-  baseURL: import.meta.env.VITE_JIKAN_BASED_URL,
-  timeout: 10000, // specify timeout if needed
-});
+const BASE_URL = import.meta.env.PROD
+  ? import.meta.env.VITE_API_PROD
+  : import.meta.env.VITE_API_LOCAL;
 
-export default apiService;
+export const apiService = axios.create({
+  baseURL: BASE_URL,
+});

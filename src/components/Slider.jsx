@@ -1,43 +1,33 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
+import { NotFound } from "./NotFound";
+import { useNavigationById } from "@/hooks/UseNavigationById";
 
 export const Slider = ({ animeList, type }) => {
-  const navigate = useNavigate();
-  const handleNavigation = (id) => {
-    window.localStorage.setItem("type", type);
-    if (id) {
-      navigate(`/watch/${id}`);
-    } else {
-      console.log("No id found!");
-    }
-  };
-
+  const navigate = useNavigationById();
   return (
     <>
       <div className="w-full">
         <Swiper
-          slidesPerView={2}
+          slidesPerView={3}
           spaceBetween={10}
           breakpoints={{
             641: {
-              slidesPerView: 3,
-            },
-            769: {
               slidesPerView: 4,
             },
-            1025: {
+            769: {
               slidesPerView: 5,
             },
-            1281: {
+            1025: {
               slidesPerView: 6,
+            },
+            1281: {
+              slidesPerView: 7,
             },
           }}
           className="mySwiper"
@@ -56,11 +46,7 @@ export const Slider = ({ animeList, type }) => {
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                   }}
-                  onClick={() =>
-                    handleNavigation(
-                      type === "watchList" ? anime.animeID : anime.id
-                    )
-                  }
+                  onClick={() => navigate(anime.id)}
                 >
                   {/* badge */}
                   <div

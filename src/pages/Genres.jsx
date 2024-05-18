@@ -80,7 +80,7 @@ export const Genres = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
+    <div className="w-screen min-h-screen bg-zinc-950 text-gray-300">
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-8 justify-center items-center">
         {/* Title */}
         {isLoading === true ? (
@@ -128,7 +128,7 @@ export const Genres = () => {
                 );
               })
             ) : (
-              <Cards animeList={animeList} type={"genre"} />
+              <Cards animeList={animeList} isRecent={false} />
             )}
           </div>
           {/* paginate */}

@@ -61,7 +61,7 @@ export const SearchAnime = () => {
   };
 
   return (
-    <div className="w-screen min-h-screen dark:bg-zinc-900 dark:text-gray-300">
+    <div className="w-screen min-h-screen bg-zinc-950 text-gray-300">
       <div className="w-full h-full pt-5 px-4 flex flex-col gap-6 lg:gap-10 justify-center items-center">
         {/* search container */}
         <div className="lg:hidden w-full px-4">
@@ -113,7 +113,7 @@ export const SearchAnime = () => {
                 );
               })
             ) : (
-              <Cards animeList={searchedAnime} type={"search"} />
+              <Cards animeList={searchedAnime} isRecent={false} />
             )}
           </div>
           {/* paginate */}
