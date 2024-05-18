@@ -105,7 +105,7 @@ export const Carousel = () => {
         <img
           src={anime ? anime.cover : defaultAnime.cover}
           alt={anime ? anime.id : defaultAnime.id}
-          className="absolute hidden lg:block w-full h-full top-0 left-0 bg-cover opacity-20 z-0"
+          className="absolute hidden lg:block w-full h-full top-0 left-0 bg-cover opacity-[15%] z-0"
         />
       </div>
     </>
