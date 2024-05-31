@@ -14,20 +14,20 @@ export const Slider = ({ animeList, type }) => {
     <>
       <div className="w-full">
         <Swiper
-          slidesPerView={3}
+          slidesPerView={2}
           spaceBetween={10}
           breakpoints={{
             641: {
-              slidesPerView: 4,
+              slidesPerView: 3,
             },
             769: {
-              slidesPerView: 5,
+              slidesPerView: 4,
             },
             1025: {
-              slidesPerView: 6,
+              slidesPerView: 5,
             },
             1281: {
-              slidesPerView: 7,
+              slidesPerView: 6,
             },
           }}
           className="mySwiper"
